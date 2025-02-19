@@ -1,5 +1,5 @@
-import React from "react";
-import { SidebarItem } from "../pages/Dashboard";
+import React, { useEffect } from "react";
+import { SidebarItem } from "../views/AdminView";
 import { 
   Box, 
   Dialog, 
@@ -27,8 +27,17 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  // Add this useEffect to handle screen size changes
+  useEffect(() => {
+    if (!isMobile) {
+      setSidebar(true); // Always show sidebar on desktop
+    }
+  }, [isMobile, setSidebar]);
+
   const handleClose = () => {
-    setSidebar(false);
+    if (isMobile) {
+      setSidebar(false);
+    }
   };
 
   const SidebarContent = () => (
@@ -57,10 +66,6 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
             )}
             <ListItemText 
               primary={item.title}
-              primaryTypographyProps={{
-                fontSize: '0.9rem',
-                fontWeight: 500
-              }}
             />
           </ListItemButton>
         </ListItem>
@@ -74,10 +79,6 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
         fullScreen
         open={isOpen}
         onClose={handleClose}
-        TransitionProps={{
-          enter: true,
-          exit: true,
-        }}
       >
         <AppBar 
           position="static" 
@@ -117,7 +118,8 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
   // Desktop version
   return isOpen ? (
     <Box sx={{ 
-      height: '100%',
+      height: '100vh',
+      width: '20vw',
       borderRight: '1px solid',
       borderColor: 'divider',
       p: 2,

@@ -3,16 +3,16 @@ import { useAdminContext } from "../contexts/AdminContextProvider";
 
 
 const Rides = () => {
-    const { rides } = useAdminContext();
+    const { orders } = useAdminContext();
 
 
   return (
     <div>
-        <h1>Rides</h1>
+        <h1>Orders</h1>
         <ul>
-            {rides?.map((ride) => (
-                <li key={ride.id}>
-                    <p>Id: {ride.id}</p>
+            {Array.isArray(orders) && orders?.map((order) => (
+                <li key={order.id}>
+                    <p>{order.id}</p>
                 </li>
             ))}
         </ul>
@@ -20,4 +20,4 @@ const Rides = () => {
   )
 }
 
-export default Rides
+export default Rides;

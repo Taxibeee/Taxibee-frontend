@@ -1,7 +1,7 @@
 import { useAuth } from "../auth/AuthProvider";
 // import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../components/ResponsiveAppBar";
-import Rides from "../components/Rides";
+import Rides from "../components/Orders";
 import Sidebar from "../components/Sidebar";
 
 
@@ -10,6 +10,7 @@ export interface SidebarItem {
   id: number;
   title: string;
   customFunc: () => void;
+  icon?: React.ReactNode;
 }
 
 const Dashboard = () => {
@@ -35,10 +36,11 @@ const Dashboard = () => {
   const adminSidebarItems: SidebarItem[] = [
     {
       id: 1,
-      title: 'Rides',
+      title: 'Orders',
       customFunc: () => {
         console.log('Rides');
       },
+      icon: <></>
     },
     {
       id: 2,
@@ -46,6 +48,7 @@ const Dashboard = () => {
       customFunc: () => {
         console.log('Profile');
       },
+      icon: <></>
     },
     {
       id: 3,
@@ -53,6 +56,7 @@ const Dashboard = () => {
       customFunc: () => {
         console.log('Profile');
       },
+      icon: <></>
     },
   ]
 

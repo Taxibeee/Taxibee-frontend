@@ -123,7 +123,8 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
       borderRight: '1px solid',
       borderColor: 'divider',
       p: 2,
-      backgroundColor: 'background.paper'
+      backgroundColor: '#090B0F',
+      color: 'white'
     }}>
       <SidebarContent />
     </Box>

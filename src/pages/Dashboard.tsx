@@ -6,7 +6,7 @@ const Dashboard = () => {
   const { currentUser } = useAuth();
 
   return (
-      <div className=" min-h-screen">
+      <div className="min-h-screen text-white" style={{ width: '60vw' }}>
         Welcome To the {currentUser?.role}'s panel, {currentUser?.name}
         <Orders />
       </div>

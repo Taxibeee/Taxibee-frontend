@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query"; 
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../api/api";
 import Order from "../models/order"
 
 

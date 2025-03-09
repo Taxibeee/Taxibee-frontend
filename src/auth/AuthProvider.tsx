@@ -1,97 +1,144 @@
-import { createContext, PropsWithChildren, useContext, useState, useEffect } from "react";
-import  axiosInstance  from "../api/axiosInstance";
-import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { AuthService } from '../auth/auth'
+import { AuthState, LoginRequest } from '../types/auth';
+import { User } from '../types/user';
 
-export type User = {
-    id: number;
-    name: string;
-    username: string;
-    password: string;
-    role: string
-}
-
-type AuthContext = {
-    authToken?: string | null;
-    currentUser?: User | null;
-    handleLogin: (username: string, password: string, role: string) => Promise<void>;
-    handleLogout: () => void;
-    error?: Error | null
+// Initial Auth State
+const initialState: AuthState = {
+    user: null,
+    token: null,
+    loading: true,
+    isAuthenticated: false,
+    error: null,
 };
 
-type Error = {
-    message: string;
+// Auth action types
+type  AuthAction = 
+    | { type: 'LOGIN_SUCCESS'; payload: { user: User; token: string } }
+    | { type: 'LOGIN_FAILURE'; payload: string }
+    | { type: 'LOGOUT' }
+    | { type: 'CLEAR_ERROR' }
+    | { type: 'AUTH_CHECKED' };
+
+
+// Auth reducer
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+    switch (action.type) {
+        case 'LOGIN_SUCCESS':
+            return {
+                ...state,
+                user: action.payload.user,
+                token: action.payload.token,
+                isAuthenticated: true,
+                loading: false,
+                error: null,
+            };
+        case 'LOGIN_FAILURE':
+            return {
+                ...state,
+                user: null,
+                token: null,
+                isAuthenticated: false,
+                loading: false,
+                error: action.payload,
+            };
+        case 'LOGOUT':
+            return {
+                ...state,
+                user: null,
+                token: null,
+                isAuthenticated: false,
+                loading: false,
+                error: null,
+            };
+        case 'CLEAR_ERROR':
+            return {
+                ...state,
+                error: null,
+            };
+        case 'AUTH_CHECKED':
+            return {
+                ...state,
+                loading: false,
+            };
+        default:
+            return state;
+    }
+};
+
+// Auth context type 
+interface AuthContextType extends AuthState {
+    login: (loginRequest: LoginRequest) => Promise<void>;
+    logout: () => void;
+    clearError: () => void;
 }
 
-const AuthContext = createContext<AuthContext | undefined>(undefined);
+// Create auth Context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type AuthProviderProps = PropsWithChildren;
+// Auth Provider component
+export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+    const [state, dispatch] = useReducer(authReducer, initialState);
 
-export default function AuthProvider({ children }: AuthProviderProps) {
-    const [ authToken, setAuthToken  ] = useState<string | null>();
-    const [ currentUser, setCurrentUser  ] = useState<User | null>();
-    const [ error, setError ] = useState<Error | null>(null);
-
-    const navigate = useNavigate();
-
+    // Check for existing auth on mount
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        const user = localStorage.getItem('currentUser');
+        const checkAuth = async () => {
+            const token = AuthService.getToken();
+            const user = AuthService.getUser(); 
 
-        if (token && user) {
-            setAuthToken(token);
-            setCurrentUser(JSON.parse(user));
-        }
+            if (token && user) {
+                dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token } });
+            } else {
+                dispatch({ type: 'AUTH_CHECKED' });
+            }
+        };
+        checkAuth();
+    }, []);
 
-        if (!token || !user) {
-            navigate('/login');
-        }
-    }, [])
-
-
-    async function handleLogin(username: string, password: string, role: string) {
+    // Login function
+    const login = async (credentials: LoginRequest) => {
         try {
-            const response = await axiosInstance.post('/auth/login', { username, password, role })
-            const { access_token, user } = response.data;
-            setAuthToken(access_token);
-            setCurrentUser(user);
-            console.log(access_token);
-            console.log(user);
-            localStorage.setItem('authToken', access_token);
-            localStorage.setItem('currentUser', JSON.stringify(user));
-        } catch (error) {
-            setAuthToken(null);
-            setCurrentUser(null);
-            setError(error as Error)
-            console.error(error);
+            const response = await AuthService.login(credentials);
+            const { access_token, user } = response;
+
+            // Store auth data
+            AuthService.setToken(access_token);
+            AuthService.setUser(user);
+
+            dispatch({ type: 'LOGIN_SUCCESS', payload: { token: access_token, user } });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.detail || 'Login failed. Please try again..';
+            dispatch({ type: 'LOGIN_FAILURE', payload: errorMessage });
         }
-    }
+    }; 
 
-    async function handleLogout() {
-        setAuthToken(null);
-        setCurrentUser(null);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('currentUser');
-        navigate('/login', { replace: true })
-    }
+    // Logout function
+    const logout = () => {
+        AuthService.logout();
+        dispatch({ type: 'LOGOUT'})
+    };
 
-    return <AuthContext.Provider
-        value={{
-            authToken,
-            currentUser,
-            handleLogin,
-            handleLogout,
-            error
-        }}
-    >
-        { children }
-    </AuthContext.Provider>
-}
+    // Clear error function
+    const clearError = () => {
+        dispatch({ type: 'CLEAR_ERROR'})
+    };
 
-export function useAuth() {
+    // Context value
+    const value = {
+        ...state,
+        login,
+        logout,
+        clearError,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+} 
+
+export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
+    if (context === undefined) {
+        throw new Error('useAuth must be use within an AuthProvider');
     }
     return context;
-}
+};

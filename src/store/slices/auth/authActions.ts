@@ -39,6 +39,7 @@ export const loginUser = createAsyncThunk(
             }));
 
             return response;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             // Handle API errors
             const errorMessage = error.response?.data?.detail || 'An error occurred during login.';

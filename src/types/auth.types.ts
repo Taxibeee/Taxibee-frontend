@@ -25,8 +25,8 @@ export interface LoginRequest {
 }
 
 export interface UpdatePasswordRequest {
-    old_password: string
-    new_password: string
+    oldPassword: string
+    newPassword: string
 }
 
 export interface LoginResponse {

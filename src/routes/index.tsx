@@ -35,7 +35,7 @@ const AppRouter: React.FC = () => {
 
 
                 {/* Special Routes */}
-                <Route path="/unauthorized" element={<Unauthorized />}
+                <Route path="/unauthorized" element={<Unauthorized />} />
 
 
                 {/* Catch-all route for 404 Not Found */}

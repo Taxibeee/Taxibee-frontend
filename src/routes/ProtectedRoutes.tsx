@@ -47,6 +47,27 @@ export const AdminRoute: React.FC = () => {
     return <Outlet />
 }
 
+/**
+ * Driver Route - For routes that only drivers should access
+ */
+export const DriverRoute: React.FC = () => {
+    const { isAuthenticated, hasRole, loading } = useAuth()
+    const location = useLocation()
+    
+    if (loading) {
+        return <div>Loading...</div>
+    }
+    if(!isAuthenticated) {
+        return <Navigate to="/login" state={{ from: location }} replace />
+    }
+    if(!hasRole('driver')) {
+        return <Navigate to="/unauthorized" replace />
+    }
+    return <Outlet />
+}
+
+
+
 
 /**
  * PublicOnlyRoute - For routes like login that should only be accessible when not logged in

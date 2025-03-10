@@ -24,13 +24,13 @@ export const injectStore = (_store: any) => {
 
 export const loginUser = createAsyncThunk(
     'auth/login',
-    async ({ username, password, role }: LoginRequest, {dispatch, rejectWithValue}) => {
+    async ({ username, password, role }: LoginRequest, { dispatch, rejectWithValue }) => {
         try {
             // Signal that auth actions is starting
             dispatch(authStart());
 
             // Call the auth service login method
-            const response = await authService.login(username, password, role);
+            const response = await authService.login({ username, password, role });
 
             // If successful, update state with token and user data
             dispatch(loginSuccess({
@@ -72,7 +72,7 @@ export const updateUserPassword = createAsyncThunk(
             dispatch(authStart());
 
             // Call the auth service update password method
-            const response = await authService.updatePassword(oldPassword, newPassword);
+            const response = await authService.updatePassword({ oldPassword, newPassword });
 
             // If successful, update state with token and user data
             dispatch(updatePasswordSuccess());

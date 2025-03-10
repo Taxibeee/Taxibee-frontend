@@ -4,6 +4,7 @@ import { ProtectedRoute, AdminRoute, DriverRoute, PublicOnlyRoute } from "./Prot
 
 // Import pages
 import Login from "../pages/auth/Login";
+import HomePage from "../pages/common/HomePage";
 
 
 const AppRouter: React.FC = () => {
@@ -44,3 +45,5 @@ const AppRouter: React.FC = () => {
         </Router>
     )
 }
+
+export default AppRouter;

@@ -5,6 +5,10 @@ import { ProtectedRoute, AdminRoute, DriverRoute, PublicOnlyRoute } from "./Prot
 // Import pages
 import Login from "../pages/auth/Login";
 import HomePage from "../pages/common/HomePage";
+import Profile from "../pages/common/Profile";
+import Unauthorized from "../pages/common/Unauthorized";
+import DriverDashboard from "../pages/driver/DriverDashboard";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 
 
 const AppRouter: React.FC = () => {

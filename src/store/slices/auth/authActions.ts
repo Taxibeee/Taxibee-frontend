@@ -23,7 +23,7 @@ export const injectStore = (_store: any) => {
  */
 
 export const loginUser = createAsyncThunk(
-    'auth/login',
+    '/auth/login',
     async ({ username, password, role }: LoginRequest, { dispatch, rejectWithValue }) => {
         try {
             // Signal that auth actions is starting

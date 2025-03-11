@@ -55,10 +55,10 @@ const Profile: React.FC = () => {
         setSuccess('');
 
         try {
-            const response = await updatePassword({
-                oldPassword: passwordData.oldPassword,
-                newPassword: passwordData.newPassword
-            });
+            const response = await updatePassword(
+                passwordData.oldPassword,
+                passwordData.newPassword
+            );
 
             setSuccess(response.message || 'Password updated successfully!');
 
@@ -68,6 +68,7 @@ const Profile: React.FC = () => {
                 newPassword: '',
             });
         } catch (err) {
+            console.error(err);
             // If error is not already handled by redux, set Local error 
             if (!error) {
                 setLocalError('Failed to update password');
@@ -108,6 +109,95 @@ const Profile: React.FC = () => {
             >
                 Logout
             </button>
+
+
+            {/* Tab Navigation */}
+            <button
+                onClick={() => setActiveTab('profile')}>
+                Profile Information
+            </button>
+            <button
+                onClick={() => setActiveTab('security')}
+            >
+                Security Settings
+            </button>
+
+
+            {/* Profile Information Tab */}
+            {activeTab === 'profile' && (
+                <>
+                <p>{currentUser.name || currentUser.full_name || 'N/A'}</p>
+                <p>{currentUser.username || 'N/A'}</p>
+                <p>{currentUser.role || 'N/A'}</p>
+                <p>{currentUser.email || 'N/A'}</p>
+                <p>{currentUser.company_id || 'N/A'}</p>
+                </>
+            )}
+
+            {/* Show additional driver-specific fields if the user is a driver */}
+            {currentUser.role === 'driver' && (
+                <>
+                <p>{currentUser.taxibee_id || 'N/A'}</p>
+                <p>{currentUser.bolt_driver_uuid || 'N/A'}</p>
+                </>
+            )}
+
+
+            {/* Security Settings Tab */}
+            {activeTab === 'security' && (
+                <>
+                <p>Update your password and security preferences</p>
+                <h3>Password Update</h3>
+                <p className='text-red-500'>
+                    {(error || localError) && (
+                        <p>
+                            {error || localError}
+                        </p>
+                    )}
+                </p>
+
+                <p>
+                    {success && (
+                        <p className='text-green-500'>
+                            {success}
+                        </p>
+                    )}
+                </p>
+
+                <form onSubmit={handlePasswordSubmit}>
+                    <label htmlFor='oldPassword'>Current Password</label>
+                    <input
+                        type='password'
+                        id='oldPassword'
+                        name='oldPassword'
+                        value={passwordData.oldPassword}
+                        onChange={handlePasswordChange}
+                        required
+                        disabled={loading}
+                    />
+
+                    <label htmlFor='newPassword'>New Password</label>
+                    <input
+                        type='password'
+                        id='newPassword'
+                        name='newPassword'
+                        value={passwordData.newPassword}
+                        onChange={handlePasswordChange}
+                        required
+                        disabled={loading}
+                    />
+
+                    <button
+                        type='submit'
+                        disabled={loading}
+                    >
+                        {loading ? 'Updating...' : 'Update Password'}
+                    </button>
+                </form>
+                </>
+            )}
         </>
     )
 }
+
+export default Profile;

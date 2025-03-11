@@ -33,7 +33,7 @@ export const useAuth = () => {
     const login = async (username: string, password: string, role: string) => {
         // eslint-disable-next-line no-useless-catch
         try {
-            return await dispatch(loginUser(username, password, role)).unwrap()
+            return await dispatch(loginUser({ username, password, role })).unwrap()
         } catch(error) {
             throw error
         }
@@ -43,7 +43,7 @@ export const useAuth = () => {
     const updatePassword = async (oldPassword: string, newPassword: string) => {
         // eslint-disable-next-line no-useless-catch
         try {
-            return await dispatch(updateUserPassword(oldPassword, newPassword)).unwrap()
+            return await dispatch(updateUserPassword({ oldPassword, newPassword })).unwrap()
         } catch(error) {
             throw error
         }

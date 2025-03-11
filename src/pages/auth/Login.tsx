@@ -15,8 +15,6 @@ import {
 } from '@mui/material';
 
 
-
-
 // Define interfaces for our types
 interface LocationState {
   from: {
@@ -126,9 +124,9 @@ const Login: React.FC = () => {
       <Paper elevation={0} sx={{ padding: 3, width: '100%' }}>
         <h2>Sign in to your account</h2>
         
-        {(error || localError) && (
-          <Alert severity="error" sx={{ mb: 2, mt: 2 }}>
-            {error || localError}
+        {(error || localError) && (          
+          <Alert severity="error" sx={{ mb: 2, mt: 2 }} >
+            {error || localError}          
           </Alert>
         )}
 

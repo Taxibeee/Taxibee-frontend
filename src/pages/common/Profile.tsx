@@ -4,7 +4,6 @@ import { useAuth } from '../../store/hooks';
 
 
 /**
- * 
  * Profile Component
  * 
  * Displays user profile information and allows password updates.

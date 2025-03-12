@@ -1,25 +1,19 @@
+// src/components/layout/DashboardLayout.tsx
 import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import {
   Box,
-  Drawer,
   AppBar,
   Toolbar,
-  List,
   Typography,
-  Divider,
   IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
 import UserMenu from './UserMenu';
+import { SidebarItem } from '../../pages/admin/AdminDashboard';
 
 // Drawer width for desktop view
 const drawerWidth = 240;
@@ -34,16 +28,16 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  marginLeft: 0,
   ...(open && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0,
+    marginLeft: drawerWidth,
   }),
   [theme.breakpoints.up('md')]: {
-    marginLeft: 0,
+    marginLeft: drawerWidth,
   },
 }));
 
@@ -68,33 +62,22 @@ const StyledAppBar = styled(AppBar, {
   },
 }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
-
-interface MenuItem {
-  text: string;
-  icon: React.ReactNode;
-  path: string;
-}
-
 interface DashboardLayoutProps {
   children: React.ReactNode;
   title: string;
-  menuItems: MenuItem[];
+  menuItems: SidebarItem[];
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title, menuItems }) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 
+  children, 
+  title, 
+  menuItems 
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
-  // State for controlling drawer open/close on mobile
+  // State for controlling drawer open/close
   const [open, setOpen] = useState(!isMobile);
 
   // Handle drawer toggle
@@ -105,9 +88,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title, menu
   // Handle navigation
   const handleNavigate = (path: string) => {
     navigate(path);
-    if (isMobile) {
-      setOpen(false);
-    }
   };
 
   return (
@@ -135,53 +115,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title, menu
         </Toolbar>
       </StyledAppBar>
       
-      {/* Sidebar / Drawer */}
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-          display: { xs: 'block', md: 'block' },
-        }}
-        variant={isMobile ? 'temporary' : 'persistent'}
-        anchor="left"
+      {/* Sidebar */}
+      <Sidebar 
+        menuItems={menuItems.map(item => ({ text: item.text, path: item.path }))}
         open={open}
         onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better mobile performance
-        }}
-      >
-        <DrawerHeader>
-          <Typography variant="h6" sx={{ flexGrow: 1, ml: 2 }}>
-            TaxiBee
-          </Typography>
-          {isMobile && (
-            <IconButton onClick={handleDrawerToggle}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          )}
-        </DrawerHeader>
-        <Divider />
-        
-        {/* Menu Items */}
-        <List>
-          {menuItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton onClick={() => handleNavigate(item.path)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+        onNavigate={handleNavigate}
+      />
       
       {/* Main Content */}
       <Main open={open}>
-        <DrawerHeader />
+        <Toolbar /> {/* This creates space beneath the AppBar */}
         {children}
       </Main>
     </Box>

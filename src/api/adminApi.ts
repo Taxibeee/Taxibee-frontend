@@ -74,57 +74,57 @@ export interface UnaccountedTransactionsResponse {
 const adminApi = {
     // Analytics 
     getWeekAnalytics: async (): Promise<WeekAnalytics> => {
-        const response = await api.get('/analyticsByWeek');
+        const response = await api.get('/admin/analyticsByWeek');
         return response.data.data;
     },
 
     getWeekdayAnalytics: async (): Promise<WeekDayAnalytics[]> => {
-        const response = await api.get('analyticsByWeekDays');
+        const response = await api.get('/admin/analyticsByWeekDays');
         return response.data.data;
     },
 
     // Revenue
     getRevenueByPaymentMethod: async (): Promise<RevenueByPaymentMethod> => {
-        const response = await api.get('/revenueByPaymentMethod');
+        const response = await api.get('/admin/revenueByPaymentMethod');
         return response.data.data;
     },
 
     getRevenueByDriver: async (): Promise<RevenueByDriver[]> => {
-        const response = await api.get('/revenueByDriver');
+        const response = await api.get('/admin/revenueByDriver');
         return response.data.data;
     },
 
     // Drivers
     getAllDrivers: async (): Promise<DriversResponse> => {
-        const response = await api.get('/getAllDrivers');
+        const response = await api.get('/admin/getAllDrivers');
         return response.data;
     },
 
     getLiveDriverStatus: async (): Promise<DriverStatus[]> => {
-        const response = await api.get('/live_status');
+        const response = await api.get('/admin/live_status');
         return response.data.data;
     },
 
     updateDriversTable: async (): Promise<{ message: string }> => {
-        const response = await api.post('/updateDriversTable');
+        const response = await api.post('/admin/updateDriversTable');
         return response.data;
     },
 
     // Transactions
     getUnaccountedTransactions: async (): Promise<UnaccountedTransactionsResponse> => {
-        const response = await api.get('/unaccountedTransactions');
+        const response = await api.get('/admin/unaccountedTransactions');
         return response.data;
     },
 
     updateTransactionDriver: async (payload: { payment_reference: string, driver_uuids: string }): Promise<{ message: string, success: boolean }> => {
-        const response = await api.post('/updateTransactionDriver', payload);
+        const response = await api.post('/admin/updateTransactionDriver', payload);
         return response.data;
     },
 
     getTransactionsByWeekday: async (
         weekday?: string
     ): Promise<{ days: { [key: string]: { transactions: Transaction[]; total_amount: number; count: number } }; week_total: { total_amount: number, total_count: number } }> => {
-        const url = weekday ? `/getTransactionsByWeekday?weekday=${weekday}` : '/getTransactionsByWeekday';
+        const url = weekday ? `/admin/getTransactionsByWeekday?weekday=${weekday}` : '/admin/getTransactionsByWeekday';
         const response = await api.get(url);
         return response.data.data;
     },
@@ -137,7 +137,7 @@ const adminApi = {
         if (params.start_date) queryParams.append('start_date', params.start_date.toString());
         if (params.end_date) queryParams.append('end_date', params.end_date.toString());
 
-        const url = queryParams.toString() ? `/getTransactionsByTerminal?${queryParams.toString()}` : '/getTransactionsByTerminal';
+        const url = queryParams.toString() ? `/admin/getTransactionsByTerminal?${queryParams.toString()}` : '/admin/getTransactionsByTerminal';
         const response = await api.get(url);
         return response.data.data;
     }

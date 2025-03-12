@@ -10,13 +10,17 @@ import {
   RadioGroup, 
   FormControlLabel, 
   Radio,
-  TextField,
   Button,
-  Paper,
   Container,
-  Typography
+  Typography,
+  FilledInput,
+  InputLabel,
+  InputAdornment,
+  IconButton,
+  TextField
 } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
+
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 // Define interfaces for our types
@@ -51,6 +55,10 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as LocationState)?.from?.pathname || '/';
+
+
+  // Track password visibility
+  const [ showPassword, setShowPassword ] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -112,6 +120,14 @@ const Login: React.FC = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   return (
@@ -180,12 +196,26 @@ const Login: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        maxWidth: '400px',
         margin: '0 auto',
+        backgroundColor: '#f5f5f5',
+        height: '100vh',
+        width: '60%',
         padding: 3,
-        mt: 10,
+        paddingTop: 30,
       }}
     >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '500px',
+          backgroundColor: 'inherit',
+          padding: 3,
+        }}
+      >
         <Typography variant="h4" align="center" sx={{ mb: 2 }}>
           Sign In to Taxibee
         </Typography>
@@ -196,7 +226,7 @@ const Login: React.FC = () => {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <TextField
             fullWidth
             label="Username"
@@ -204,21 +234,57 @@ const Login: React.FC = () => {
             value={formData.username}
             onChange={handleInputChange}
             autoFocus
-
             sx={{
               mb: 2,
+              backgroundColor: 'white',
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none'  // This removes the border
+              },
+              '& .MuiOutlinedInput-root': {
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  border: 'none'  // Removes border on hover
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  border: 'none'  // Removes border on focus
+                }
+              }
             }}
           />
-
-          <TextField
-            fullWidth
-            label="Password"
-            name="password"
-            type="password"
-            value={formData.password}
+          <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
+            <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+            <FilledInput
+              id="filled-adornment-password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+              sx={{
+                backgroundColor: 'white',
+                '&:hover': {
+                  backgroundColor: 'white',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: 'white',
+                }
+              }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? 'hide the password' : 'display the password'
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
             onChange={handleInputChange}
-          />
+            />
+          </FormControl>
 
+          
           <FormControl component="fieldset" sx={{ mt: 2, width: '100%' }}>
             <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>Role</FormLabel>
             <RadioGroup
@@ -257,13 +323,13 @@ const Login: React.FC = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white', p: 1.1 }}
+            sx={{ mt: 3, mb: 2, backgroundColor: '#fecc04', color: 'black', p: 1.1 }}
             disabled={loading || isSubmitting}
           >
             {loading ? 'Logging In...' : 'Sign In'}
           </Button>
         </form>
-
+        </Box>
       <Link
         to="/"
         style={{ marginTop: '1rem' }}

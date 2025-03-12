@@ -6,53 +6,45 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
-  Divider,
-  IconButton,
+  Toolbar,
   Typography,
-  useTheme,
-  useMediaQuery
 } from '@mui/material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { SidebarItem } from './DashboardLayout';
+import logo from '../../assets/react.svg';
 
 // Define drawer width - make sure this matches your DashboardLayout
 const drawerWidth = 240;
 
-interface MenuItem {
-  text: string;
-  path: string;
-}
-
 interface SidebarProps {
-  menuItems: MenuItem[];
+  menuItems: SidebarItem[];
   open: boolean;
   onClose: () => void;
   onNavigate: (path: string) => void;
+  isMobile: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, open, onClose, onNavigate }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+const Sidebar: React.FC<SidebarProps> = ({ 
+  menuItems, 
+  open, 
+  onClose, 
+  onNavigate,
+  isMobile
+}) => {
 
   // Sidebar content - shared between mobile and desktop versions
   const sidebarContent = (
-    <>
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between',
-        padding: 2
-      }}>
-        <Typography variant="h6" noWrap>
-          TaxiBee
-        </Typography>
-        {isMobile && (
-          <IconButton onClick={onClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        )}
-      </Box>
-      <Divider />
+    <Box
+      sx={{
+        mt: isMobile ? 2: -6, // Adjust the margin top if needed
+        }}
+      >
+      {!isMobile && <Toolbar />} {/* This provides space at the top for the AppBar in desktop mode */}
+      {!isMobile && <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <img src={logo} alt="React" width={50} />
+        <Typography variant="h4" sx={{ ml: 1 }}>Taxibee</Typography>
+      </Box>}
       <List sx={{ p: 1 }}>
         {menuItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
@@ -70,23 +62,30 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, open, onClose, onNavigate 
                 },
               }}
             >
+              {item.icon && (
+                <ListItemIcon>
+                  {item.icon}
+                </ListItemIcon>
+              )}
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-    </>
+    </Box>
   );
 
+  // For mobile, we just return the content directly since it's rendered inside a Dialog
+  if (isMobile) {
+    return <Box sx={{ width: '100%' }}>{sidebarContent}</Box>;
+  }
+
+  // For desktop, we use the Drawer component with positioning to account for the AppBar
   return (
     <Box component="nav">
       <Drawer
-        variant={isMobile ? "temporary" : "persistent"}
+        variant="persistent"
         open={open}
-        onClose={onClose}
-        ModalProps={{
-          keepMounted: true, // Better mobile performance
-        }}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -94,6 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, open, onClose, onNavigate 
             width: drawerWidth,
             boxSizing: 'border-box',
             borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+            paddingTop: 0, // AppBar will be above this
           },
         }}
       >

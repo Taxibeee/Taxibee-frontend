@@ -9,7 +9,7 @@ import WeeklyAnalyticsTable from '../../components/admin/WeeklyAnalyticsTable';
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
 import DriverStatusList from '../../components/admin/DriverStatusList';
 import TopDriversTable from '../../components/admin/TopDriversTable';   
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 
 export interface SidebarItem {
@@ -59,7 +59,7 @@ const sidebarItemsAdmin: SidebarItem[] = [
 
 
 const AdminDashboard: React.FC = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
 
     return (

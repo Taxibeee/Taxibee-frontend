@@ -10,7 +10,6 @@ import Unauthorized from "../pages/common/Unauthorized";
 import DriverDashboard from "../pages/driver/DriverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
-
 const AppRouter: React.FC = () => {
     return (
         <Router>
@@ -31,17 +30,17 @@ const AppRouter: React.FC = () => {
                 {/* Admin Only Routes */}
                 <Route element={<AdminRoute />}>
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    {/* Add other admin routes as needed */}
                 </Route>
 
                 {/* Driver only routes */}
                 <Route element={<DriverRoute />}>
                     <Route path="/driver/dashboard" element={<DriverDashboard />} />
+                    <Route path="/driver/orders" element={<DriverDashboard />} />
                 </Route>
-
 
                 {/* Special Routes */}
                 <Route path="/unauthorized" element={<Unauthorized />} />
-
 
                 {/* Catch-all route for 404 Not Found */}
                 <Route path="*" element={<Navigate to="/" replace />} />

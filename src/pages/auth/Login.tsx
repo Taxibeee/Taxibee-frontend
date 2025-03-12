@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import taxisHomePageVideo from '../../assets/taxi_vid.mp4';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../store/hooks';
 import { 
@@ -11,8 +12,11 @@ import {
   Radio,
   TextField,
   Button,
-  Paper
+  Paper,
+  Container,
+  Typography
 } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
 
 
 // Define interfaces for our types
@@ -111,6 +115,66 @@ const Login: React.FC = () => {
   };
 
   return (
+    <Container
+      maxWidth={false}
+      disableGutters
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        padding: 0,
+        margin: 0,
+        width: '100%',
+      }}
+    >
+      <Box
+        sx={{
+          width: '40%',
+          backgroundColor: 'black',
+          color: 'white',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
+          }}
+        >
+          <source src={taxisHomePageVideo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* overlay to make text more readable */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
+            zIndex: 1
+          }}
+        />
+        <Typography variant="h5" align="left" sx={{ mb: 2, pl: 5, zIndex: 1 }}>
+          Welcome Onboard!
+        </Typography>
+      </Box>
     <Box
       sx={{
         display: 'flex',
@@ -119,10 +183,12 @@ const Login: React.FC = () => {
         maxWidth: '400px',
         margin: '0 auto',
         padding: 3,
+        mt: 10,
       }}
     >
-      <Paper elevation={0} sx={{ padding: 3, width: '100%' }}>
-        <h2>Sign in to your account</h2>
+        <Typography variant="h4" align="center" sx={{ mb: 2 }}>
+          Sign In to Taxibee
+        </Typography>
         
         {(error || localError) && (          
           <Alert severity="error" sx={{ mb: 2, mt: 2 }} >
@@ -138,6 +204,10 @@ const Login: React.FC = () => {
             value={formData.username}
             onChange={handleInputChange}
             autoFocus
+
+            sx={{
+              mb: 2,
+            }}
           />
 
           <TextField
@@ -150,7 +220,7 @@ const Login: React.FC = () => {
           />
 
           <FormControl component="fieldset" sx={{ mt: 2, width: '100%' }}>
-            <FormLabel component="legend">Role</FormLabel>
+            <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>Role</FormLabel>
             <RadioGroup
               aria-label="role"
               name="role"
@@ -160,12 +230,24 @@ const Login: React.FC = () => {
             >
               <FormControlLabel 
                 value="admin" 
-                control={<Radio />} 
+                control={<Radio
+                  sx={{
+                    '&.Mui-checked': {
+                      color: 'black',
+                    },
+                  }}
+                />} 
                 label="Admin" 
               />
               <FormControlLabel 
                 value="driver" 
-                control={<Radio />} 
+                control={<Radio
+                  sx={{
+                    '&.Mui-checked': {
+                      color: 'black',
+                    },
+                  }}
+                />} 
                 label="Driver" 
               />
             </RadioGroup>
@@ -175,13 +257,12 @@ const Login: React.FC = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white', p: 1.1 }}
             disabled={loading || isSubmitting}
           >
             {loading ? 'Logging In...' : 'Sign In'}
           </Button>
         </form>
-      </Paper>
 
       <Link
         to="/"
@@ -190,6 +271,7 @@ const Login: React.FC = () => {
         Back to Home
       </Link>
     </Box>
+    </Container>
   );
 };
 

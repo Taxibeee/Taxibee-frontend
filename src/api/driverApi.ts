@@ -60,13 +60,13 @@ export interface Order {
 const driverApi = {
     // Profile
     getDriverProfile: async (): Promise<DriverProfile> => {
-        const response = await api.get('/profile');
+        const response = await api.get('/driver/profile');
         return response.data;   
     },
 
     // Earnings 
     getDriverEarnings: async (period: string = 'week'): Promise<DriverEarnings> => {
-        const response = await api.get(`/earnings?period=${period}`);
+        const response = await api.get(`/driver/earnings?period=${period}`);
         return response.data;
     },
 
@@ -77,7 +77,7 @@ const driverApi = {
         if (params.limit) queryParams.append('limit', params.limit.toString());
         if (params.offset) queryParams.append('offset', params.offset.toString());
 
-        const response = await api.get(`/orders?${queryParams.toString()}`);
+        const response = await api.get(`/driver/orders?${queryParams.toString()}`);
         return response.data;
     }
 };

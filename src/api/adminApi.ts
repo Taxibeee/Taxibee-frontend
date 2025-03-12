@@ -4,7 +4,7 @@ import api from './api';
 export interface WeekAnalytics {
     total_revenue: number;
     total_orders: number;
-    toal_distance: number;
+    total_distance: number;
 }
 
 export interface RevenueByPaymentMethod {
@@ -130,11 +130,11 @@ const adminApi = {
     },
 
     getTransactionsByTerminal: async (
-        params: { terminal_name?: string; start_data?: number; end_date?: number } = {}
+        params: { terminal_name?: string; start_date?: number; end_date?: number } = {}
     ): Promise<{ terminals: { [key: string]: { transactions: Transaction[]; total_amount: number; count: number } }; total_amount: number; total_count: number }> => {
         const queryParams = new URLSearchParams();
         if (params.terminal_name) queryParams.append('terminal_name', params.terminal_name);
-        if (params.start_data) queryParams.append('start_date', params.start_data.toString());
+        if (params.start_date) queryParams.append('start_date', params.start_date.toString());
         if (params.end_date) queryParams.append('end_date', params.end_date.toString());
 
         const url = queryParams.toString() ? `/getTransactionsByTerminal?${queryParams.toString()}` : '/getTransactionsByTerminal';

@@ -24,7 +24,7 @@ export const useAdminQueries = () => {
     };
 
     // Revenue queries
-    const useRevenueBypaymentMethod = () => {
+    const useRevenueByPaymentMethod = () => {
         return useQuery({
             queryKey: [ 'admin', 'revenueByMethod' ],
             queryFn: adminApi.getRevenueByPaymentMethod,
@@ -116,7 +116,7 @@ export const useAdminQueries = () => {
         useWeekDayAnalytics,
 
         // Revenue
-        useRevenueBypaymentMethod,
+        useRevenueByPaymentMethod,
         useRevenueByDriver,
 
         // Drivers

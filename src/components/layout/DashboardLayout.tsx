@@ -79,13 +79,11 @@ const StyledAppBar = styled(AppBar, {
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  title: string;
   menuItems: SidebarItem[];
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 
   children, 
-  title, 
   menuItems 
 }) => {
   const theme = useTheme();

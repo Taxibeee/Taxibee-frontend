@@ -7,6 +7,23 @@ import adminApi from '../api/adminApi';
 
 export const useAdminQueries = () => {
     const queryClient = useQueryClient();
+    
+    // Orders queries
+    const useAllOrders = (page: number = 1, pageSize: number = 25) => {
+        return useQuery({
+            queryKey: [ 'admin', 'allOrders', page, pageSize ],
+            queryFn: () => adminApi.getAllOrders(page, pageSize),
+        })
+    }
+
+    const useDriverOrders = (driverUuid: string, page: number = 1, pageSize: number = 25) => {
+        return useQuery({
+            queryKey: [ 'admin', 'driverOrders', driverUuid, page, pageSize ],
+            queryFn: () => adminApi.getDriverOrders(driverUuid, page, pageSize),
+            enabled: !!driverUuid, // Only run the query if driverUuid is provided
+        })
+    }
+
 
     // Analytics queries
     const useWeekAnalytics = () => {
@@ -111,6 +128,10 @@ export const useAdminQueries = () => {
 
     // Return all the query hooks
     return {
+        // Orders
+        useAllOrders,
+        useDriverOrders,
+
         // Analytics
         useWeekAnalytics,
         useWeekDayAnalytics,

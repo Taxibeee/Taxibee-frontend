@@ -63,7 +63,7 @@ const AdminDashboard: React.FC = () => {
 
 
     return (
-        <DashboardLayout title='Admin Dashboard' menuItems={ sidebarItemsAdmin}>
+        <DashboardLayout menuItems={ sidebarItemsAdmin}>
             <SummaryCards />
             <WeeklyAnalyticsTable />
             <RevenueByMethodChart />

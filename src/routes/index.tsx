@@ -30,7 +30,7 @@ const AppRouter: React.FC = () => {
                 {/* Admin Only Routes */}
                 <Route element={<AdminRoute />}>
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    {/* Add other admin routes as needed */}
+                    
                 </Route>
 
                 {/* Driver only routes */}

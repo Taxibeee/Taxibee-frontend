@@ -9,7 +9,7 @@ import WeeklyAnalyticsTable from '../../components/admin/WeeklyAnalyticsTable';
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
 import DriverStatusList from '../../components/admin/DriverStatusList';
 import TopDriversTable from '../../components/admin/TopDriversTable';   
-// import { useNavigate } from 'react-router-dom';
+import { sidebarItemsAdmin } from './AdminSidebar';
 
 
 export interface SidebarItem {
@@ -18,44 +18,6 @@ export interface SidebarItem {
     path: string;
 }
 
-const sidebarItemsAdmin: SidebarItem[] = [
-    {
-        text: 'Dashboard',
-        icon: null,
-        path: '/admin/dashboard',
-    },
-    {
-        text: 'Live Status',
-        icon: null,
-        path: '/admin/live-status',
-    },
-    {
-        text: 'Recent Orders',
-        icon: null,
-        path: '/admin/recent-orders',
-    },
-    {
-        text: 'Drivers',
-        icon: null,
-        path: '/admin/drivers',
-    },
-    {
-        text: 'Transactions',
-        icon: null,
-        path: '/admin/transactions',
-    },
-    {
-        text: "EXACT FILE",
-        icon: null,
-        path: '/admin/exact-file',
-    },
-    {
-        text: 'Contacts',
-        icon: null,
-        path: '/admin/contacts',
-    }
-];
-
 
 
 const AdminDashboard: React.FC = () => {
@@ -63,7 +25,7 @@ const AdminDashboard: React.FC = () => {
 
 
     return (
-        <DashboardLayout menuItems={ sidebarItemsAdmin}>
+        <DashboardLayout menuItems={sidebarItemsAdmin}>
             <SummaryCards />
             <WeeklyAnalyticsTable />
             <RevenueByMethodChart />

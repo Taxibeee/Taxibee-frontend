@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import adminApi from '../api/adminApi';
 
+import { OrdersResponse } from '../api/adminApi';
+import { formatApiError } from '../api/api';
+
 /**
  * Custom hook that provides React Query hooks for admin data fetching
  */
@@ -11,8 +14,9 @@ export const useAdminQueries = () => {
     // Orders queries
     const useAllOrders = (page: number = 1, pageSize: number = 25) => {
         return useQuery({
-            queryKey: [ 'admin', 'allOrders', page, pageSize ],
-            queryFn: () => adminApi.getAllOrders(page, pageSize),
+            queryKey: ['admin', 'allOrders', page, pageSize],
+            queryFn: () => adminApi.getAllOrders(page, pageSize) as Promise<OrdersResponse>,
+            placeholderData: (previousData: OrdersResponse | undefined) => previousData,
         })
     }
 
@@ -21,6 +25,7 @@ export const useAdminQueries = () => {
             queryKey: [ 'admin', 'driverOrders', driverUuid, page, pageSize ],
             queryFn: () => adminApi.getDriverOrders(driverUuid, page, pageSize),
             enabled: !!driverUuid, // Only run the query if driverUuid is provided
+            placeholderData: (previousData: OrdersResponse | undefined) => previousData,
         })
     }
 
@@ -67,7 +72,8 @@ export const useAdminQueries = () => {
         return useQuery({
             queryKey: [ 'admin', 'liveDriverStatus' ],
             queryFn: adminApi.getLiveDriverStatus,
-            refetchInterval: refreshInterval // Refresh automatically at the given interval
+            refetchInterval: refreshInterval, // Refresh automatically at the given interval
+            refetchIntervalInBackground: false, // Only refetch when the tab is focused
         });
     };
 
@@ -83,6 +89,10 @@ export const useAdminQueries = () => {
                     queryKey: [ 'admin', 'liveDriverStatus' ]
                 });
             },
+            onError: (error: unknown) => {
+                console.error('Failed to update drivers:', error);
+                return formatApiError(error).message;
+            }
         });
     };
 
@@ -109,6 +119,10 @@ export const useAdminQueries = () => {
                     queryKey: [ 'admin', 'transactionsByTerminal' ]
                 });
             },
+            onError: (error: unknown) => {
+                console.error('Failed to update transaction driver: ', formatApiError(error));
+                return formatApiError(error).message;
+            }
         });
     };
 

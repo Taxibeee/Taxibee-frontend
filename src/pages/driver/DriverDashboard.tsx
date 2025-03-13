@@ -73,7 +73,7 @@ const DriverDashboard: React.FC = () => {
   };
 
   return (
-    <DashboardLayout title="Driver Dashboard" menuItems={menuItems}>
+    <DashboardLayout menuItems={menuItems}>
       {renderContent()}
     </DashboardLayout>
   );

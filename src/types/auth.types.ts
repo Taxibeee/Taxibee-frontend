@@ -1,14 +1,23 @@
-export interface UserType {
-    id?: number | string
-    name?: string
-    full_name?: string
-    username: string
-    role: string
-    email?: string
-    company_id?: string
-    bolt_driver_uuid?: string
-    taxibee_id?: number
+export interface AdminUser {
+    id: number | string;
+    name: string;
+    username: string;
+    role: 'admin',
+    email: string;
+    company_id: string;
 }
+
+export interface DriverUser {
+    username: string;
+    bolt_driver_uuid: string;
+    taxibee_id: number;
+    full_name: string;
+    company_id: string;
+    role: 'driver';
+}
+
+export type UserType = AdminUser | DriverUser;
+
 
 export interface AuthState {
     token: string | null
@@ -29,7 +38,16 @@ export interface UpdatePasswordRequest {
     newPassword: string
 }
 
+export interface UpdatePasswordResponse {
+    message: string
+}
+
 export interface LoginResponse {
     access_token: string
     user: UserType
+}
+
+export interface ApiError {
+    message: string;
+    status?: number;
 }

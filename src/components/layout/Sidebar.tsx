@@ -9,10 +9,9 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
 } from '@mui/material';
 import { SidebarItem } from './DashboardLayout';
-import logo from '../../assets/react.svg';
+import logo from '../../assets/F5-04.png';
 
 // Define drawer width - make sure this matches your DashboardLayout
 const drawerWidth = 240;
@@ -41,9 +40,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         }}
       >
       {!isMobile && <Toolbar />} {/* This provides space at the top for the AppBar in desktop mode */}
-      {!isMobile && <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-        <img src={logo} alt="React" width={50} />
-        <Typography variant="h4" sx={{ ml: 1 }}>Taxibee</Typography>
+      {!isMobile && <Box sx={{ display: 'flex', justifyContent: 'center', mt: -5, mb: -4 }}>
+        <img src={logo} alt="React" width={200} height={100} />
       </Box>}
       <List sx={{ p: 1 }}>
         {menuItems.map((item, index) => (
@@ -67,7 +65,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {item.icon}
                 </ListItemIcon>
               )}
-              <ListItemText primary={item.text} />
+              <ListItemText primary={item.text} slotProps={{
+                primary: {
+                  sx: {
+                    fontSize: '0.875rem',
+                    fontFamily: '"Comic Sans MS", "Comic Sans"'
+                  }
+                }
+              }} />
             </ListItemButton>
           </ListItem>
         ))}

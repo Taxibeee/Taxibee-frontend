@@ -18,7 +18,7 @@ import {
   IconButton,
   CircularProgress,
   Divider,
-  Grid,
+  Grid2,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -234,22 +234,22 @@ const AdminOrdersPage: React.FC = () => {
         </DialogTitle>
         <DialogContent dividers>
           {selectedOrder && (
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
+            <Grid2 container spacing={3}>
+              <Grid2 item xs={12}>
                 <Typography variant="subtitle1" gutterBottom>
                   Basic Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                <Grid2 container spacing={2}>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Driver
                     </Typography>
                     <Typography variant="body1">
                       {selectedOrder.driver_name || 'N/A'}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Status
                     </Typography>
@@ -258,41 +258,41 @@ const AdminOrdersPage: React.FC = () => {
                       color={getOrderStatusColor(selectedOrder.order_status)}
                       size="small"
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Created At
                     </Typography>
                     <Typography variant="body1">
                       {formatTimestamp(selectedOrder.order_created_timestamp)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Finished At
                     </Typography>
                     <Typography variant="body1">
                       {formatTimestamp(selectedOrder.order_finished_timestamp)}
                     </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
+                  </Grid2>
+                </Grid2>
+              </Grid2>
 
-              <Grid item xs={12}>
+              <Grid2 item xs={12}>
                 <Typography variant="subtitle1" gutterBottom>
                   Location Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                <Grid2 container spacing={2}>
+                  <Grid2 item xs={12}>
                     <Typography variant="body2" color="text.secondary">
                       Pickup Address
                     </Typography>
                     <Typography variant="body1">
                       {selectedOrder.pickup_address || 'N/A'}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Distance
                     </Typography>
@@ -301,25 +301,25 @@ const AdminOrdersPage: React.FC = () => {
                         ? `${(selectedOrder.ride_distance / 1000).toFixed(2)} km`
                         : 'N/A'}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Vehicle
                     </Typography>
                     <Typography variant="body1">
                       {selectedOrder.vehicle_model || 'N/A'} ({selectedOrder.vehicle_license_plate || 'N/A'})
                     </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
+                  </Grid2>
+                </Grid2>
+              </Grid2>
 
-              <Grid item xs={12}>
+              <Grid2 item xs={12}>
                 <Typography variant="subtitle1" gutterBottom>
                   Payment Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                <Grid2 container spacing={2}>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Method
                     </Typography>
@@ -328,82 +328,82 @@ const AdminOrdersPage: React.FC = () => {
                       color={getPaymentMethodColor(selectedOrder.payment_method)}
                       size="small"
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Total Price
                     </Typography>
                     <Typography variant="body1" fontWeight="bold">
                       {formatCurrency(selectedOrder.ride_price)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Base Fare
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.ride_price ? selectedOrder.ride_price - (selectedOrder.booking_fee || 0) - (selectedOrder.toll_fee || 0) : null)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Booking Fee
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.booking_fee)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Toll Fee
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.toll_fee)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Tip
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.tip)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Discount
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.in_app_discount)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={4}>
                     <Typography variant="body2" color="text.secondary">
                       Driver Commission
                     </Typography>
                     <Typography variant="body1">
                       {formatCurrency(selectedOrder.commission)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Driver Net Earnings
                     </Typography>
                     <Typography variant="body1" fontWeight="bold">
                       {formatCurrency(selectedOrder.net_earnings)}
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Grid2>
+                  <Grid2 item xs={12} sm={6}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Confirmed
                     </Typography>
                     <Typography variant="body1">
                       {formatTimestamp(selectedOrder.payment_confirmed_timestamp)}
                     </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+                  </Grid2>
+                </Grid2>
+              </Grid2>
+            </Grid2>
           )}
         </DialogContent>
         <DialogActions>

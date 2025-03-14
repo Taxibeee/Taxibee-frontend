@@ -4,7 +4,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+  Grid2,
   Table,
   TableBody,
   TableCell,
@@ -140,9 +140,9 @@ const AdminDriversPage: React.FC = () => {
 
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid2 container spacing={3}>
         {/* Left side - Driver List */}
-        <Grid item xs={12} md={5} lg={4}>
+        <Grid2 item xs={12} md={5} lg={4}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 0 }}>
               <Typography variant="h6" gutterBottom>
@@ -226,10 +226,10 @@ const AdminDriversPage: React.FC = () => {
               )}
             </Box>
           </Card>
-        </Grid>
+        </Grid2>
 
         {/* Right side - Driver Details and Orders */}
-        <Grid item xs={12} md={7} lg={8}>
+        <Grid2 item xs={12} md={7} lg={8}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             {selectedDriver ? (
               <>
@@ -267,8 +267,8 @@ const AdminDriversPage: React.FC = () => {
 
                 <Box sx={{ flexGrow: 1, overflow: 'auto', maxHeight: 'calc(100vh - 250px)' }}>
                   <TabPanel value={tabValue} index={0}>
-                    <Grid container spacing={3} p={2}>
-                      <Grid item xs={12} sm={6}>
+                    <Grid2 container spacing={3} p={2}>
+                      <Grid2 item xs={12} sm={6}>
                         <Typography variant="subtitle2" color="text.secondary">
                           Personal Information
                         </Typography>
@@ -293,9 +293,9 @@ const AdminDriversPage: React.FC = () => {
                           <Typography variant="body2" color="text.secondary">Chauffeurs Kaartnr</Typography>
                           <Typography variant="body1">{selectedDriver.chauffeurskaartnr || 'N/A'}</Typography>
                         </Box>
-                      </Grid>
+                      </Grid2>
                       
-                      <Grid item xs={12} sm={6}>
+                      <Grid2 item xs={12} sm={6}>
                         <Typography variant="subtitle2" color="text.secondary">
                           System Information
                         </Typography>
@@ -341,8 +341,8 @@ const AdminDriversPage: React.FC = () => {
                           <Typography variant="body2" color="text.secondary">MyPOS Operator Code</Typography>
                           <Typography variant="body1">{selectedDriver.mypos_operator_code || 'N/A'}</Typography>
                         </Box>
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
                   </TabPanel>
                   
                   <TabPanel value={tabValue} index={1}>
@@ -438,8 +438,8 @@ const AdminDriversPage: React.FC = () => {
               </Box>
             )}
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

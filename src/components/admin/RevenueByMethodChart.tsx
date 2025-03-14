@@ -1,10 +1,8 @@
 import React from 'react';
 import {
   Card,
-  CardHeader,
+  Skeleton,
   CardContent,
-  Divider,
-  CircularProgress,
   Alert,
   Typography,
   Box
@@ -40,13 +38,19 @@ const RevenueByMethodChart: React.FC = () => {
   const prepareChartData = () => {
     if (!data) return [];
     
+    const total = Object.values(data).reduce((sum, amount) => sum + amount, 0);
+
+
     // Convert object to array format required by PieChart
-    return Object.entries(data).map(([method, amount], index) => ({
-      id: index,
-      value: amount,
-      label: method,
-      color: chartColors[index % chartColors.length],
-    }));
+    return Object.entries(data).map(([method, amount], index) => {
+      const percentage = (amount / total * 100).toFixed(1);
+      return {
+        id: index,
+        value: amount,
+        label: `${method} (${percentage}%)`,
+        color: chartColors[index % chartColors.length],
+      };
+    });
   };
 
   // Calculate total for the summary
@@ -56,12 +60,20 @@ const RevenueByMethodChart: React.FC = () => {
   };
 
   return (
-    <Card elevation={2}>
-      <CardHeader title="Revenue by Payment Method" />
-      <Divider />
+    <Card elevation={1} sx={{ p: 0 }}>
       <CardContent>
         {isLoading ? (
-          <CircularProgress />
+           <Box sx={{ height: 350, display: 'flex', justifyContent: 'center', alignItems: 'center', p: 0 }}>
+           <Skeleton 
+             variant="rectangular" 
+             width='100%'
+             height='100%'
+             animation="wave"
+             sx={{
+               transform: 'none', // This prevents the skeleton from being squished
+             }}
+           />
+         </Box>
         ) : isError ? (
           <Alert severity="error">Failed to load payment method data.</Alert>
         ) : !data || Object.keys(data).length === 0 ? (
@@ -73,12 +85,13 @@ const RevenueByMethodChart: React.FC = () => {
                 {
                   data: prepareChartData(),
                   highlightScope: { faded: 'global', highlighted: 'item' },
-                  faded: { innerRadius: 30, color: 'gray' },
-                  valueFormatter: (value) => formatCurrency(value),
+                  innerRadius: 100,
+                  paddingAngle: 0,
+                  cornerRadius: 4,
                 },
               ]}
               height={300}
-              width={350}
+              width={300}
               margin={{ top: 10, bottom: 10, left: 10, right: 10 }}
               slotProps={{
                 legend: {
@@ -88,12 +101,21 @@ const RevenueByMethodChart: React.FC = () => {
                   labelStyle: {
                     fontSize: 12,
                   },
+                  itemMarkWidth: 10,
+                  itemMarkHeight: 10,
+                  markGap: 5,
+                  itemGap: 15,
                 },
               }}
             />
-            <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 'bold' }}>
+            <Box sx={{ alignSelf: 'flex-start', ml: 2, display: 'flex', flexDirection: 'column' }}>
+            <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 'bold' }} component= "span">
               Total Revenue: {formatCurrency(calculateTotal())}
             </Typography>
+            <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
+              Revenue by payment method
+            </Typography>
+            </Box>
           </Box>
         )}
       </CardContent>

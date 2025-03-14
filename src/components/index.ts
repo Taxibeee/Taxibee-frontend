@@ -7,7 +7,7 @@ export { default as PasswordChangeDialog } from './shared/PasswordChangeDialog';
 
 // Admin components
 export { default as SummaryCards } from './admin/SummaryCards';
-export { default as WeeklyAnalyticsTable } from './admin/WeeklyAnalyticsTable';
+export { default as WeeklyAnalyticsTable } from './admin/WeeklyAnalyticsCharts';
 export { default as RevenueByMethodChart } from './admin/RevenueByMethodChart';
 export { default as DriverStatusList } from './admin/DriverStatusList';
 export { default as TopDriversTable } from './admin/TopDriversTable';

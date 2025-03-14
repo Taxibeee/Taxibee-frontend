@@ -28,18 +28,31 @@ const SummaryCards: React.FC = () => {
   const { useWeekAnalytics } = useAdminQueries();
   const { data, isLoading, isError } = useWeekAnalytics();
 
+
+  const LoadingSkeleton = () => {
+    return (
+      <Skeleton
+        animation="pulse"
+        variant="rectangular"
+        height={170}
+        width={300}
+        sx={{ borderRadius: 1 }}
+      />
+    )
+  }
+
+
   return (
+    <Box sx= {{
+      p: 1,
+    }}>
+      <Typography variant="overline">Weekly Summary</Typography>
     <Stack container spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
       <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={1}>
           <CardContent>
             {isLoading ? (
-              <Skeleton 
-                animation="pulse" 
-                variant="rectangular" 
-                height={40} 
-                sx={{ borderRadius: 1 }}
-              />
+              <LoadingSkeleton />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
@@ -69,12 +82,7 @@ const SummaryCards: React.FC = () => {
           <CardContent>
             
             {isLoading ? (
-              <Skeleton 
-              animation="pulse" 
-              variant="rectangular" 
-              height={40} 
-              sx={{ borderRadius: 1 }}
-            />
+              <LoadingSkeleton />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
@@ -102,11 +110,11 @@ const SummaryCards: React.FC = () => {
           <CardContent>
             {isLoading ? (
               <Skeleton 
-              animation="pulse" 
-              variant="rectangular" 
-              height={40} 
-              sx={{ borderRadius: 1 }}
-            />
+                animation="pulse" 
+                variant="rectangular" 
+                height={40} 
+                sx={{ borderRadius: 1 }}
+              />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
@@ -155,6 +163,7 @@ const SummaryCards: React.FC = () => {
         </Card>
       </Stack>
     </Stack>
+    </Box>
   );
 };
 

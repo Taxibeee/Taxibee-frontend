@@ -61,7 +61,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
           </Box>
         );
       case 'orders':
-        return <AdminOrdersPage />;
+        return (<Box>
+          <Typography variant="h3" gutterBottom>
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+            </Typography>
+        <AdminOrdersPage />
+        </Box>
+      );
       case 'live-status':
         return <AdminLiveStatusPage />;
       case 'drivers':

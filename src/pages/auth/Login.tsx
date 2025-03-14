@@ -21,6 +21,8 @@ import {
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import logo from '../../assets/F3-02.png'
+// import logo2 from '../../assets/F4-03.png'
 
 
 // Define interfaces for our types
@@ -184,12 +186,44 @@ const Login: React.FC = () => {
             right: 0,
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
-            zIndex: 1
+            zIndex: 1,
           }}
         />
-        <Typography variant="h5" align="left" sx={{ mb: 2, pl: 5, zIndex: 1 }}>
-          Welcome Onboard!
-        </Typography>
+        
+        {/* Logo and Welcome text container */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 300,
+            left: 10,
+            zIndex: 2,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Logo */}
+          <Box
+            component="img"
+            src={logo}
+            alt="Taxibee Logo"
+            sx={{
+              width: 150, // Adjust size as needed
+              height: 'auto',
+              objectFit: 'contain',
+            }}
+          />
+          
+          {/* Welcome text */}
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              fontFamily: 'Comic Sans MS, sans-serif',
+              color: 'white',
+            }}
+          >
+            Welcome Onboard!
+          </Typography>
+        </Box>
       </Box>
     <Box
       sx={{
@@ -201,7 +235,7 @@ const Login: React.FC = () => {
         height: '100vh',
         width: '60%',
         padding: 3,
-        paddingTop: 30,
+        paddingTop: 20,
       }}
     >
       <Box
@@ -216,6 +250,16 @@ const Login: React.FC = () => {
           padding: 3,
         }}
       >
+        {/* <Box
+            component="img"
+            src={logo2}
+            alt="Taxibee Logo"
+            sx={{
+              width: 150, // Adjust size as needed
+              height: 'auto',
+              objectFit: 'contain',
+            }}
+          /> */}
         <Typography variant="h4" align="center" sx={{ mb: 2 }}>
           Sign In to Taxibee
         </Typography>

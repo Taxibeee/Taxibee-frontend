@@ -1,6 +1,8 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../store/hooks'
+import { CircularProgress } from '@mui/joy';
+import { Box } from '@mui/material';
 
 /**
  * Protected Route - Base component for protected routes
@@ -13,7 +15,17 @@ export const ProtectedRoute: React.FC = () => {
 
     // While checking authentication status, show laoding indicator
     if (loading) {
-        return <div>Loading...</div>
+        return (
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+        }}>
+        <CircularProgress color="warning" variant="plain" />
+        </Box>
+        );
+
     }
 
     // If not authenticated, redirect to login page
@@ -33,7 +45,14 @@ export const AdminRoute: React.FC = () => {
     const location = useLocation()
 
     if (loading) {
-        return <div>Loading...</div>
+        return <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+        }}>
+        <CircularProgress color="warning" variant="plain" />
+        </Box>
     }
 
     if(!isAuthenticated) {
@@ -55,7 +74,14 @@ export const DriverRoute: React.FC = () => {
     const location = useLocation()
     
     if (loading) {
-        return <div>Loading...</div>
+        return <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+        }}>
+        <CircularProgress color="warning" variant="plain" />
+        </Box>
     }
     if(!isAuthenticated) {
         return <Navigate to="/login" state={{ from: location }} replace />
@@ -81,7 +107,14 @@ export const PublicOnlyRoute: React.FC = () => {
     const from = location.state?.from?.pathname || '/'
 
     if (loading) {
-        return <div>Loading...</div>
+        return <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+        }}>
+        <CircularProgress color="warning" variant="plain" />
+        </Box>
     }
 
     // If already authenticated, redirect to appropriate dashboard

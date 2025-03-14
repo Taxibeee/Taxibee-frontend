@@ -16,7 +16,6 @@ export const useAdminQueries = () => {
         return useQuery({
             queryKey: ['admin', 'allOrders', page, pageSize],
             queryFn: () => adminApi.getAllOrders(page, pageSize) as Promise<OrdersResponse>,
-            placeholderData: (previousData: OrdersResponse | undefined) => previousData,
         })
     }
 
@@ -25,7 +24,6 @@ export const useAdminQueries = () => {
             queryKey: [ 'admin', 'driverOrders', driverUuid, page, pageSize ],
             queryFn: () => adminApi.getDriverOrders(driverUuid, page, pageSize),
             enabled: !!driverUuid, // Only run the query if driverUuid is provided
-            placeholderData: (previousData: OrdersResponse | undefined) => previousData,
         })
     }
 

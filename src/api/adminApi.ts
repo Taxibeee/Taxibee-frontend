@@ -119,7 +119,7 @@ const adminApi = {
     },
 
     getDriverOrders: async (driver_uuid: string, page: number = 1, page_size: number = 25): Promise<OrdersResponse> => {
-        const response = await api.get(`/admin/getDriverOrders?driver_uuid=${driver_uuid}&page=${page}&page_size=${page_size}`);
+        const response = await api.get(`/admin/getDriverOrders/${driver_uuid}?page=${page}&page_size=${page_size}`);
         return response.data;
     },
 
@@ -164,7 +164,7 @@ const adminApi = {
 
     // Transactions
     getUnaccountedTransactions: async (): Promise<UnaccountedTransactionsResponse> => {
-        const response = await api.get('/admin/unaccountedTransactions');
+        const response = await api.get('/admin/getUnaccountedTransactions');
         return response.data;
     },
 
@@ -189,7 +189,7 @@ const adminApi = {
         if (params.start_date) queryParams.append('start_date', params.start_date.toString());
         if (params.end_date) queryParams.append('end_date', params.end_date.toString());
 
-        const url = queryParams.toString() ? `/admin/getTransactionsByTerminal?${queryParams.toString()}` : '/admin/getTransactionsByTerminal';
+        const url = queryParams.toString() ? `/admin/getTransactionsByTerminalName?${queryParams.toString()}` : '/admin/getTransactionsByTerminalName';
         const response = await api.get(url);
         return response.data.data;
     }

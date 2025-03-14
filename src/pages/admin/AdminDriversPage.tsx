@@ -20,12 +20,19 @@ import {
   Tab,
   Divider,
   Pagination,
-  Avatar
+  Avatar,
+  Stack,
+  useMediaQuery,
+  useTheme,
+  Tooltip,
+  IconButton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAdminQueries } from '../../hooks';
 import { Driver, Order } from '../../api/adminApi';
+import { WhatsApp } from '@mui/icons-material';
+import { RadioButtonChecked } from '@mui/icons-material';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,6 +61,9 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const AdminDriversPage: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+
   // State for selected driver and search
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +78,7 @@ const AdminDriversPage: React.FC = () => {
   const { data: driverOrdersData, isLoading: ordersLoading } = useDriverOrders(
     selectedDriver?.bolt_driver_uuid || '',
     orderPage,
-    10
+    10,
   );
   
   // Add a refetch trigger when driver changes
@@ -77,7 +87,7 @@ const AdminDriversPage: React.FC = () => {
       // This will trigger a refetch when a new driver is selected
       setOrderPage(1);
     }
-  }, [selectedDriver?.bolt_driver_uuid]);
+  }, [selectedDriver?.bolt_driver_uuid, selectedDriver]);
 
   // Handle tab change
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -138,11 +148,38 @@ const AdminDriversPage: React.FC = () => {
     }
   };
 
+  const openWhatsAppChat = (phone: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
+    window.open(`https://wa.me/${formattedPhone}`, '_blank');
+  }
+
+  const renderStatusLegend = () => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, px: 2, py: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <RadioButtonChecked sx={{ color: 'success.main', fontSize: 12 }} />
+        <Typography variant="caption">Active</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <RadioButtonChecked sx={{ color: 'grey.400', fontSize: 12 }} />
+        <Typography variant="caption">Inactive</Typography>
+      </Box>
+    </Box>
+  );
+
   return (
     <Box>
-      <Grid2 container spacing={3}>
+      <Stack
+        direction={isMobile ? 'column' : 'row'}
+        spacing={2}
+      >
         {/* Left side - Driver List */}
-        <Grid2 item xs={12} md={5} lg={4}>
+        <Box 
+          sx={{
+            width: isMobile ? '100%' : '300px', // Fixed width for desktop
+            flexShrink: 0
+          }}
+        >
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 0 }}>
               <Typography variant="h6" gutterBottom>
@@ -164,9 +201,17 @@ const AdminDriversPage: React.FC = () => {
                   ),
                 }}
               />
+              {renderStatusLegend()}
             </CardContent>
             <Divider />
-            <Box sx={{ flexGrow: 1, overflow: 'auto', maxHeight: 'calc(100vh - 250px)' }}>
+            <Box sx={{ 
+              flexGrow: 1, 
+              overflow: 'auto', 
+              maxHeight: 'calc(100vh - 250px)',
+              '& .MuiTableContainer-root': {
+                maxWidth: '100%'
+              }
+            }}>
               {driversLoading ? (
                 <Box display="flex" justifyContent="center" p={3}>
                   <CircularProgress />
@@ -178,13 +223,6 @@ const AdminDriversPage: React.FC = () => {
               ) : (
                 <TableContainer component={Paper} elevation={0}>
                   <Table size="small" stickyHeader>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Phone</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                      </TableRow>
-                    </TableHead>
                     <TableBody>
                       {filteredDrivers.length > 0 ? (
                         filteredDrivers.map((driver) => (
@@ -196,20 +234,34 @@ const AdminDriversPage: React.FC = () => {
                             sx={{ cursor: 'pointer' }}
                           >
                             <TableCell>
-                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                 <Avatar sx={{ width: 32, height: 32, mr: 1, bgcolor: 'primary.main' }}>
                                   <PersonIcon fontSize="small" />
                                 </Avatar>
                                 {driver.full_name}
                               </Box>
                             </TableCell>
-                            <TableCell>{driver.phone}</TableCell>
-                            <TableCell align="center">
-                              <Chip
-                                label={driver.state}
-                                color={getDriverStatusColor(driver.state)}
+                            <Tooltip title="Chat on Whatsapp">
+                              <IconButton
                                 size="small"
-                              />
+                                onClick={(e) => openWhatsAppChat(driver.phone, e)}
+                                sx={{ 
+                                  color: 'success.main',
+                                  mt: 1
+                                }}
+                              >
+                                <WhatsApp fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                            <TableCell align="left">
+                            <RadioButtonChecked 
+                              sx={{ 
+                              color: driver.state.toLowerCase() === 'active' 
+                                ? 'success.main' 
+                                : 'grey.400',
+                              fontSize: 12
+                              }} 
+                            />
                             </TableCell>
                           </TableRow>
                         ))
@@ -226,10 +278,15 @@ const AdminDriversPage: React.FC = () => {
               )}
             </Box>
           </Card>
-        </Grid2>
+        </Box>
 
         {/* Right side - Driver Details and Orders */}
-        <Grid2 item xs={12} md={7} lg={8}>
+        <Box 
+          sx={{
+            flexGrow: 1,
+            minWidth: 0
+          }}
+        >
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             {selectedDriver ? (
               <>
@@ -265,7 +322,14 @@ const AdminDriversPage: React.FC = () => {
 
                 <Divider />
 
-                <Box sx={{ flexGrow: 1, overflow: 'auto', maxHeight: 'calc(100vh - 250px)' }}>
+                <Box sx={{ 
+  flexGrow: 1, 
+  overflow: 'auto', 
+  maxHeight: 'calc(100vh - 250px)',
+  '& .MuiTableContainer-root': {
+    maxWidth: '100%'
+  }
+}}>
                   <TabPanel value={tabValue} index={0}>
                     <Grid2 container spacing={3} p={2}>
                       <Grid2 item xs={12} sm={6}>
@@ -438,8 +502,8 @@ const AdminDriversPage: React.FC = () => {
               </Box>
             )}
           </Card>
-        </Grid2>
-      </Grid2>
+        </Box>
+      </Stack>
     </Box>
   );
 };

@@ -16,14 +16,14 @@ import {
   InputAdornment,
   Chip,
   IconButton,
-  CircularProgress,
   Divider,
   Grid2,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
+  Skeleton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
@@ -40,6 +40,35 @@ const AdminOrdersPage: React.FC = () => {
   // Fetch orders with pagination
   const { useAllOrders } = useAdminQueries();
   const { data, isLoading, isError } = useAllOrders(page, 25);
+
+  const TableRowSkeleton = () => (
+    <TableRow>
+      <TableCell>
+        <Skeleton animation="wave" />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" width="60%" />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" width={80} />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" variant="rounded" width={70} height={24} />
+      </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" variant="rounded" width={70} height={24} />
+      </TableCell>
+      <TableCell align="center">
+        <Skeleton animation="wave" variant="circular" width={30} height={30} />
+      </TableCell>
+    </TableRow>
+  );
 
   // Format timestamp to readable date
   const formatTimestamp = (timestamp: number | null): string => {
@@ -117,16 +146,19 @@ const AdminOrdersPage: React.FC = () => {
     <Box>
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Typography variant="h5" gutterBottom>
-            Orders Management
-          </Typography>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            mb: 2
+          }}>
           <TextField
             fullWidth
             variant="outlined"
             placeholder="Search by order reference, driver name, or pickup address"
             value={searchTerm}
             onChange={handleSearchChange}
-            sx={{ mb: 3 }}
+            sx={{ mb: 3, width: '40%' }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -135,15 +167,8 @@ const AdminOrdersPage: React.FC = () => {
               ),
             }}
           />
+          </Box>
 
-          {isLoading ? (
-            <Box display="flex" justifyContent="center" p={3}>
-              <CircularProgress />
-            </Box>
-          ) : isError ? (
-            <Typography color="error">Error loading orders. Please try again.</Typography>
-          ) : (
-            <>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small">
                   <TableHead>
@@ -155,11 +180,19 @@ const AdminOrdersPage: React.FC = () => {
                       <TableCell>Price</TableCell>
                       <TableCell>Payment</TableCell>
                       <TableCell>Status</TableCell>
-                      <TableCell align="center">Actions</TableCell>
+                      <TableCell align="center">Info</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredOrders.length > 0 ? (
+                    {isLoading ? (
+                      <TableRowSkeleton />
+                    ) : isError ? (
+                      <TableRow>
+                        <TableCell colSpan={8} align="center">
+                          Error loading orders
+                        </TableCell>
+                      </TableRow>
+                    ) : filteredOrders.length > 0 ? (
                       filteredOrders.map((order) => (
                         <TableRow key={order.order_reference} hover>
                           <TableCell>{order.order_reference}</TableCell>
@@ -217,8 +250,7 @@ const AdminOrdersPage: React.FC = () => {
                   color="primary"
                 />
               </Box>
-            </>
-          )}
+            
         </CardContent>
       </Card>
 

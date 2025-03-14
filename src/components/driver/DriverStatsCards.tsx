@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid,
+  Grid2,
   Card,
   CardContent,
   Typography,
@@ -39,8 +39,8 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
   const { data, isLoading, isError } = useDriverEarnings(period);
 
   return (
-    <Grid container spacing={3} sx={{ mb: 4 }}>
-      <Grid item xs={12} sm={6} md={3}>
+    <Grid2 container spacing={3} sx={{ mb: 4 }}>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>
@@ -60,8 +60,8 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Avatar sx={{ bgcolor: 'info.main', mb: 2 }}>
@@ -81,8 +81,8 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Avatar sx={{ bgcolor: 'success.main', mb: 2 }}>
@@ -102,8 +102,8 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Avatar sx={{ bgcolor: 'warning.main', mb: 2 }}>
@@ -123,8 +123,8 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

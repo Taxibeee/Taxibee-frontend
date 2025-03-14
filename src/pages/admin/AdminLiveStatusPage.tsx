@@ -4,7 +4,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+  Grid2,
   Table,
   TableBody,
   TableCell,
@@ -104,11 +104,11 @@ const AdminLiveStatusPage: React.FC = () => {
 
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid2 container spacing={3}>
         {/* Status Summary Cards */}
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+        <Grid2 item xs={12}>
+          <Grid2 container spacing={2}>
+            <Grid2 item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -125,9 +125,9 @@ const AdminLiveStatusPage: React.FC = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid2>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid2 item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -144,9 +144,9 @@ const AdminLiveStatusPage: React.FC = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid2>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid2 item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -163,9 +163,9 @@ const AdminLiveStatusPage: React.FC = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid2>
             
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid2 item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -182,12 +182,12 @@ const AdminLiveStatusPage: React.FC = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Grid2>
+          </Grid2>
+        </Grid2>
 
         {/* Main Table Card */}
-        <Grid item xs={12}>
+        <Grid2 item xs={12}>
           <Card>
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -224,8 +224,8 @@ const AdminLiveStatusPage: React.FC = () => {
                 </Box>
               </Box>
               
-              <Grid container spacing={2} mb={2}>
-                <Grid item xs={12} sm={6} md={4}>
+              <Grid2 container spacing={2} mb={2}>
+                <Grid2 item xs={12} sm={6} md={4}>
                   <TextField
                     fullWidth
                     variant="outlined"
@@ -241,9 +241,9 @@ const AdminLiveStatusPage: React.FC = () => {
                       ),
                     }}
                   />
-                </Grid>
+                </Grid2>
                 
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid2 item xs={12} sm={6} md={4}>
                   <FormControl fullWidth size="small">
                     <InputLabel id="status-filter-label">Status Filter</InputLabel>
                     <Select
@@ -259,8 +259,8 @@ const AdminLiveStatusPage: React.FC = () => {
                       <MenuItem value="unknown">Unknown</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
               
               <Divider sx={{ mb: 2 }} />
 
@@ -333,8 +333,8 @@ const AdminLiveStatusPage: React.FC = () => {
               )}
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

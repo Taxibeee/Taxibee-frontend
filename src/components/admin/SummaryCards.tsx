@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Grid,
+  Grid2,
   Card,
   CardContent,
   Typography,
@@ -22,8 +22,8 @@ const SummaryCards: React.FC = () => {
   const { data, isLoading, isError } = useWeekAnalytics();
 
   return (
-    <Grid container spacing={3} sx={{ mb: 4 }}>
-      <Grid item xs={12} sm={6} md={3}>
+    <Grid2 container spacing={3} sx={{ mb: 4 }}>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -40,8 +40,8 @@ const SummaryCards: React.FC = () => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -58,8 +58,8 @@ const SummaryCards: React.FC = () => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -76,8 +76,8 @@ const SummaryCards: React.FC = () => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      </Grid2>
+      <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={2}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -96,8 +96,8 @@ const SummaryCards: React.FC = () => {
             )}
           </CardContent>
         </Card>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

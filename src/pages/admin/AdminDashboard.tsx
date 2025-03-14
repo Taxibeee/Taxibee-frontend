@@ -16,7 +16,7 @@ import AdminExactFilePage from './AdminExactFilePage';
 
 // Import dashboard components for the main dashboard
 import SummaryCards from '../../components/admin/SummaryCards';
-import WeeklyAnalyticsTable from '../../components/admin/WeeklyAnalyticsTable'; 
+import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts'; 
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
@@ -44,19 +44,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
             </Typography>
 
             <SummaryCards />
+            
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
-              <Box sx={{ flex: 1 }}>
-                <WeeklyAnalyticsTable />
+              <Box sx={{ flex: 4 }}>
+                <WeeklyAnalyticsCharts />
               </Box>
-              <Box sx={{ flex: 1 }}>
+              <Box sx={{ flex: 2 }}>
                 <RevenueByMethodChart />
               </Box>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
-              <Box sx={{ flex: 1 }}>
+
+
+              <Box sx={{ flex: 4 }}>
                 <TopDriversTable />
               </Box>
-            </Box>
+              </Box>
           </Box>
         );
       case 'orders':

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 // Import Layout
 import { DashboardLayout } from '../../components';
@@ -18,7 +18,6 @@ import AdminExactFilePage from './AdminExactFilePage';
 import SummaryCards from '../../components/admin/SummaryCards';
 import WeeklyAnalyticsTable from '../../components/admin/WeeklyAnalyticsTable'; 
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
-import DriverStatusList from '../../components/admin/DriverStatusList';
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
 // Placeholder for Contacts page
@@ -40,6 +39,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'dashboard':
         return (
           <Box>
+            <Typography variant="h3" gutterBottom>
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+            </Typography>
+
             <SummaryCards />
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
               <Box sx={{ flex: 1 }}>

@@ -35,9 +35,7 @@ const TopDriversTable: React.FC = () => {
   const { data, isLoading, isError } = useRevenueByDriver();
 
   return (
-    <Card elevation={2}>
-      <CardHeader title="Top Performing Drivers" />
-      <Divider />
+    <Card elevation={1}>
       <CardContent>
         {isLoading ? (
           <CircularProgress />
@@ -85,11 +83,21 @@ const TopDriversTable: React.FC = () => {
               </TableBody>
             </Table>
             {data.length > 5 && (
-              <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Box sx={{ textAlign: 'center', mt: 2, display:'flex', justifyContent: 'space-between', flexDirection: 'row', gap: 0, p: 0 }}>
+                <Typography variant="caption" color="textSecondary"
+                  sx={{
+                    mt: 5
+                  }}
+                >
+                  Top performance drivers
+                </Typography>
                 <Button 
                   variant="text" 
                   size="small"
                   onClick={() => navigate('/admin/drivers')}
+                  sx={{
+                    mt: 4
+                  }}
                 >
                   View All Drivers
                 </Button>

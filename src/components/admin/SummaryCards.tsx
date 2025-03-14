@@ -4,7 +4,11 @@ import {
   Card,
   CardContent,
   Typography,
-  CircularProgress
+  Skeleton,
+  Box,
+  Stack,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { useAdminQueries } from '../../hooks';
 
@@ -18,86 +22,139 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 const SummaryCards: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { useWeekAnalytics } = useAdminQueries();
   const { data, isLoading, isError } = useWeekAnalytics();
 
   return (
-    <Grid2 container spacing={3} sx={{ mb: 4 }}>
+    <Stack container spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
       <Grid2 item xs={12} sm={6} md={3}>
-        <Card elevation={2}>
+        <Card elevation={1}>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Total Revenue (This Week)
-            </Typography>
             {isLoading ? (
-              <CircularProgress size={24} />
+              <Skeleton 
+                animation="pulse" 
+                variant="rectangular" 
+                height={40} 
+                sx={{ borderRadius: 1 }}
+              />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
-              <Typography variant="h4" component="div">
-                {formatCurrency(data?.total_revenue)}
-              </Typography>
+              <Box sx={{
+                height: '170px',
+                width: '300px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-start',
+              }}>
+                
+                  <Typography variant="h4">
+                    {formatCurrency(data?.total_revenue)}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" gutterBottom>
+                    Total Revenue
+                  </Typography>
+    
+              </Box>
             )}
           </CardContent>
         </Card>
       </Grid2>
       <Grid2 item xs={12} sm={6} md={3}>
-        <Card elevation={2}>
+        <Card elevation={1}>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Total Orders
-            </Typography>
+            
             {isLoading ? (
-              <CircularProgress size={24} />
+              <Skeleton 
+              animation="pulse" 
+              variant="rectangular" 
+              height={40} 
+              sx={{ borderRadius: 1 }}
+            />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
-              <Typography variant="h4" component="div">
-                {data?.total_orders || 0}
-              </Typography>
+              <Box sx={{
+                height: '170px',
+                width: '300px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-start'
+              }}>
+                <Typography variant="h4" component="div">
+                  {data?.total_orders || 0}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" gutterBottom>
+                  Total Orders
+                </Typography>
+              </Box>
             )}
           </CardContent>
         </Card>
       </Grid2>
-      <Grid2 item xs={12} sm={6} md={3}>
-        <Card elevation={2}>
+      <Stack direction="column" spacing={2} sx={{ flex: 1 }}>
+        <Card elevation={1}>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Total Distance (km)
-            </Typography>
             {isLoading ? (
-              <CircularProgress size={24} />
+              <Skeleton 
+              animation="pulse" 
+              variant="rectangular" 
+              height={40} 
+              sx={{ borderRadius: 1 }}
+            />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
-              <Typography variant="h4" component="div">
-                {data ? (data.total_distance / 1000).toFixed(1) : 0}
+              <Box sx={{
+                height: '55px',
+              }}>
+              <Typography variant="h5">
+                {data ? (data.total_distance / 1000).toFixed(1) : 0} <Typography component="span" variant="caption">
+                  km
+                </Typography>
               </Typography>
+              <Typography variant="caption" color="text.secondary" gutterBottom>
+                Total Distance
+              </Typography>
+              </Box>
             )}
           </CardContent>
         </Card>
-      </Grid2>
-      <Grid2 item xs={12} sm={6} md={3}>
-        <Card elevation={2}>
+        <Card elevation={1}>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Avg. Revenue per Order
-            </Typography>
+            
             {isLoading ? (
-              <CircularProgress size={24} />
+              <Skeleton 
+              animation="pulse" 
+              variant="rectangular" 
+              height={40} 
+              sx={{ borderRadius: 1 }}
+            />
             ) : isError ? (
               <Typography color="error">Failed to load data</Typography>
             ) : (
-              <Typography variant="h4" component="div">
+              <Box sx={{
+                height: '55px',
+              }}>
+              <Typography variant="h5" component="div">
                 {data && data.total_orders > 0
                   ? formatCurrency(data.total_revenue / data.total_orders)
                   : '$0.00'}
               </Typography>
+              <Typography variant="caption" color="text.secondary" gutterBottom>
+                Average Revenue per Order
+              </Typography>
+              </Box>
             )}
           </CardContent>
         </Card>
-      </Grid2>
-    </Grid2>
+      </Stack>
+    </Stack>
   );
 };
 

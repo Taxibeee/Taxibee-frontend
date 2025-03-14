@@ -10,6 +10,7 @@ import Unauthorized from "../pages/common/Unauthorized";
 import DriverDashboard from "../pages/driver/DriverDashboard";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
+
 const AppRouter: React.FC = () => {
     return (
         <Router>
@@ -29,14 +30,21 @@ const AppRouter: React.FC = () => {
 
                 {/* Admin Only Routes */}
                 <Route element={<AdminRoute />}>
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    
+                    {/* All admin routes use the same AdminDashboard component, which will handle rendering the appropriate content */}
+                    <Route path="/admin/dashboard" element={<AdminDashboard selectedPage="dashboard" />} />
+                    <Route path="/admin/orders" element={<AdminDashboard selectedPage="orders" />} />
+                    <Route path="/admin/live-status" element={<AdminDashboard selectedPage="live-status" />} />
+                    <Route path="/admin/drivers" element={<AdminDashboard selectedPage="drivers" />} />
+                    <Route path="/admin/transactions" element={<AdminDashboard selectedPage="transactions" />} />
+                    <Route path="/admin/exact-file" element={<AdminDashboard selectedPage="exact-file" />} />
+                    <Route path="/admin/contacts" element={<AdminDashboard selectedPage="contacts" />} />
                 </Route>
 
                 {/* Driver only routes */}
                 <Route element={<DriverRoute />}>
-                    <Route path="/driver/dashboard" element={<DriverDashboard />} />
-                    <Route path="/driver/orders" element={<DriverDashboard />} />
+                    {/* All driver routes use the same DriverDashboard component, which will handle rendering the appropriate content */}
+                    <Route path="/driver/dashboard" element={<DriverDashboard selectedPage="dashboard" />} />
+                    <Route path="/driver/orders" element={<DriverDashboard selectedPage="orders" />} />
                 </Route>
 
                 {/* Special Routes */}

@@ -19,14 +19,9 @@ import SummaryCards from '../../components/admin/SummaryCards';
 import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts'; 
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
 import TopDriversTable from '../../components/admin/TopDriversTable';
+import ContactsPage from '../../components/shared/ContactsPage';
 
 // Placeholder for Contacts page
-const ContactsPage = () => (
-  <Box p={3}>
-    <h1>Contacts</h1>
-    <p>This page is under construction. The endpoint for the contacts page is not yet implemented.</p>
-  </Box>
-);
 
 interface AdminDashboardProps {
   selectedPage: string;
@@ -77,7 +72,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'exact-file':
         return <AdminExactFilePage />;
       case 'contacts':
-        return <ContactsPage />;
+        return <ContactsPage role='admin' />;
       default:
         return <div>Page not found</div>;
     }

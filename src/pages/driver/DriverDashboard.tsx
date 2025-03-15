@@ -3,6 +3,8 @@ import { Box } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 
+import { sidebarItemsDriver } from './DriverSidebar';
+
 // Import layout
 import DashboardLayout, { SidebarItem } from '../../components/layout/DashboardLayout';
 
@@ -14,6 +16,7 @@ import RecentOrdersList from '../../components/driver/RecentOrdersList';
 
 // Import pages
 import DriverOrdersPage from './DriverOrdersPage';
+import ContactsPage from '../../components/shared/ContactsPage';
 
 interface DriverDashboardProps {
   selectedPage: string;
@@ -22,12 +25,7 @@ interface DriverDashboardProps {
 const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
   // State for selected period
   const [selectedPeriod, setSelectedPeriod] = useState<string>('week');
-  
-  // Define menu items for the dashboard
-  const menuItems: SidebarItem[] = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/driver/dashboard' },
-    { text: 'My Orders', icon: <ReceiptIcon />, path: '/driver/orders' },
-  ];
+
 
   // Handle period change
   const handlePeriodChange = (period: string) => {
@@ -70,6 +68,8 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
             onPeriodChange={handlePeriodChange}
           />
         );
+      case 'contacts':
+        return <ContactsPage role='driver' />
       default:
         return <div>Page not found</div>;
     }

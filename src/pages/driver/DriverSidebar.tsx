@@ -18,5 +18,10 @@ export const sidebarItemsDriver: SidebarItem[] = [
         text: 'Orders',
         icon: <ReceiptIcon />,
         path: '/driver/orders',
+    },
+    {
+        text: 'Contacts',
+        icon: <ReceiptIcon />,
+        path: '/driver/contacts'
     }
 ];

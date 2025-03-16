@@ -32,7 +32,7 @@ export const useDriverQueries = () => {
   // Contacts query
   const useDriverContacts = () => {
     return useQuery({
-      queryKey: ['contacts'],
+      queryKey: [ 'driver', 'contacts' ],
       queryFn: driverApi.getContacts,
     });
   }

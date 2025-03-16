@@ -2,22 +2,16 @@ import { Box, Alert, List, ListItem, ListItemAvatar, ListItemText, Divider } fro
 import { Avatar, CircularProgress, Typography } from '@mui/joy';
 import React from 'react';
 
-import { useAdminQueries } from '../../hooks';
 import { useDriverQueries } from '../../hooks';
 import { Contact } from '../../api/adminApi';
 
-interface ContactsPageProps {
-  role: string;
-}
 
-
-const ContactsPage: React.FC<ContactsPageProps> = ( { role } ) => {
+const DriverContactsPage: React.FC = () => {
     // Use the appropriate query hook based on role
-    const { useAdminContacts } = useAdminQueries();
     const { useDriverContacts } = useDriverQueries();
 
     // Get contacts based on role
-    const { data: contacts, isLoading, error } = role === 'admin' ? useAdminContacts() : useDriverContacts();
+    const { data, isLoading, error } = useDriverContacts();
 
     if (isLoading) {
         return (
@@ -38,9 +32,8 @@ const ContactsPage: React.FC<ContactsPageProps> = ( { role } ) => {
 
     return (
         <Box>
-            <Typography>Contacts</Typography>
             <List>
-                {contacts?.map((contact: Contact) => (
+                {data?.data?.map((contact: Contact) => (
                     <React.Fragment key={contact.phone}>
                     <ListItem alignItems="flex-start">
                         <ListItemAvatar>
@@ -68,4 +61,4 @@ const ContactsPage: React.FC<ContactsPageProps> = ( { role } ) => {
     );
 }
 
-export default ContactsPage;
+export default DriverContactsPage;

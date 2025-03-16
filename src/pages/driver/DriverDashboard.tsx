@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import { Box, Typography } from '@mui/material';
 
 import { sidebarItemsDriver } from './DriverSidebar';
 
 // Import layout
-import DashboardLayout, { SidebarItem } from '../../components/layout/DashboardLayout';
+import DashboardLayout from '../../components/layout/DashboardLayout';
 
 // Import dashboard components
 import DriverWelcomeCard from '../../components/driver/DriverWelcomeCard';
@@ -16,7 +14,7 @@ import RecentOrdersList from '../../components/driver/RecentOrdersList';
 
 // Import pages
 import DriverOrdersPage from './DriverOrdersPage';
-import ContactsPage from '../../components/shared/ContactsPage';
+import DriverContactsPage from './DriverContactsPage';
 
 interface DriverDashboardProps {
   selectedPage: string;
@@ -69,14 +67,19 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
           />
         );
       case 'contacts':
-        return <ContactsPage role='driver' />
+        return <Box>
+          <Typography variant="h4" gutterBottom>
+            {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+          </Typography>
+          <DriverContactsPage />
+        </Box>
       default:
         return <div>Page not found</div>;
     }
   };
 
   return (
-    <DashboardLayout menuItems={menuItems}>
+    <DashboardLayout menuItems={sidebarItemsDriver}>
       {renderContent()}
     </DashboardLayout>
   );

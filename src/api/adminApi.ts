@@ -117,7 +117,7 @@ export interface Contact {
 }
 
 export interface ContactResponse {
-    contacts: Contact[];
+    data: Contact[];
 }
 
 

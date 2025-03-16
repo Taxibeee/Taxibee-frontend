@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import ContactsIcon from '@mui/icons-material/Contacts';
 
 export interface SidebarItem {
     text: string;
@@ -21,7 +22,7 @@ export const sidebarItemsDriver: SidebarItem[] = [
     },
     {
         text: 'Contacts',
-        icon: <ReceiptIcon />,
+        icon: <ContactsIcon />,
         path: '/driver/contacts'
     }
 ];

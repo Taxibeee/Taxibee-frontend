@@ -25,7 +25,8 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
-  IconButton
+  IconButton,
+  Skeleton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
@@ -167,6 +168,21 @@ const AdminDriversPage: React.FC = () => {
     </Box>
   );
 
+  const SkeletonLoader = () => (
+    <Box p={2}>
+    {[...Array(15)].map((_, index) => (
+      <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Skeleton variant="circular" width={32} height={32} sx={{ mr: 1 }} />
+        <Skeleton variant="text" width={150} />
+        <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
+          <Skeleton variant="circular" width={24} height={24} />
+          <Skeleton variant="circular" width={12} height={12} />
+        </Box>
+      </Box>
+    ))}
+  </Box>
+  )
+
   return (
     <Box>
       <Stack
@@ -213,9 +229,7 @@ const AdminDriversPage: React.FC = () => {
               }
             }}>
               {driversLoading ? (
-                <Box display="flex" justifyContent="center" p={3}>
-                  <CircularProgress />
-                </Box>
+                <SkeletonLoader />
               ) : driversError ? (
                 <Typography color="error" p={2}>
                   Error loading drivers. Please try again.
@@ -235,7 +249,7 @@ const AdminDriversPage: React.FC = () => {
                           >
                             <TableCell>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <Avatar sx={{ width: 32, height: 32, mr: 1, bgcolor: 'primary.main' }}>
+                                <Avatar sx={{ width: 32, height: 32, mr: 1, bgcolor: 'gray.900' }}>
                                   <PersonIcon fontSize="small" />
                                 </Avatar>
                                 {driver.full_name}
@@ -292,7 +306,7 @@ const AdminDriversPage: React.FC = () => {
               <>
                 <CardContent sx={{ flexGrow: 0, pb: 1 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Avatar sx={{ width: 48, height: 48, mr: 2, bgcolor: 'primary.main' }}>
+                    <Avatar sx={{ width: 48, height: 48, mr: 2, bgcolor: 'gray.900' }}>
                       <PersonIcon />
                     </Avatar>
                     <Box>
@@ -323,13 +337,13 @@ const AdminDriversPage: React.FC = () => {
                 <Divider />
 
                 <Box sx={{ 
-  flexGrow: 1, 
-  overflow: 'auto', 
-  maxHeight: 'calc(100vh - 250px)',
-  '& .MuiTableContainer-root': {
-    maxWidth: '100%'
-  }
-}}>
+                    flexGrow: 1, 
+                    overflow: 'auto', 
+                    maxHeight: 'calc(100vh - 250px)',
+                    '& .MuiTableContainer-root': {
+                      maxWidth: '100%'
+                    }
+                  }}>
                   <TabPanel value={tabValue} index={0}>
                     <Grid2 container spacing={3} p={2}>
                       <Grid2 item xs={12} sm={6}>
@@ -458,7 +472,7 @@ const AdminDriversPage: React.FC = () => {
                                 ))
                               ) : (
                                 <TableRow>
-                                  <TableCell colSpan={6} align="center">
+                                  <TableCell align="center">
                                     No orders found for this driver
                                   </TableCell>
                                 </TableRow>

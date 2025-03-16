@@ -166,7 +166,7 @@ const AdminLiveStatusPage: React.FC = () => {
           <Grid2 container spacing={2}>
             <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
-                <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
+                <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
                   <Box
                     sx={{
                       position: 'absolute',
@@ -196,100 +196,100 @@ const AdminLiveStatusPage: React.FC = () => {
             </Grid2>
             
             {/* Waiting Orders Card */}
-<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
-  <Card>
-    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 8,
-          left: 8
-        }}
-      >
-        <Typography variant="body1" color="text.secondary" component="div">
-          Waiting Orders
-        </Typography>
-      </Box>
-      <Box sx={{
-        position: 'absolute',
-        top: 30,
-        right: 30,
-      }}>
-        <Badge
-          badgeContent={getDriverCountByStatus('waiting_orders')}
-          color="success"
-          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
-        >
-          <PersonIcon fontSize="large" color="action" />
-        </Badge>
-      </Box>
-    </CardContent>
-  </Card>
-</Grid2>
+            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+              <Card>
+                <CardContent sx={{ position:'relative', height: '100px', p: 4 }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: 8
+                    }}
+                  >
+                    <Typography variant="body1" color="text.secondary" component="div">
+                      Waiting Orders
+                    </Typography>
+                  </Box>
+                  <Box sx={{
+                    position: 'absolute',
+                    top: 30,
+                    right: 30,
+                  }}>
+                    <Badge
+                      badgeContent={getDriverCountByStatus('waiting_orders')}
+                      color="success"
+                      sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+                    >
+                      <PersonIcon fontSize="large" color="action" />
+                    </Badge>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid2>
 
-{/* Has Order Card */}
-<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
-  <Card>
-    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 8,
-          left: 8
-        }}
-      >
-        <Typography variant="body1" color="text.secondary" component="div">
-          Has Order
-        </Typography>
-      </Box>
-      <Box sx={{
-        position: 'absolute',
-        top: 30,
-        right: 30,
-      }}>
-        <Badge
-          badgeContent={getDriverCountByStatus('has_order')}
-          color="primary"
-          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
-        >
-          <PersonIcon fontSize="large" color="action" />
-        </Badge>
-      </Box>
-    </CardContent>
-  </Card>
-</Grid2>
+            {/* Has Order Card */}
+            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+              <Card>
+                <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: 8
+                    }}
+                  >
+                    <Typography variant="body1" color="text.secondary" component="div">
+                      Has Order
+                    </Typography>
+                  </Box>
+                  <Box sx={{
+                    position: 'absolute',
+                    top: 30,
+                    right: 30,
+                  }}>
+                    <Badge
+                      badgeContent={getDriverCountByStatus('has_order')}
+                      color="primary"
+                      sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+                    >
+                      <PersonIcon fontSize="large" color="action" />
+                    </Badge>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid2>
 
-{/* Unknown Status Card */}
-<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
-  <Card>
-    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 8,
-          left: 8
-        }}
-      >
-        <Typography variant="body1" color="text.secondary" component="div">
-          Unknown Status
-        </Typography>
-      </Box>
-      <Box sx={{
-        position: 'absolute',
-        top: 30,
-        right: 30,
-      }}>
-        <Badge
-          badgeContent={getDriverCountByStatus('unknown')}
-          color="default"
-          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
-        >
-          <PersonIcon fontSize="large" color="action" />
-        </Badge>
-      </Box>
-    </CardContent>
-  </Card>
-</Grid2>
+          {/* Unknown Status Card */}
+          <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card>
+              <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 8,
+                    left: 8
+                  }}
+                >
+                  <Typography variant="body1" color="text.secondary" component="div">
+                    Unknown Status
+                  </Typography>
+                </Box>
+                <Box sx={{
+                  position: 'absolute',
+                  top: 30,
+                  right: 30,
+                }}>
+                  <Badge
+                    badgeContent={getDriverCountByStatus('unknown')}
+                    color="default"
+                    sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+                  >
+                    <PersonIcon fontSize="large" color="action" />
+                  </Badge>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid2>
 
           </Grid2>
         </Grid2>
@@ -298,87 +298,85 @@ const AdminLiveStatusPage: React.FC = () => {
         <Grid2 item size={{ xs: 12 }}>
           <Card>
             <CardContent>
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5">{""}</Typography>
-                
-                <Box display="flex" gap={2}>
-                  <Button
-                    variant="contained"
-                    startIcon={<RefreshIcon sx={{ fontSize: '20px' }} />}
-                    onClick={handleUpdateDrivers}
-                    disabled={isUpdating}
-                    sx={{
-                      backgroundColor: '#fecc04',
-                      color: 'black',
-                      width: '170px',
-                      height: '40px',
-                      fontSize: '0.7rem',
-                      '&:hover': {
-                        backgroundColor: '#e5b803',
-                      }
-                    }}
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+              {/* Left side - Search and Filter */}
+              <Box display="flex" gap={2} flex={1}>
+                <TextField
+                  variant="outlined"
+                  placeholder="Search by driver name or phone"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  size="small"
+                  sx={{ width: '300px' }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+    
+                <FormControl size="small" sx={{ width: '200px' }}>
+                  <InputLabel id="status-filter-label">Status Filter</InputLabel>
+                  <Select
+                    labelId="status-filter-label"
+                    value={statusFilter}
+                    onChange={handleStatusFilterChange}
+                    label="Status Filter"
                   >
-                    {isUpdating ? 'Updating...' : 'Update Drivers'}
-                  </Button>
-                  
-                  <FormControl variant="outlined" size="small" sx={{ minWidth: 150 }}>
-                    <InputLabel id="refresh-interval-label">Auto-refresh</InputLabel>
-                    <Select
-                      labelId="refresh-interval-label"
-                      value={refreshInterval}
-                      onChange={handleRefreshIntervalChange} 
-                      label="Auto-refresh"
-                    >
-                      <MenuItem value={30000}>Every 30 seconds</MenuItem>
-                      <MenuItem value={60000}>Every 1 minute</MenuItem>
-                      <MenuItem value={300000}>Every 5 minutes</MenuItem>
-                      <MenuItem value={0}>Manual only</MenuItem>
-                    </Select>
-                  </FormControl>
-                  
-                  <IconButton onClick={handleManualRefresh} disabled={isLoading}>
-                    <RefreshIcon />
-                  </IconButton>
-                </Box>
+                    <MenuItem value="all">All Statuses</MenuItem>
+                    <MenuItem value="waiting_orders">Waiting Orders</MenuItem>
+                    <MenuItem value="has_order">Has Order</MenuItem>
+                    <MenuItem value="unknown">Unknown</MenuItem>
+                  </Select>
+                </FormControl>
               </Box>
+
+              {/* Right side - Update, Auto-refresh, and Refresh */}
+              <Box display="flex" gap={2} alignItems="center">
+                <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
+                  <InputLabel id="refresh-interval-label">Auto-refresh</InputLabel>
+                  <Select
+                    labelId="refresh-interval-label"
+                    value={refreshInterval}
+                    onChange={handleRefreshIntervalChange}
+                    label="Auto-refresh"
+                  >
+                    <MenuItem value={30000}>Every 30 seconds</MenuItem>
+                    <MenuItem value={60000}>Every 1 minute</MenuItem>
+                    <MenuItem value={300000}>Every 5 minutes</MenuItem>
+                    <MenuItem value={0}>Manual only</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Button
+                  variant="contained"
+                  startIcon={<RefreshIcon sx={{ fontSize: '20px' }} />}
+                  onClick={handleUpdateDrivers}
+                  disabled={isUpdating}
+                  sx={{
+                    backgroundColor: '#fecc04',
+                    color: 'black',
+                    width: '170px',
+                    height: '40px',
+                    fontSize: '0.7rem',
+                    '&:hover': {
+                      backgroundColor: '#e5b803',
+                    }
+                  }}
+                >
+                  {isUpdating ? 'Updating...' : 'Update Drivers'}
+                </Button>
+
+                <IconButton onClick={handleManualRefresh} disabled={isLoading}>
+                  <RefreshIcon />
+                </IconButton>
+              </Box>
+            </Box>
+
               
-              <Grid2 container spacing={2} mb={2}>
-                <Grid2 item size={{ xs: 12, sm: 6, md: 4}}>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Search by driver name or phone"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    size="small"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid2>
-                
-                <Grid2 item size={{ xs: 12, sm: 6, md: 4 }} >
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="status-filter-label">Status Filter</InputLabel>
-                    <Select
-                      labelId="status-filter-label"
-                      value={statusFilter}
-                      onChange={handleStatusFilterChange}
-                      label="Status Filter"
-                      
-                    >
-                      <MenuItem value="all">All Statuses</MenuItem>
-                      <MenuItem value="waiting_orders">Waiting Orders</MenuItem>
-                      <MenuItem value="has_order">Has Order</MenuItem>
-                      <MenuItem value="unknown">Unknown</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid2>
-              </Grid2>
+              
               
               <Divider sx={{ mb: 2 }} />
 

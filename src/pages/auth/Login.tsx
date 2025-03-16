@@ -235,7 +235,7 @@ const Login: React.FC = () => {
         height: '100vh',
         width: '60%',
         padding: 3,
-        paddingTop: 20,
+        paddingTop: 30,
       }}
     >
       <Box

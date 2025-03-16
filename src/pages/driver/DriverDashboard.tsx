@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import { Box, Typography } from '@mui/material';
+
+import { sidebarItemsDriver } from './DriverSidebar';
 
 // Import layout
-import DashboardLayout, { SidebarItem } from '../../components/layout/DashboardLayout';
+import DashboardLayout from '../../components/layout/DashboardLayout';
 
 // Import dashboard components
 import DriverWelcomeCard from '../../components/driver/DriverWelcomeCard';
@@ -14,6 +14,7 @@ import RecentOrdersList from '../../components/driver/RecentOrdersList';
 
 // Import pages
 import DriverOrdersPage from './DriverOrdersPage';
+import DriverContactsPage from './DriverContactsPage';
 
 interface DriverDashboardProps {
   selectedPage: string;
@@ -22,12 +23,7 @@ interface DriverDashboardProps {
 const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
   // State for selected period
   const [selectedPeriod, setSelectedPeriod] = useState<string>('week');
-  
-  // Define menu items for the dashboard
-  const menuItems: SidebarItem[] = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/driver/dashboard' },
-    { text: 'My Orders', icon: <ReceiptIcon />, path: '/driver/orders' },
-  ];
+
 
   // Handle period change
   const handlePeriodChange = (period: string) => {
@@ -70,13 +66,20 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
             onPeriodChange={handlePeriodChange}
           />
         );
+      case 'contacts':
+        return <Box>
+          <Typography variant="h4" gutterBottom>
+            {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+          </Typography>
+          <DriverContactsPage />
+        </Box>
       default:
         return <div>Page not found</div>;
     }
   };
 
   return (
-    <DashboardLayout menuItems={menuItems}>
+    <DashboardLayout menuItems={sidebarItemsDriver}>
       {renderContent()}
     </DashboardLayout>
   );

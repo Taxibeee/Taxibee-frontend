@@ -138,6 +138,14 @@ export const useAdminQueries = () => {
         });
     };
 
+    // Contacts
+    const useAdminContacts = () => {
+        return useQuery({
+            queryKey: [ 'admin', 'contacts' ],
+            queryFn: adminApi.getContacts,
+        });
+    }; 
+       
     // Return all the query hooks
     return {
         // Orders
@@ -161,6 +169,9 @@ export const useAdminQueries = () => {
         useUnaccountedTransactions,
         useUpdateTransactionDriver,
         useTransactionsByWeekday,
-        useTransactionsByTerminal
+        useTransactionsByTerminal,
+
+        // Contacts
+        useAdminContacts
     }
 }

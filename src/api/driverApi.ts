@@ -56,6 +56,18 @@ export interface Order {
     cancellation_fee: number | null;
 }
 
+export interface Contact {
+    name: string;
+    email: string;
+    phone: string;
+    tag: string;
+}
+
+export interface ContactResponse {
+    data: Contact[];
+}
+
+
 // Driver API functions
 const driverApi = {
     // Profile
@@ -78,6 +90,12 @@ const driverApi = {
         if (params.offset) queryParams.append('offset', params.offset.toString());
 
         const response = await api.get(`/driver/orders?${queryParams.toString()}`);
+        return response.data;
+    },
+
+    // Contacts
+    getContacts: async (): Promise<ContactResponse> => {
+        const response = await api.get('/getContacts');
         return response.data;
     }
 };

@@ -45,6 +45,7 @@ const AppRouter: React.FC = () => {
                     {/* All driver routes use the same DriverDashboard component, which will handle rendering the appropriate content */}
                     <Route path="/driver/dashboard" element={<DriverDashboard selectedPage="dashboard" />} />
                     <Route path="/driver/orders" element={<DriverDashboard selectedPage="orders" />} />
+                    <Route path="/driver/contacts" element={<DriverDashboard selectedPage="contacts" />} />
                 </Route>
 
                 {/* Special Routes */}

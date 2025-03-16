@@ -109,6 +109,17 @@ export interface UnaccountedTransactionsResponse {
     driver_options: { uuid: string; name: string }[];
 }
 
+export interface Contact {
+    name: string;
+    email: string;
+    phone: string;
+    tag: string;
+}
+
+export interface ContactResponse {
+    data: Contact[];
+}
+
 
 // Admin API functions
 const adminApi = {
@@ -192,6 +203,12 @@ const adminApi = {
         const url = queryParams.toString() ? `/admin/getTransactionsByTerminalName?${queryParams.toString()}` : '/admin/getTransactionsByTerminalName';
         const response = await api.get(url);
         return response.data.data;
+    },
+
+    // Contacts
+    getContacts: async (): Promise<ContactResponse> => {
+        const response = await api.get('/getContacts');
+        return response.data;
     }
 };
 

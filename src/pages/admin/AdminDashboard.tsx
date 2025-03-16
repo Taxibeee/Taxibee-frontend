@@ -13,6 +13,7 @@ import AdminDriversPage from './AdminDriversPage';
 import AdminLiveStatusPage from './AdminLiveStatusPage';
 import AdminTransactionsPage from './AdminTransactionsPage';
 import AdminExactFilePage from './AdminExactFilePage';
+import AdminContactsPage from './AdminContactsPage';
 
 // Import dashboard components for the main dashboard
 import SummaryCards from '../../components/admin/SummaryCards';
@@ -21,12 +22,6 @@ import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart';
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
 // Placeholder for Contacts page
-const ContactsPage = () => (
-  <Box p={3}>
-    <h1>Contacts</h1>
-    <p>This page is under construction. The endpoint for the contacts page is not yet implemented.</p>
-  </Box>
-);
 
 interface AdminDashboardProps {
   selectedPage: string;
@@ -77,7 +72,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'exact-file':
         return <AdminExactFilePage />;
       case 'contacts':
-        return <ContactsPage />;
+        return <Box>
+          <Typography variant="h3" gutterBottom>
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+            </Typography>
+          <AdminContactsPage /> 
+        </Box>
       default:
         return <div>Page not found</div>;
     }

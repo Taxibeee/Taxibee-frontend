@@ -244,7 +244,7 @@ const AdminDriversPage: React.FC = () => {
                             <Tooltip title="Chat on Whatsapp">
                               <IconButton
                                 size="small"
-                                onClick={(e) => openWhatsAppChat(driver.phone, e)}
+                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => openWhatsAppChat(driver.phone, e)}
                                 sx={{ 
                                   color: 'success.main',
                                   mt: 1
@@ -267,7 +267,7 @@ const AdminDriversPage: React.FC = () => {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={3} align="center">
+                          <TableCell align="center">
                             No drivers found
                           </TableCell>
                         </TableRow>

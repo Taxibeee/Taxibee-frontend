@@ -29,10 +29,21 @@ export const useDriverQueries = () => {
     });
   };
 
+  // Contacts query
+  const useDriverContacts = () => {
+    return useQuery({
+      queryKey: [ 'driver', 'contacts' ],
+      queryFn: driverApi.getContacts,
+    });
+  }
+
   // Return all the query hooks
   return {
     useDriverProfile,
     useDriverEarnings,
     useDriverOrders,
+
+    // Contacts,
+    useDriverContacts
   };
 };

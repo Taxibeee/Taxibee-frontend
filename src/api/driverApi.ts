@@ -1,72 +1,7 @@
 import api from './api';
-
-// Define response types
-export interface DriverProfile {
-    taxibee_id: number;
-    bolt_driver_uuid: string;
-    bolt_partner_uuid: string;
-    chauffeurskaartnr: string;
-    phone: string;
-    email: string;
-    exact_debnr: string;
-    state: string;
-    mypos_operator_code: string;
-    full_name: string;
-    company_id: string;
-    inactivity_reason: string | null;
-    today_terminal_name: string | null;
-}
-
-export interface DriverEarnings {
-    total_orders: number;
-    total_revenue: number;
-    total_distance: number;
-    average_ride_price: number;
-    total_ride_time: number | null;
-    today_terminal_name: string | null;
-    average_ride_time: number | null;
-    average_distance: number;
-    average_price_per_mile: number;
-}
-
-export interface Order {
-    order_reference: string;
-    driver_name: string | null;
-    driver_uuid: string | null;
-    payment_method: string | null;
-    order_status: string | null;
-    vehicle_model: string | null;
-    vehicle_license_plate: string | null;
-    terminal_name: string | null;
-    pickup_address: string | null;
-    ride_distance: number | null;
-    order_created_timestamp: string | null;
-    order_accepted_timestamp: number | null;
-    order_pickup_timestamp: number | null;
-    order_dropoff_timestamp: number | null;
-    order_finished_timestamp: number | null;
-    ride_price: number | null;
-    booking_fee: number | null;
-    toll_fee: number | null;
-    tip: number | null;
-    cash_discount: number | null;
-    commission: number | null;
-    in_app_discount: number | null;
-    net_earnings: number | null;
-    cancellation_fee: number | null;
-}
-
-export interface Contact {
-    name: string;
-    email: string;
-    phone: string;
-    tag: string;
-}
-
-export interface ContactResponse {
-    data: Contact[];
-}
-
+import { Order } from '../types/order.types';
+import { ContactResponse } from '../types/contact.types';
+import { DriverEarnings, DriverProfile } from '../types/driver.types';
 
 // Driver API functions
 const driverApi = {

@@ -15,6 +15,7 @@ import {
   TextField,
   InputAdornment,
   Chip,
+  Backdrop,
   CircularProgress,
   Button,
   MenuItem,
@@ -23,16 +24,20 @@ import {
   InputLabel,
   IconButton,
   Divider,
-  Badge
+  Badge,
+  Skeleton,
+  Theme
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { SelectChangeEvent } from '@mui/material/Select';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
+import PersonIcon from "@mui/icons-material/Person"
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAdminQueries } from '../../hooks';
 import { DriverStatus } from '../../api/adminApi';
+
+import { formatPhone } from '../../utils/formatPhone';
 
 const AdminLiveStatusPage: React.FC = () => {
   // State for filters
@@ -102,103 +107,216 @@ const AdminLiveStatusPage: React.FC = () => {
     return (data || []).filter(driver => driver.current_status === status).length;
   };
 
+  const SkeletonLoader = () => {
+    return (
+      <TableContainer component={Paper} elevation={0}>
+    <Table sx={{ minWidth: 650, width: '100%' }}>
+      <TableHead>
+        <TableRow>
+          <TableCell>Driver</TableCell>
+          <TableCell>Phone</TableCell>
+          <TableCell>Current Status</TableCell>
+          <TableCell>Last Updated</TableCell>
+          <TableCell>Duration</TableCell>
+          <TableCell align="center">Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {[...Array(9)].map((_, index) => (
+          <TableRow key={index}>
+            <TableCell>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Skeleton variant="circular" width={24} height={24} sx={{ mr: 1 }} />
+                <Skeleton variant="text" width={120} />
+              </Box>
+            </TableCell>
+            <TableCell>
+              <Skeleton variant="text" width={100} />
+            </TableCell>
+            <TableCell>
+              <Skeleton variant="rounded" width={80} height={24} />
+            </TableCell>
+            <TableCell>
+              <Skeleton variant="text" width={150} />
+            </TableCell>
+            <TableCell>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Skeleton variant="circular" width={16} height={16} sx={{ mr: 1 }} />
+                <Skeleton variant="text" width={80} />
+              </Box>
+            </TableCell>
+            <TableCell align="center">
+              <Skeleton variant="circular" width={32} height={32} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+    )
+  }
+
+
+
   return (
     <Box>
       <Grid2 container spacing={3}>
         {/* Status Summary Cards */}
-        <Grid2 item xs={12}>
+        <Grid2 item size={{ xs: 12 }}>
           <Grid2 container spacing={2}>
-            <Grid2 item xs={12} sm={6} md={3}>
+            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" component="div">
+                <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: 8
+                    }}
+                  >
+                    <Typography variant="body1" color="text.secondary" component="div">
                       Total Active
                     </Typography>
+                  </Box>
+                  <Box sx={{
+                    position: 'absolute',
+                    top: 30,
+                    right: 30,
+                  }}>
                     <Badge
                       badgeContent={data?.length || 0}
                       color="primary"
-                      sx={{ '& .MuiBadge-badge': { fontSize: 14, height: 24, minWidth: 24 } }}
+                      sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
                     >
-                      <LocalTaxiIcon fontSize="large" color="action" />
+                      <PersonIcon fontSize="large" color="action" />
                     </Badge>
                   </Box>
                 </CardContent>
               </Card>
             </Grid2>
             
-            <Grid2 item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" component="div">
-                      Waiting Orders
-                    </Typography>
-                    <Badge
-                      badgeContent={getDriverCountByStatus('waiting_orders')}
-                      color="success"
-                      sx={{ '& .MuiBadge-badge': { fontSize: 14, height: 24, minWidth: 24 } }}
-                    >
-                      <LocalTaxiIcon fontSize="large" color="action" />
-                    </Badge>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid2>
-            
-            <Grid2 item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" component="div">
-                      Has Order
-                    </Typography>
-                    <Badge
-                      badgeContent={getDriverCountByStatus('has_order')}
-                      color="primary"
-                      sx={{ '& .MuiBadge-badge': { fontSize: 14, height: 24, minWidth: 24 } }}
-                    >
-                      <LocalTaxiIcon fontSize="large" color="action" />
-                    </Badge>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid2>
-            
-            <Grid2 item xs={12} sm={6} md={3}>
-              <Card>
-                <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" component="div">
-                      Unknown Status
-                    </Typography>
-                    <Badge
-                      badgeContent={getDriverCountByStatus('unknown')}
-                      color="default"
-                      sx={{ '& .MuiBadge-badge': { fontSize: 14, height: 24, minWidth: 24 } }}
-                    >
-                      <LocalTaxiIcon fontSize="large" color="action" />
-                    </Badge>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid2>
+            {/* Waiting Orders Card */}
+<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+  <Card>
+    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 8,
+          left: 8
+        }}
+      >
+        <Typography variant="body1" color="text.secondary" component="div">
+          Waiting Orders
+        </Typography>
+      </Box>
+      <Box sx={{
+        position: 'absolute',
+        top: 30,
+        right: 30,
+      }}>
+        <Badge
+          badgeContent={getDriverCountByStatus('waiting_orders')}
+          color="success"
+          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+        >
+          <PersonIcon fontSize="large" color="action" />
+        </Badge>
+      </Box>
+    </CardContent>
+  </Card>
+</Grid2>
+
+{/* Has Order Card */}
+<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+  <Card>
+    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 8,
+          left: 8
+        }}
+      >
+        <Typography variant="body1" color="text.secondary" component="div">
+          Has Order
+        </Typography>
+      </Box>
+      <Box sx={{
+        position: 'absolute',
+        top: 30,
+        right: 30,
+      }}>
+        <Badge
+          badgeContent={getDriverCountByStatus('has_order')}
+          color="primary"
+          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+        >
+          <PersonIcon fontSize="large" color="action" />
+        </Badge>
+      </Box>
+    </CardContent>
+  </Card>
+</Grid2>
+
+{/* Unknown Status Card */}
+<Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+  <Card>
+    <CardContent sx={{ position:'relative', height: '100px', p: 2}}>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 8,
+          left: 8
+        }}
+      >
+        <Typography variant="body1" color="text.secondary" component="div">
+          Unknown Status
+        </Typography>
+      </Box>
+      <Box sx={{
+        position: 'absolute',
+        top: 30,
+        right: 30,
+      }}>
+        <Badge
+          badgeContent={getDriverCountByStatus('unknown')}
+          color="default"
+          sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+        >
+          <PersonIcon fontSize="large" color="action" />
+        </Badge>
+      </Box>
+    </CardContent>
+  </Card>
+</Grid2>
+
           </Grid2>
         </Grid2>
 
         {/* Main Table Card */}
-        <Grid2 item xs={12}>
+        <Grid2 item size={{ xs: 12 }}>
           <Card>
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h5">Live Driver Status</Typography>
+                <Typography variant="h5">{""}</Typography>
                 
                 <Box display="flex" gap={2}>
                   <Button
-                    variant="outlined"
-                    startIcon={<RefreshIcon />}
+                    variant="contained"
+                    startIcon={<RefreshIcon sx={{ fontSize: '20px' }} />}
                     onClick={handleUpdateDrivers}
                     disabled={isUpdating}
+                    sx={{
+                      backgroundColor: '#fecc04',
+                      color: 'black',
+                      width: '170px',
+                      height: '40px',
+                      fontSize: '0.7rem',
+                      '&:hover': {
+                        backgroundColor: '#e5b803',
+                      }
+                    }}
                   >
                     {isUpdating ? 'Updating...' : 'Update Drivers'}
                   </Button>
@@ -225,7 +343,7 @@ const AdminLiveStatusPage: React.FC = () => {
               </Box>
               
               <Grid2 container spacing={2} mb={2}>
-                <Grid2 item xs={12} sm={6} md={4}>
+                <Grid2 item size={{ xs: 12, sm: 6, md: 4}}>
                   <TextField
                     fullWidth
                     variant="outlined"
@@ -243,7 +361,7 @@ const AdminLiveStatusPage: React.FC = () => {
                   />
                 </Grid2>
                 
-                <Grid2 item xs={12} sm={6} md={4}>
+                <Grid2 item size={{ xs: 12, sm: 6, md: 4 }} >
                   <FormControl fullWidth size="small">
                     <InputLabel id="status-filter-label">Status Filter</InputLabel>
                     <Select
@@ -265,9 +383,7 @@ const AdminLiveStatusPage: React.FC = () => {
               <Divider sx={{ mb: 2 }} />
 
               {isLoading ? (
-                <Box display="flex" justifyContent="center" p={3}>
-                  <CircularProgress />
-                </Box>
+                <SkeletonLoader />
               ) : isError ? (
                 <Typography color="error">Error loading driver status data. Please try again.</Typography>
               ) : (
@@ -289,11 +405,11 @@ const AdminLiveStatusPage: React.FC = () => {
                           <TableRow key={driver.driver_uuid} hover>
                             <TableCell>
                               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <LocalTaxiIcon sx={{ mr: 1, color: getStatusColor(driver.current_status) }} />
+                                <PersonIcon sx={{ mr: 1, color: getStatusColor(driver.current_status) }} />
                                 {driver.driver_name}
                               </Box>
                             </TableCell>
-                            <TableCell>{driver.phone}</TableCell>
+                            <TableCell>{formatPhone(driver.phone)}</TableCell>
                             <TableCell>
                               <Chip
                                 label={driver.current_status}
@@ -322,7 +438,7 @@ const AdminLiveStatusPage: React.FC = () => {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={6} align="center">
+                          <TableCell align="center">
                             No drivers match your filters
                           </TableCell>
                         </TableRow>
@@ -335,6 +451,23 @@ const AdminLiveStatusPage: React.FC = () => {
           </Card>
         </Grid2>
       </Grid2>
+
+      <Backdrop
+        sx={{
+          color: '#fff',
+          zIndex: (theme: Theme) => theme.zIndex.drawer + 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2
+        }}
+        open={isUpdating}
+      >
+        <CircularProgress color="inherit" />
+        <Typography variant="caption" component="div">
+          Updating drivers...
+        </Typography>
+      </Backdrop>
+
     </Box>
   );
 };

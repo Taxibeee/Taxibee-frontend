@@ -74,7 +74,7 @@ const AdminDriversPage: React.FC = () => {
   // Fetch all drivers
   const { useAllDrivers, useDriverOrders } = useAdminQueries();
   const { data: driversData, isLoading: driversLoading, isError: driversError } = useAllDrivers();
-  
+
   // Fetch selected driver's orders
   const { data: driverOrdersData, isLoading: ordersLoading } = useDriverOrders(
     selectedDriver?.bolt_driver_uuid || '',
@@ -134,6 +134,12 @@ const AdminDriversPage: React.FC = () => {
     driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (driver.taxibee_id && driver.taxibee_id.toString().includes(searchTerm))
   ) || [];
+
+    // Total number of drivers
+  const totalDrivers = driversData?.data.length || 0;
+  const filteredDriversCount = filteredDrivers.length;
+  const activeDrivers = filteredDrivers.filter(driver => driver.state.toLowerCase() === 'active').length;
+
 
   // Get driver status color
   const getDriverStatusColor = (status: string): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
@@ -200,6 +206,15 @@ const AdminDriversPage: React.FC = () => {
             <CardContent sx={{ flexGrow: 0 }}>
               <Typography variant="h6" gutterBottom>
                 Drivers
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                {searchTerm 
+                  ? `Showing ${filteredDriversCount} of ${totalDrivers} drivers`
+                  : `Total ${totalDrivers} drivers`
+                }
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                {`Active: ${activeDrivers}`}
               </Typography>
               <TextField
                 fullWidth

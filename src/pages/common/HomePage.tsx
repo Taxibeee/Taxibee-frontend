@@ -335,7 +335,7 @@ const HomePage: React.FC = () => {
                         width: isMobile ? '100%' : '170px',
                       }}
                     >
-                        {isAuthenticated ? 'Go to your Dashboard' : 'Sign In'}
+                        {isAuthenticated ? 'Dashboard' : 'Sign In'}
                     </Button>
                     
                     <Button

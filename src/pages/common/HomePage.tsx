@@ -4,7 +4,8 @@ import { useAuth } from '../../store/hooks';
 import taxisHomePageVideo from '../../assets/taxi_vid.mp4';
 import logo from '../../assets/F3-02.png';
 
-// Material UI imports
+import emailjs from '@emailjs/browser';
+
 import {
   Box,
   Button,
@@ -18,7 +19,15 @@ import {
   useTheme,
   Fade,
   Slide,
-  Stack
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  TextField,
+  DialogContentText,
+  DialogContent,
+  Snackbar,
+  Alert
 } from '@mui/material';
 
 // Icons
@@ -30,13 +39,141 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 
+interface ContactUs {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface ImportMetaEnv {
+    readonly VITE_EMAILJS_SERVICE_ID: string;
+    readonly VITE_EMAILJS_TEMPLATE_ID: string;
+    readonly VITE_EMAILJS_PUBLIC_KEY: string;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}
+
+interface SnackbarAlert {
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error' | 'warning' | 'info';
+}
+
 const HomePage: React.FC = () => {
   const { isAuthenticated, userRole } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [ snackbar, setSnackbar ] = useState<SnackbarAlert>({
+    open: false,
+    message: '',
+    severity: 'success' 
+  }) 
+
+  const handleSnackbarClose = () => {
+    setSnackbar({
+        ...snackbar, open: false
+    })
+  }
+
+
+  const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+
+  const [ openContactDialog, setOpenContactDialog ] = useState<boolean>(false);
+  const [ contactForm, setContactForm ] = useState<ContactUs>({
+    name: '',
+    email: '',
+    message: ''
+  })
+
+  const handleContactDialogOpen = () => {
+    setOpenContactDialog(true);
+  }
+
+  const handleContactDialogClose = () => {
+    setOpenContactDialog(false);
+    setContactForm({
+        name: '',
+        email: '',
+        message: ''
+    })
+  }
+
+  const handleContactFormChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContactForm({
+      ...contactForm,
+      [e.target.name]: e.target.value
+    });
+
+  };
+
+  const handleContactSubmit = async () => {
+    // Basic validation
+    if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+      setSnackbar({
+        open: true,
+        message: 'Please fill in all fields',
+        severity: 'error'
+      })
+      return;
+    }
   
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactForm.email)) {
+      setSnackbar({
+        open: true,
+        message: 'Please enter a valid email address',
+        severity: 'error'
+      })
+      return;
+    }
+    
+    setIsSubmitting(true);
+
+    try {
+      const templateParams = {
+        from_name: contactForm.name,
+        from_email: contactForm.email,
+        message: contactForm.message,
+        to_email: 'nasrul2001@gmail.com', // Your email address
+      };
+  
+      // Replace these with your actual EmailJS credentials
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID!,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID!,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY!
+      );
+  
+      setSnackbar({
+        open: true,
+        message: 'Message sent successfully!',
+        severity: 'success'
+      })
+      handleContactDialogClose();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSnackbar({
+        open: true,
+        message: 'Error sending message. Please try again later.',
+        severity: 'error'
+      })
+    } finally{
+        setIsSubmitting(false);
+    }
+  };
+
+
+
+
+
   // Animation states
   const [heroVisible, setHeroVisible] = useState(false);
   const [featuresVisible, setFeaturesVisible] = useState(false);
@@ -113,7 +250,7 @@ const HomePage: React.FC = () => {
               position: 'absolute',
               width: '100%',
               height: '100%',
-              background: 'rgba(0, 0, 0, 0.6)',
+              background: 'rgba(0, 0, 0, 0.85)',
               zIndex: 0,
             }}
           />
@@ -142,14 +279,24 @@ const HomePage: React.FC = () => {
                     component="h1" 
                     color="white"
                     sx={{ 
-                      fontWeight: 700, 
+                      fontWeight: 900, 
                       textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                       mb: 2,
                       fontSize: isMobile ? '1.5rem' : '2.5rem',
-                      fontFamily: 'Comic Sans MS, sans-serif'
+                      fontFamily: 'Inter, sans-serif'
                     }}
                   >
                     Taxi fleet management with ease
+                  </Typography>
+
+                  <Typography 
+                    variant="body1" 
+                    color="white"
+                    sx={{ 
+                      textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
+                    }}
+                  >
+                    Get your fleet registered with us
                   </Typography>
                   
                   <Typography 
@@ -194,7 +341,7 @@ const HomePage: React.FC = () => {
                     <Button
                       variant="outlined"
                       size="large"
-                      onClick={() => handleNavigation('/contact')}
+                      onClick={handleContactDialogOpen}
                       sx={{
                         borderColor: 'white',
                         color: 'white',
@@ -230,6 +377,7 @@ const HomePage: React.FC = () => {
                 sx={{ 
                   fontWeight: 700,
                   mb: 6,
+                  fontFamily: 'Helvetica-Neue',
                   position: 'relative',
                   '&:after': {
                     content: '""',
@@ -247,16 +395,12 @@ const HomePage: React.FC = () => {
               </Typography>
               
               <Grid2 container spacing={isTablet ? 3 : 4}>
-                <Grid2 item xs={12} md={4}>
+                <Grid2 item size={{ xs: 12, md: 4 }} >
                   <Card 
-                    elevation={2}
+                    elevation={0}
                     sx={{ 
                       height: '100%',
-                      transition: 'transform 0.3s, box-shadow 0.3s',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: 6,
-                      }
+                      backgroungColor: 'inherit'
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
@@ -277,16 +421,11 @@ const HomePage: React.FC = () => {
                   </Card>
                 </Grid2>
                 
-                <Grid2 item xs={12} md={4}>
+                <Grid2 item size={{ xs: 12, md: 4 }} >
                   <Card 
-                    elevation={2}
+                    elevation={0}
                     sx={{ 
                       height: '100%',
-                      transition: 'transform 0.3s, box-shadow 0.3s',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: 6,
-                      }
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
@@ -307,16 +446,11 @@ const HomePage: React.FC = () => {
                   </Card>
                 </Grid2>
                 
-                <Grid2 item xs={12} md={4}>
+                <Grid2 item size={{ xs: 12, md: 4 }} >
                   <Card 
-                    elevation={2}
+                    elevation={0}
                     sx={{ 
                       height: '100%',
-                      transition: 'transform 0.3s, box-shadow 0.3s',
-                      '&:hover': {
-                        transform: 'translateY(-8px)',
-                        boxShadow: 6,
-                      }
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
@@ -337,28 +471,6 @@ const HomePage: React.FC = () => {
                   </Card>
                 </Grid2>
               </Grid2>
-              
-              <Box sx={{ mt: 8, textAlign: 'center' }}>
-                {!isAuthenticated && (
-                  <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => handleNavigation('/login')}
-                    sx={{
-                      backgroundColor: '#fecc04',
-                      color: 'black',
-                      py: 1.5,
-                      px: 4,
-                      fontWeight: 'bold',
-                      '&:hover': {
-                        backgroundColor: '#e5b800',
-                      }
-                    }}
-                  >
-                    Get Started Today
-                  </Button>
-                )}
-              </Box>
             </Box>
           </Slide>
         </Container>
@@ -373,7 +485,7 @@ const HomePage: React.FC = () => {
       }}>
         <Container>
           <Grid2 container spacing={3} alignItems="center">
-            <Grid2 item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
               <Box
                 component="img"
                 src={logo}
@@ -389,18 +501,18 @@ const HomePage: React.FC = () => {
               </Typography>
             </Grid2>
             
-            <Grid2 item xs={12} md={4} sx={{ textAlign: 'center' }}>
+            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: 'center' }}>
               <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', md: 'center' }}>
                 <IconButton color="inherit">
                   <PhoneIcon />
                 </IconButton>
-                <IconButton color="inherit">
+                <IconButton color="inherit" onClick={handleContactDialogOpen} >
                   <EmailIcon />
                 </IconButton>
               </Stack>
             </Grid2>
             
-            <Grid2 item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
+            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
                 © {new Date().getFullYear()} Taxibee. All rights reserved.
               </Typography>
@@ -408,6 +520,107 @@ const HomePage: React.FC = () => {
           </Grid2>
         </Container>
       </Box>
+      <Dialog 
+        open={openContactDialog} 
+        onClose={handleContactDialogClose}
+        maxWidth="sm"
+        fullWidth
+      >
+      <DialogTitle sx={{ 
+        backgroundColor: '#1a1a1a',
+        color: 'white',
+        fontWeight: 'bold'
+    }}>
+        Contact Us
+    </DialogTitle>
+    <DialogContent sx={{ mt: 2 }}>
+        <DialogContentText sx={{ mb: 2 }}>
+        Please fill out the form below and we'll get back to you as soon as possible.
+        </DialogContentText>
+        <TextField
+        autoFocus
+        name="name"
+        label="Name"
+        type="text"
+        fullWidth
+        variant="outlined"
+        value={contactForm.name}
+        onChange={handleContactFormChange}
+        sx={{ mb: 2 }}
+        />
+        <TextField
+        margin="dense"
+        name="email"
+        label="Email Address"
+        type="email"
+        fullWidth
+        variant="outlined"
+        value={contactForm.email}
+        onChange={handleContactFormChange}
+        sx={{ mb: 2 }}
+        />
+        <TextField
+        margin="dense"
+        name="message"
+        label="Message"
+        type="text"
+        fullWidth
+        multiline
+        rows={4}
+        variant="outlined"
+        value={contactForm.message}
+        onChange={handleContactFormChange}
+        />
+    </DialogContent>
+    <DialogActions sx={{ p: 3 }}>
+        <Button 
+        onClick={handleContactDialogClose}
+        variant="outlined"
+        sx={{
+            borderColor: '#fecc04',
+            color: 'black',
+            '&:hover': {
+            borderColor: '#e5b800',
+            backgroundColor: 'rgba(254, 204, 4, 0.1)',
+            }
+        }}
+        >
+        Cancel
+        </Button>
+        <Button 
+        onClick={handleContactSubmit}
+        variant="contained"
+        sx={{
+            backgroundColor: '#fecc04',
+            color: 'black',
+            '&:hover': {
+            backgroundColor: '#e5b800',
+            }
+        }}
+        >
+            {isSubmitting ? 'Sending.. ' : 'Send Message'}
+        </Button>
+    </DialogActions>
+    </Dialog>
+        
+        {/* Snackbar Alert */}
+        <Snackbar
+            open={snackbar.open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+            <Alert 
+                onClose={handleSnackbarClose} 
+                severity={snackbar.severity}
+                variant="filled"
+                sx={{ width: '100%' }}
+            >
+                {snackbar.message}
+            </Alert>
+        </Snackbar>
+
+
     </Box>
   );
 };

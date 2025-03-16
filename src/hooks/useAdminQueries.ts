@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import adminApi from '../api/adminApi';
 
-import { OrdersResponse } from '../api/adminApi';
+import { OrdersResponse } from '../types/order.types';
 import { formatApiError } from '../api/api';
 
 /**

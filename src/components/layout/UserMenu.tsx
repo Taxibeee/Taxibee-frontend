@@ -12,7 +12,6 @@ import {
   Typography
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LockIcon from '@mui/icons-material/Lock';
 import DarkModeIcon from '@mui/icons-material/DarkMode';

@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import driverApi, { DriverProfile, DriverEarnings, Order } from '../api/driverApi';
+import driverApi from '../api/driverApi';
+import { DriverProfile, DriverEarnings } from '../types/driver.types';
+import { Order } from '../types/order.types';
 
 /**
  * Custom hook that provides React Query hooks for driver data fetching

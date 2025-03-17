@@ -1,18 +1,21 @@
-export interface AdminUser {
-    id: number | string;
-    name: string;
+export interface BaseUser {
     username: string;
-    role: 'admin',
-    email: string;
     company_id: string;
+    role: 'admin' | 'driver';
 }
 
-export interface DriverUser {
-    username: string;
+
+export interface AdminUser extends BaseUser {
+    id: number | string;
+    name: string;
+    role: 'admin',
+    email: string;
+}
+
+export interface DriverUser extends BaseUser {
     bolt_driver_uuid: string;
     taxibee_id: number;
     full_name: string;
-    company_id: string;
     role: 'driver';
 }
 

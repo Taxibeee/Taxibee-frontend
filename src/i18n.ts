@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import AdminTransactionsPage from './pages/admin/AdminTransactionsPage';
+
 
 // English translations
 const enTranslations = {
@@ -142,14 +142,24 @@ const enTranslations = {
     loading: "Loading...",
     failedToLoadData: "Failed to load data",
     search: "Search",
-    searchPlaceholder: "Search by name or phone number",
+    searchPlaceholder: "Search by name, phone, email, or ID",
     searchNoResults: "No results found",
     searchNoDrivers: "No drivers found",
     searchNoOrders: "No orders found",
     searchNoResultsDesc: "Try adjusting your search criteria or check for typos.",
     searchNoResultsDesc2: "Please try a different search term or contact support for assistance.",
     selectADriver: "Select a driver to view details",
-    selectADriverText: "Click on any driver from the list on the left to view their profile information and order history."
+    selectADriverText: "Click on any driver from the list on the left to view their profile information and order history.",
+    filters: "Filters",
+    employmentType: "Employment Type",
+    all: "All",
+    inactive: "Inactive",
+    salaried: "Salaried",
+    freelancer: "Freelancer",
+    common: {
+      apply: "Apply",
+      cancel: "Cancel"
+    }
   },
   adminExactFilePage: {
     exactFile: "EXACT FILE"
@@ -295,13 +305,23 @@ const nlTranslations = {
     loading: "Laden...",
     failedToLoadData: "Data niet geladen",
     search: "Zoeken",
-    searchPlaceholder: "Zoek op naam of telefoonnummer",
+    searchPlaceholder: "Zoek op naam, telefoonnummer, e-mail of ID",
     searchNoResults: "Geen resultaten gevonden",
     searchNoDrivers: "Geen chauffeurs gevonden",
     searchNoResultsDesc: "Probeer uw zoekopdracht te verbeteren of controleer uw zoekopdracht.",
     searchNoResultsDesc2: "Probeer een andere zoekopdracht of neem contact op met ons voor hulp.",
     selectADriver: "Selecteer een chauffeur om details te bekijken",
-    selectADriverText: "Klik op een chauffeur in de lijst links om zijn persoonlijke informatie en bestelhistorie te bekijken."
+    selectADriverText: "Klik op een chauffeur in de lijst links om zijn persoonlijke informatie en bestelhistorie te bekijken.",
+    filters: "Filters",
+    employmentType: "Werkloosheidstype",
+    all: "Alle",
+    inactive: "Inactief",
+    salaried: "Salaris",
+    freelancer: "Werkzaam",
+    common: {
+      apply: "Toepassen",
+      cancel: "Annuleren"
+    }
   },
   adminExactFilePage: {
     exactFile: "EXACT BESTAND"

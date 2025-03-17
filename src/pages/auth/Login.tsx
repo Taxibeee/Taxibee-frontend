@@ -18,7 +18,9 @@ import {
   IconButton,
   TextField,
   Paper,
-  OutlinedInput
+  OutlinedInput,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -46,7 +48,8 @@ interface FormState {
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // State with explicit typing
   const [formData, setFormData] = useState<FormState>({
@@ -151,89 +154,89 @@ const Login: React.FC = () => {
         margin: 0,
         width: '100%',
       }}
+    >{!isMobile && <Box
+      sx={{
+        width: '40%',
+        backgroundColor: 'black',
+        color: 'white',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      <Box
-        sx={{
-          width: '40%',
-          backgroundColor: 'black',
-          color: 'white',
+      <video
+        autoPlay
+        muted
+        loop
+        style={{
+          position: 'absolute',
+          width: '100%',
           height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
-          overflow: 'hidden',
+          objectFit: 'cover',
+          zIndex: 0,
         }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 0,
-          }}
-        >
-          <source src={taxisHomePageVideo} type="video/mp4" />
-          {t('app.videoNoSupport')}
-        </video>
+        <source src={taxisHomePageVideo} type="video/mp4" />
+        {t('app.videoNoSupport')}
+      </video>
 
-        {/* overlay to make text more readable */}
+      {/* overlay to make text more readable */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
+          zIndex: 1,
+        }}
+      />
+      <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+      <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+        <LanguageSwitcher />
+      </Paper>
+    </Box>
+      {/* Logo and Welcome text container */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 300,
+          left: 10,
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Logo */}
         <Box
+          component="img"
+          src={logo}
+          alt="Taxibee Logo"
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
-            zIndex: 1,
+            width: 150, // Adjust size as needed
+            height: 'auto',
+            objectFit: 'contain',
           }}
         />
-        <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
-        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
-          <LanguageSwitcher />
-        </Paper>
-      </Box>
-        {/* Logo and Welcome text container */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 300,
-            left: 10,
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
+        
+        {/* Welcome text */}
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            fontFamily: 'Comic Sans MS, sans-serif',
+            color: 'white',
           }}
         >
-          {/* Logo */}
-          <Box
-            component="img"
-            src={logo}
-            alt="Taxibee Logo"
-            sx={{
-              width: 150, // Adjust size as needed
-              height: 'auto',
-              objectFit: 'contain',
-            }}
-          />
-          
-          {/* Welcome text */}
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontFamily: 'Comic Sans MS, sans-serif',
-              color: 'white',
-            }}
-          >
-            {t('loginPage.heroText')}
-          </Typography>
-        </Box>
+          {t('loginPage.heroText')}
+        </Typography>
       </Box>
+    </Box>}
+      
     <Box
       sx={{
         display: 'flex',
@@ -242,11 +245,18 @@ const Login: React.FC = () => {
         margin: '0 auto',
         backgroundColor: '#f5f5f5',
         height: '100vh',
-        width: '60%',
+        width: isMobile? '100%': '60%',
         padding: 3,
         paddingTop: 30,
       }}
     >
+      {isMobile && (
+        <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+          <LanguageSwitcher />
+        </Paper>
+        </Box>
+      )}
       <Box
         sx={{
           display: 'flex',

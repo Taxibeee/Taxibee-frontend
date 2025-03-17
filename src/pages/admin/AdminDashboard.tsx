@@ -92,13 +92,25 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'drivers':
         return <AdminDriversPage />;
       case 'transactions':
-        return <AdminTransactionsPage />;
+        return (<Box>
+          <Typography variant="h3" gutterBottom>
+              {t('adminSidebar.transactions')}
+            </Typography>
+        <AdminTransactionsPage />
+        </Box>
+      );
       case 'exact-file':
-        return <AdminExactFilePage />;
+        return (<Box>
+          <Typography variant="h3" gutterBottom>
+              {t('adminSidebar.exactFile')}
+            </Typography>
+        <AdminExactFilePage />
+        </Box>
+      );
       case 'contacts':
         return <Box>
           <Typography variant="h3" gutterBottom>
-              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+              {t('adminContactsPage.contacts')}
             </Typography>
           <AdminContactsPage /> 
         </Box>

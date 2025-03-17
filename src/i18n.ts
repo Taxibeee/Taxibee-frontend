@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import AdminTransactionsPage from './pages/admin/AdminTransactionsPage';
 
 // English translations
 const enTranslations = {
@@ -90,7 +91,33 @@ const enTranslations = {
     contacts: "Contacts"
   },
   adminDashboard: {
-    pageNotFound: "Page not found"
+    pageNotFound: "Page not found",
+    summaryCards: {
+      weeklySummary: "Weekly Summary",
+      totalRevenue: "Total Revenue",
+      totalOrders: "Total Orders",
+      totalDistance: "Total Distance",
+      failedToLoadData: "Failed to load data",
+      averageRevenuePerOrder: "Average Revenue Per Order",
+    }
+  },
+  adminContactsPage: {
+    contacts: "Contacts"
+  },
+  adminTransactionsPage: {
+    transactions: "Transactions"
+  },
+  adminOrdersPage: {
+    orders: "Orders"
+  },
+  adminLiveStatusPage: {
+    liveStatus: "Live Status"
+  },
+  adminDriversPage: {
+    drivers: "Drivers"
+  },
+  adminExactFilePage: {
+    exactFile: "EXACT FILE"
   }
 };
 
@@ -182,7 +209,33 @@ const nlTranslations = {
     contacts: "Contacten"
   },
   adminDashboard: {
-    pageNotFound: "Pagina niet gevonden"
+    pageNotFound: "Pagina niet gevonden",
+    summaryCards: {
+      weeklySummary: "Wekelijks Samenvatting",
+      totalRevenue: "Totale Omzet",
+      totalOrders: "Totaal aantal bestellingen",
+      totalDistance: "Totale afstand",
+      failedToLoadData: "Data niet geladen",
+      averageRevenuePerOrder: "Gemiddelde omzet per bestelling",
+    }
+  },
+  adminContactsPage: {
+    contacts: "Contacten"
+  },
+  adminTransactionsPage: {
+    transactions: "Transacties"
+  },
+  adminOrdersPage: {
+    orders: "Ritten"
+  },
+  adminLiveStatusPage: {
+    liveStatus: "Live Status"
+  },
+  adminDriversPage: {
+    drivers: "Chauffeurs"
+  },
+  adminExactFilePage: {
+    exactFile: "EXACT BESTAND"
   }
 };
 

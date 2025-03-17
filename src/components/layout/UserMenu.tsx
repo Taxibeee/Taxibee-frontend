@@ -14,24 +14,20 @@ import {
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LockIcon from '@mui/icons-material/Lock';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/hooks';
 import PasswordChangeDialog from '../shared/PasswordChangeDialog';
+import LanguageSwitcher from '../shared/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const UserMenu: React.FC = () => {
   const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // State for user menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
-  
-  // State for dark mode
-  const [darkMode, setDarkMode] = useState<boolean>(
-    localStorage.getItem('darkMode') === 'true'
-  );
   
   // State for password dialog
   const [passwordDialogOpen, setPasswordDialogOpen] = useState<boolean>(false);
@@ -57,13 +53,6 @@ const UserMenu: React.FC = () => {
     navigate('/login');
   };
 
-  // Handle dark mode toggle
-  const handleDarkModeToggle = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem('darkMode', newMode.toString());
-    // Note: For full implementation, you'd need to connect this to your theme provider
-  };
 
   // Handle password dialog
   const handleOpenPasswordDialog = () => {
@@ -149,18 +138,11 @@ const UserMenu: React.FC = () => {
 
         <Divider />
         
+        {/* Language Switcher */}
         <MenuItem>
-          <ListItemIcon>
-            {darkMode ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
-          </ListItemIcon>
-          <Typography variant="inherit">Dark Mode</Typography>
-          <Switch 
-            checked={darkMode}
-            onChange={handleDarkModeToggle}
-            size="small"
-            sx={{ ml: 1 }}
-          />
+          <LanguageSwitcher />
         </MenuItem>
+        
         
         <MenuItem onClick={handleOpenPasswordDialog}>
           <ListItemIcon>
@@ -173,7 +155,7 @@ const UserMenu: React.FC = () => {
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          <Typography variant="inherit">Logout</Typography>
+          <Typography variant="inherit">{t('auth.logout')}</Typography>
         </MenuItem>
       </Menu>
 

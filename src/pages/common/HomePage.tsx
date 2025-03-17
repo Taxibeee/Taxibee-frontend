@@ -27,7 +27,8 @@ import {
   DialogContentText,
   DialogContent,
   Snackbar,
-  Alert
+  Alert,
+  Paper
 } from '@mui/material';
 
 // Icons
@@ -39,20 +40,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
+
 interface ContactUs {
   name: string;
   email: string;
   message: string;
-}
-
-interface ImportMetaEnv {
-    readonly VITE_EMAILJS_SERVICE_ID: string;
-    readonly VITE_EMAILJS_TEMPLATE_ID: string;
-    readonly VITE_EMAILJS_PUBLIC_KEY: string;
-}
-
-interface ImportMeta {
-    readonly env: ImportMetaEnv;
 }
 
 interface SnackbarAlert {
@@ -67,6 +61,8 @@ const HomePage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+  const { t } = useTranslation();
 
   const [ snackbar, setSnackbar ] = useState<SnackbarAlert>({
     open: false,
@@ -205,6 +201,11 @@ const HomePage: React.FC = () => {
       display: 'flex', 
       flexDirection: 'column'
     }}>
+      <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+          <LanguageSwitcher />
+        </Paper>
+      </Box>
       {/* Hero Section */}
       <Box 
         sx={{
@@ -286,7 +287,7 @@ const HomePage: React.FC = () => {
                       fontFamily: 'Inter, sans-serif'
                     }}
                   >
-                    Taxi fleet management with ease
+                    {t('homepage.heroTitle')}
                   </Typography>
 
                   <Typography 
@@ -296,7 +297,7 @@ const HomePage: React.FC = () => {
                       textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
                     }}
                   >
-                    Get your fleet registered with us
+                    {t('homepage.heroTitle2')}
                   </Typography>
                   
                   <Typography 
@@ -308,7 +309,7 @@ const HomePage: React.FC = () => {
                       maxWidth: '700px'
                     }}
                   >
-                    Streamlined operations, real-time data, and powerful analytics for taxi companies and drivers
+                    {t('homepage.heroDesc')}
                   </Typography>
                   
                   <Stack 
@@ -335,7 +336,7 @@ const HomePage: React.FC = () => {
                         width: isMobile ? '100%' : '170px',
                       }}
                     >
-                        {isAuthenticated ? 'Dashboard' : 'Sign In'}
+                        {isAuthenticated ? t('nav.dashboard') : t('auth.login')}
                     </Button>
                     
                     <Button
@@ -351,10 +352,10 @@ const HomePage: React.FC = () => {
                           borderColor: '#fecc04',
                           backgroundColor: 'rgba(254, 204, 4, 0.1)',
                         },
-                        width: isMobile ? '100%' : '170px',
+                        width: isMobile ? '100%' : '220px',
                       }}
                     >
-                      Contact Us
+                      {t('contactForm.contactUs')}
                     </Button>
                   </Stack>
                 </Box>
@@ -391,7 +392,7 @@ const HomePage: React.FC = () => {
                   }
                 }}
               >
-                Powerful Fleet Management
+                {t('homepage.features.title')}
               </Typography>
               
               <Grid2 container spacing={isTablet ? 3 : 4}>
@@ -412,10 +413,10 @@ const HomePage: React.FC = () => {
                         }} 
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
-                        Real-Time Driver Tracking
+                        {t('homepage.features.feature1.title')}
                       </Typography>
                       <Typography variant="body1" color="text.secondary">
-                        Monitor your entire fleet in real-time. Track driver status, availability, and current orders from anywhere.
+                        {t('homepage.features.feature1.content')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -437,10 +438,10 @@ const HomePage: React.FC = () => {
                         }} 
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
-                        Comprehensive Analytics
+                        {t('homepage.features.feature2.title')}
                       </Typography>
                       <Typography variant="body1" color="text.secondary">
-                        Gain valuable insights with detailed analytics on revenue, driver performance, and customer trends.
+                        {t('homepage.features.feature2.content')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -462,10 +463,10 @@ const HomePage: React.FC = () => {
                         }} 
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
-                        Driver Portal
+                        {t('homepage.features.feature3.title')}
                       </Typography>
                       <Typography variant="body1" color="text.secondary">
-                        Give your drivers access to their personal dashboard with earnings, performance metrics, and order history.
+                        {t('homepage.features.feature3.content')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -497,7 +498,7 @@ const HomePage: React.FC = () => {
                 }}
               />
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                Taxi fleet management made simple
+                {t('homepage.footer.desc')}
               </Typography>
             </Grid2>
             
@@ -514,7 +515,7 @@ const HomePage: React.FC = () => {
             
             <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                © {new Date().getFullYear()} Taxibee. All rights reserved.
+                © {new Date().getFullYear()} {t('homepage.footer.copyright')}
               </Typography>
             </Grid2>
           </Grid2>
@@ -526,79 +527,79 @@ const HomePage: React.FC = () => {
         maxWidth="sm"
         fullWidth
       >
-      <DialogTitle sx={{ 
-        backgroundColor: '#1a1a1a',
-        color: 'white',
-        fontWeight: 'bold'
-    }}>
-        Contact Us
-    </DialogTitle>
-    <DialogContent sx={{ mt: 2 }}>
+        <DialogTitle sx={{ 
+          backgroundColor: '#1a1a1a',
+          color: 'white',
+          fontWeight: 'bold'
+        }}>
+          {t('contactForm.contactUs')}
+        </DialogTitle>
+      <DialogContent sx={{ mt: 2 }}>
         <DialogContentText sx={{ mb: 2 }}>
-        Please fill out the form below and we'll get back to you as soon as possible.
-        </DialogContentText>
+          {t('contactForm.instruction')}
+      </DialogContentText>
         <TextField
-        autoFocus
-        name="name"
-        label="Name"
-        type="text"
-        fullWidth
-        variant="outlined"
-        value={contactForm.name}
-        onChange={handleContactFormChange}
-        sx={{ mb: 2 }}
+          autoFocus
+          name="name"
+          label={t('contactForm.name')}
+          type="text"
+          fullWidth
+          variant="outlined"
+          value={contactForm.name}
+          onChange={handleContactFormChange}
+          sx={{ mb: 2 }}
         />
         <TextField
-        margin="dense"
-        name="email"
-        label="Email Address"
-        type="email"
-        fullWidth
-        variant="outlined"
-        value={contactForm.email}
-        onChange={handleContactFormChange}
-        sx={{ mb: 2 }}
+          margin="dense"
+          name="email"
+          label={t('contactForm.email')}
+          type="email"
+          fullWidth
+          variant="outlined"
+          value={contactForm.email}
+          onChange={handleContactFormChange}
+          sx={{ mb: 2 }}
         />
         <TextField
-        margin="dense"
-        name="message"
-        label="Message"
-        type="text"
-        fullWidth
-        multiline
-        rows={4}
-        variant="outlined"
-        value={contactForm.message}
-        onChange={handleContactFormChange}
+          margin="dense"
+          name="message"
+          label={t('contactForm.message')}
+          type="text"
+          fullWidth
+          multiline
+          rows={4}
+          variant="outlined"
+          value={contactForm.message}
+          onChange={handleContactFormChange}
         />
     </DialogContent>
     <DialogActions sx={{ p: 3 }}>
         <Button 
-        onClick={handleContactDialogClose}
-        variant="outlined"
-        sx={{
-            borderColor: '#fecc04',
-            color: 'black',
-            '&:hover': {
-            borderColor: '#e5b800',
-            backgroundColor: 'rgba(254, 204, 4, 0.1)',
-            }
-        }}
+          onClick={handleContactDialogClose}
+          variant="outlined"
+          sx={{
+              borderColor: '#fecc04',
+              color: 'black',
+              '&:hover': {
+              borderColor: '#e5b800',
+              backgroundColor: 'rgba(254, 204, 4, 0.1)',
+              }
+          }}
         >
-        Cancel
+          {t('actions.cancel')}
         </Button>
         <Button 
-        onClick={handleContactSubmit}
-        variant="contained"
-        sx={{
-            backgroundColor: '#fecc04',
-            color: 'black',
-            '&:hover': {
-            backgroundColor: '#e5b800',
-            }
-        }}
+          onClick={handleContactSubmit}
+          variant="contained"
+          sx={{
+              backgroundColor: '#fecc04',
+              color: 'black',
+              '&:hover': {
+              backgroundColor: '#e5b800',
+              }
+          }}
         >
-            {isSubmitting ? 'Sending.. ' : 'Send Message'}
+            {isSubmitting ? 'Sending.. ' : t('contacts.sendMessage')}
         </Button>
     </DialogActions>
     </Dialog>

@@ -26,10 +26,21 @@ import {
   useTheme,
   Tooltip,
   IconButton,
-  Skeleton
+  Skeleton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  FormControl,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  FormLabel,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { useAdminQueries } from '../../hooks';
 import { Driver } from '../../api/adminApi';
 import { Order } from '../../types/order.types';
@@ -65,10 +76,172 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+interface SearchFieldProps {
+  searchTerm: string;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  filterDialogOpen: boolean;
+  handleFilterDialogOpen: () => void;
+  handleFilterDialogClose: () => void;
+  handleApplyFilters: (filters: FilterOptions) => void;
+  filters: FilterOptions;
+
+}
+interface FilterOptions {
+  status: 'all' | 'active' | 'inactive';
+  employmentType: 'all' | 'salaried' | 'freelancer';
+}
+
+interface FilterDialogProps {
+  open: boolean;
+  onClose: () => void;
+  filters: FilterOptions;
+  onApplyFilters: (filters: FilterOptions) => void;
+}
+
+
+const FilterDialog: React.FC<FilterDialogProps> = ({
+  open, onClose, filters, onApplyFilters
+}) => {
+  const [ localFilters, setLocalFilters ] = useState<FilterOptions>(filters);
+  const { t } = useTranslation();
+
+  const handleApply = () => {
+    onApplyFilters(localFilters);
+    onClose();
+  }
+  
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{t('adminDriversPage.filters')}</DialogTitle>
+      <DialogContent>
+        <FormControl component="fieldset" sx={{ mb: 2 }}>
+          <FormLabel component="legend">{t('adminDriversPage.status')}</FormLabel>
+          <RadioGroup
+            value={localFilters.status}
+            onChange={(e) => setLocalFilters(prev => ({
+              ...prev,
+              status: e.target.value as FilterOptions['status']
+            }))}
+          >
+            <FormControlLabel value="all" control={<Radio />} label={t('adminDriversPage.all')} />
+            <FormControlLabel value="active" control={<Radio />} label={t('adminDriversPage.active')} />
+            <FormControlLabel value="inactive" control={<Radio />} label={t('adminDriversPage.inactive')} />
+          </RadioGroup>
+        </FormControl>
+
+        <FormControl component="fieldset">
+          <FormLabel component="legend">{t('adminDriversPage.employmentType')}</FormLabel>
+          <RadioGroup
+            value={localFilters.employmentType}
+            onChange={(e) => setLocalFilters(prev => ({
+              ...prev,
+              employmentType: e.target.value as FilterOptions['employmentType']
+            }))}
+          >
+            <FormControlLabel value="all" control={<Radio />} label={t('adminDriversPage.all')} />
+            <FormControlLabel value="salaried" control={<Radio />} label={t('adminDriversPage.salaried')} />
+            <FormControlLabel value="freelancer" control={<Radio />} label={t('adminDriversPage.freelancer')} />
+          </RadioGroup>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>{t('adminDriversPage.common.cancel')}</Button>
+        <Button onClick={handleApply} variant="contained">
+          {t('adminDriversPage.common.apply')}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+const SearchField: React.FC<SearchFieldProps> = ({
+  searchTerm,
+  handleSearchChange,
+  filterDialogOpen,
+  handleFilterDialogOpen,
+  handleFilterDialogClose,
+  handleApplyFilters,
+  filters
+}) => {
+
+  const { t } = useTranslation();
+
+
+
+  return (
+    <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      border: '1px solid gray',
+      p: 0.5,
+      borderRadius: 2,
+    }}>
+      <InputAdornment>
+        <SearchIcon />
+      </InputAdornment>
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder={t('adminDriversPage.searchPlaceholder')}
+        value={searchTerm}
+        onChange={handleSearchChange}
+        size="small"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              border: 'none'
+            },
+            '&:hover fieldset': {
+              border: 'none'
+            },
+            '&.Mui-focused fieldset': {
+              border: 'none'
+            }
+          }
+        }}
+      />
+    </Box>
+    <Tooltip title={t('adminDriversPage.filters')}>
+      <IconButton 
+        onClick={handleFilterDialogOpen}
+        sx={{ 
+          border: '1px solid gray',
+          borderRadius: 2,
+          p: 1,
+          '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' }
+        }}
+      >
+        <FilterListIcon />
+      </IconButton>
+    </Tooltip>
+    <FilterDialog
+      open={filterDialogOpen}
+      onClose={handleFilterDialogClose}
+      filters={filters}
+      onApplyFilters={handleApplyFilters}
+    />
+  </Box>
+  )
+}
+
+
+
+
+
 const AdminDriversPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { t } = useTranslation();
+
+  // State for filter dialog
+  const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
+  const [ filters, setFilters ] = useState<FilterOptions>({
+    status: 'all',
+    employmentType: 'all'
+  })
 
 
   // State for selected driver and search
@@ -119,10 +292,21 @@ const AdminDriversPage: React.FC = () => {
   };
 
   // Format timestamp to readable date
-  const formatTimestamp = (timestamp: number | null): string => {
+  const formatTimestamp = (timestamp: string | number | null): string => {
     if (!timestamp) return 'N/A';
-    return new Date(timestamp * 1000).toLocaleString();
+    
+    let numericTimestamp: number;
+    
+    if (typeof timestamp === 'string') {
+      numericTimestamp = parseInt(timestamp, 10);
+      if (isNaN(numericTimestamp)) return 'Invalid Date';
+    } else {
+      numericTimestamp = timestamp;
+    }
+    
+    return new Date(numericTimestamp * 1000).toLocaleString();
   };
+  
 
   // Format currency
   const formatCurrency = (amount: number | null): string => {
@@ -134,12 +318,41 @@ const AdminDriversPage: React.FC = () => {
   };
 
   // Filter drivers based on search term
-  const filteredDrivers = driversData?.data.filter(driver => 
-    driver.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    driver.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (driver.taxibee_id && driver.taxibee_id.toString().includes(searchTerm))
-  ) || [];
+  const filteredDrivers = driversData?.data.filter(driver => {
+    // First apply search filter
+    const matchesSearch = 
+      driver.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (driver.taxibee_id && driver.taxibee_id.toString().includes(searchTerm));
+
+    // Then apply status filter
+    const matchesStatus = 
+      filters.status === 'all' || 
+      (filters.status === 'active' && driver.state.toLowerCase() === 'active') ||
+      (filters.status === 'inactive' && driver.state.toLowerCase() !== 'active');
+
+    // Then apply employment type filter
+    const matchesEmploymentType = 
+      filters.employmentType === 'all' || 
+      (filters.employmentType === 'freelancer' && driver.exact_debnr) ||
+      (filters.employmentType === 'salaried' && !driver.exact_debnr);
+
+    return matchesSearch && matchesStatus && matchesEmploymentType;
+  }) || [];
+
+  const handleFilterDialogOpen = () => {
+    setFilterDialogOpen(true);
+  }
+
+  const handleFilterDialogClose = () => {
+    setFilterDialogOpen(false);
+  }
+
+  const handleApplyFilters = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+  
+  }
 
     // Total number of drivers
   const totalDrivers = driversData?.data.length || 0;
@@ -222,21 +435,14 @@ const AdminDriversPage: React.FC = () => {
               <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
                 {`Active: ${activeDrivers}`}
               </Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="Search by name, phone, email, or ID"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                size="small"
-                sx={{ mb: 2 }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
+              <SearchField 
+                searchTerm={searchTerm} 
+                handleSearchChange={handleSearchChange}
+                filterDialogOpen={filterDialogOpen}
+                handleFilterDialogOpen={handleFilterDialogOpen}
+                handleFilterDialogClose={handleFilterDialogClose}
+                handleApplyFilters={handleApplyFilters}
+                filters={filters}
               />
               {renderStatusLegend()}
             </CardContent>

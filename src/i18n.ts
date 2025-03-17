@@ -108,13 +108,48 @@ const enTranslations = {
     transactions: "Transactions"
   },
   adminOrdersPage: {
-    orders: "Orders"
+    orders: "Orders",
+    date: "Date",
+    pickup: "Pickup",
+    price: "Price",
+    netEarnings: "Net Earnings",
+    payment: "Payment",
+    status: "Status"
   },
   adminLiveStatusPage: {
     liveStatus: "Live Status"
   },
   adminDriversPage: {
-    drivers: "Drivers"
+    drivers: "Drivers",
+    active: "Active",
+    inActive: "InActive",
+    status: "Status",
+    driver: "Driver",
+    phone: "Phone",
+    email: "Email",
+    chauffeurskaartnr: "Chauffeurs Kaartnr",
+    taxibeeId: "Taxibee ID",
+    fullName: "Full Name",
+    reason: "Reason",
+    inactivityReason: "Inactivity Reason",
+    todayTerminalName: "Today Terminal Name",
+    exactDebnr: "Exact Debnr",
+    myposOperatorCode: "MyPOS Operator Code",
+    driverDetails: "Driver Details",
+    personalInformation: "Personal Information",
+    systemInformation: "System Information",
+    noDriversFound: "No drivers found",
+    loading: "Loading...",
+    failedToLoadData: "Failed to load data",
+    search: "Search",
+    searchPlaceholder: "Search by name or phone number",
+    searchNoResults: "No results found",
+    searchNoDrivers: "No drivers found",
+    searchNoOrders: "No orders found",
+    searchNoResultsDesc: "Try adjusting your search criteria or check for typos.",
+    searchNoResultsDesc2: "Please try a different search term or contact support for assistance.",
+    selectADriver: "Select a driver to view details",
+    selectADriverText: "Click on any driver from the list on the left to view their profile information and order history."
   },
   adminExactFilePage: {
     exactFile: "EXACT FILE"
@@ -226,13 +261,47 @@ const nlTranslations = {
     transactions: "Transacties"
   },
   adminOrdersPage: {
-    orders: "Ritten"
+    orders: "Ritten",
+    date: "Datum",
+    pickup: "Pick-up",
+    price: "Prijs",
+    netEarnings: "Netto Omzet",
+    payment: "Betaling",
+    status: "Status"
   },
   adminLiveStatusPage: {
     liveStatus: "Live Status"
   },
   adminDriversPage: {
-    drivers: "Chauffeurs"
+    drivers: "Chauffeurs",
+    active: "Actief",
+    inActive: "Inactief",
+    status: "Status",
+    driver: "Chauffeur",
+    phone: "Telefoon",
+    email: "E-mail",
+    reason: "Reden",
+    inactivityReason: "Inactiviteitsreden",
+    todayTerminalName: "Vandaag Terminal Naam",
+    exactDebnr: "Exact Debnr",
+    myposOperatorCode: "MyPOS Operator Code",
+    driverDetails: "Chauffeur Details",
+    chauffeurskaartnr: "Chauffeurskaartnr",
+    taxibeeId: "Taxibee ID",
+    fullName: "Volledige naam",
+    personalInformation: "Persoonlijke informatie",
+    systemInformation: "Systeem informatie",
+    noDriversFound: "Geen chauffeurs gevonden",
+    loading: "Laden...",
+    failedToLoadData: "Data niet geladen",
+    search: "Zoeken",
+    searchPlaceholder: "Zoek op naam of telefoonnummer",
+    searchNoResults: "Geen resultaten gevonden",
+    searchNoDrivers: "Geen chauffeurs gevonden",
+    searchNoResultsDesc: "Probeer uw zoekopdracht te verbeteren of controleer uw zoekopdracht.",
+    searchNoResultsDesc2: "Probeer een andere zoekopdracht of neem contact op met ons voor hulp.",
+    selectADriver: "Selecteer een chauffeur om details te bekijken",
+    selectADriverText: "Klik op een chauffeur in de lijst links om zijn persoonlijke informatie en bestelhistorie te bekijken."
   },
   adminExactFilePage: {
     exactFile: "EXACT BESTAND"

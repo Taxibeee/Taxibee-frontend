@@ -34,6 +34,8 @@ import { useAdminQueries } from '../../hooks';
 import { Driver, Order } from '../../api/adminApi';
 import { WhatsApp } from '@mui/icons-material';
 import { RadioButtonChecked } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,6 +45,7 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
+
 
   return (
     <div
@@ -64,6 +67,8 @@ function TabPanel(props: TabPanelProps) {
 const AdminDriversPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const { t } = useTranslation();
+
 
   // State for selected driver and search
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
@@ -165,11 +170,11 @@ const AdminDriversPage: React.FC = () => {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, px: 2, py: 1 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
         <RadioButtonChecked sx={{ color: 'success.main', fontSize: 12 }} />
-        <Typography variant="caption">Active</Typography>
+        <Typography variant="caption">{t('adminDriversPage.active')}</Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
         <RadioButtonChecked sx={{ color: 'grey.400', fontSize: 12 }} />
-        <Typography variant="caption">Inactive</Typography>
+        <Typography variant="caption">{t('adminDriversPage.inActive')}</Typography>
       </Box>
     </Box>
   );
@@ -205,7 +210,7 @@ const AdminDriversPage: React.FC = () => {
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 0 }}>
               <Typography variant="h6" gutterBottom>
-                Drivers
+                {t('adminDriversPage.drivers')}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
                 {searchTerm 
@@ -247,7 +252,7 @@ const AdminDriversPage: React.FC = () => {
                 <SkeletonLoader />
               ) : driversError ? (
                 <Typography color="error" p={2}>
-                  Error loading drivers. Please try again.
+                  {t('adminDriversPage.failedToLoadData')}
                 </Typography>
               ) : (
                 <TableContainer component={Paper} elevation={0}>
@@ -297,7 +302,7 @@ const AdminDriversPage: React.FC = () => {
                       ) : (
                         <TableRow>
                           <TableCell align="center">
-                            No drivers found
+                            {t('adminDriversPage.searchNoDrivers')}
                           </TableCell>
                         </TableRow>
                       )}
@@ -363,22 +368,22 @@ const AdminDriversPage: React.FC = () => {
                     <Grid2 container spacing={3} p={2}>
                       <Grid2 item xs={12} sm={6}>
                         <Typography variant="subtitle2" color="text.secondary">
-                          Personal Information
+                          {t('adminDriversPage.personalInformation')}
                         </Typography>
                         <Divider sx={{ mb: 2, mt: 1 }} />
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Full Name</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.fullName')}</Typography>
                           <Typography variant="body1">{selectedDriver.full_name}</Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Phone</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.phone')}</Typography>
                           <Typography variant="body1">{selectedDriver.phone}</Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Email</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.email')}</Typography>
                           <Typography variant="body1">{selectedDriver.email || 'N/A'}</Typography>
                         </Box>
                         
@@ -390,24 +395,24 @@ const AdminDriversPage: React.FC = () => {
                       
                       <Grid2 item xs={12} sm={6}>
                         <Typography variant="subtitle2" color="text.secondary">
-                          System Information
+                          {t('adminDriversPage.systemInformation')}
                         </Typography>
                         <Divider sx={{ mb: 2, mt: 1 }} />
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Taxibee ID</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.taxibeeId')}</Typography>
                           <Typography variant="body1">{selectedDriver.taxibee_id}</Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Bolt Driver UUID</Typography>
+                          <Typography variant="body2" color="text.secondary">Bolt {t('adminDriversPage.driver')} UUID</Typography>
                           <Typography variant="body1" sx={{ wordBreak: 'break-all' }}>
                             {selectedDriver.bolt_driver_uuid}
                           </Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Status</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.status')}</Typography>
                           <Chip
                             label={selectedDriver.state}
                             color={getDriverStatusColor(selectedDriver.state)}
@@ -415,23 +420,23 @@ const AdminDriversPage: React.FC = () => {
                           />
                           {selectedDriver.inactivity_reason && (
                             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                              Reason: {selectedDriver.inactivity_reason}
+                              {t('adminDriversPage.reason')}: {selectedDriver.inactivity_reason}
                             </Typography>
                           )}
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Terminal Name</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.todayTerminalName')}</Typography>
                           <Typography variant="body1">{selectedDriver.today_terminal_name || 'Not Assigned'}</Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Exact Debnr</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.exactDebnr')}</Typography>
                           <Typography variant="body1">{selectedDriver.exact_debnr || 'N/A'}</Typography>
                         </Box>
                         
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">MyPOS Operator Code</Typography>
+                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.myposOperatorCode')}</Typography>
                           <Typography variant="body1">{selectedDriver.mypos_operator_code || 'N/A'}</Typography>
                         </Box>
                       </Grid2>
@@ -445,7 +450,7 @@ const AdminDriversPage: React.FC = () => {
                       </Box>
                     ) : !driverOrdersData ? (
                       <Typography color="text.secondary" align="center" p={3}>
-                        No orders data available
+                        {t('adminDriversPage.searchNoOrders')}
                       </Typography>
                     ) : (
                       <Box p={2}>
@@ -453,12 +458,12 @@ const AdminDriversPage: React.FC = () => {
                           <Table size="small">
                             <TableHead>
                               <TableRow>
-                                <TableCell>Date</TableCell>
-                                <TableCell>Pickup</TableCell>
-                                <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">Net Earnings</TableCell>
-                                <TableCell>Payment</TableCell>
-                                <TableCell>Status</TableCell>
+                                <TableCell>{t('adminOrdersPage.date')}</TableCell>
+                                <TableCell>{t('adminOrdersPage.pickup')}</TableCell>
+                                <TableCell align="right">{t('adminOrdersPage.price')}</TableCell>
+                                <TableCell align="right">{t('adminOrdersPage.netEarnings')}</TableCell>
+                                <TableCell>{t('adminOrdersPage.payment')}</TableCell>
+                                <TableCell>{t('adminOrdersPage.status')}</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -488,7 +493,7 @@ const AdminDriversPage: React.FC = () => {
                               ) : (
                                 <TableRow>
                                   <TableCell align="center">
-                                    No orders found for this driver
+                                    {t('adminDriversPage.searchNoOrders')}
                                   </TableCell>
                                 </TableRow>
                               )}
@@ -523,10 +528,10 @@ const AdminDriversPage: React.FC = () => {
               >
                 <PersonIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
                 <Typography variant="h6" color="text.secondary">
-                  Select a driver to view details
+                  {t('adminDriversPage.selectADriver')}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" align="center" sx={{ maxWidth: 400, mt: 1 }}>
-                  Click on any driver from the list on the left to view their profile information and order history.
+                  {t('adminDriversPage.selectADriverText')}
                 </Typography>
               </Box>
             )}

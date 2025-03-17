@@ -4,6 +4,8 @@ import { useAuth } from '../../store/hooks';
 import taxisHomePageVideo from '../../assets/taxi_vid.mp4';
 import logo from '../../assets/F3-02.png';
 
+import { CustomAlert } from '../../utils/customAlert';
+
 import emailjs from '@emailjs/browser';
 
 import {
@@ -27,7 +29,6 @@ import {
   DialogContentText,
   DialogContent,
   Snackbar,
-  Alert,
   Paper
 } from '@mui/material';
 
@@ -550,7 +551,6 @@ const HomePage: React.FC = () => {
           sx={{ mb: 2 }}
         />
         <TextField
-          margin="dense"
           name="email"
           label={t('contactForm.email')}
           type="email"
@@ -561,7 +561,6 @@ const HomePage: React.FC = () => {
           sx={{ mb: 2 }}
         />
         <TextField
-          margin="dense"
           name="message"
           label={t('contactForm.message')}
           type="text"
@@ -611,14 +610,14 @@ const HomePage: React.FC = () => {
             onClose={handleSnackbarClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-            <Alert 
+            <CustomAlert 
                 onClose={handleSnackbarClose} 
                 severity={snackbar.severity}
                 variant="filled"
                 sx={{ width: '100%' }}
             >
                 {snackbar.message}
-            </Alert>
+            </CustomAlert>
         </Snackbar>
 
 

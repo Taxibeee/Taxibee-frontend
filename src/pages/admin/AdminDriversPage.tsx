@@ -31,7 +31,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAdminQueries } from '../../hooks';
-import { Driver, Order } from '../../api/adminApi';
+import { Driver } from '../../api/adminApi';
+import { Order } from '../../types/order.types';
 import { WhatsApp } from '@mui/icons-material';
 import { RadioButtonChecked } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';

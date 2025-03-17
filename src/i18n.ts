@@ -79,6 +79,18 @@ const enTranslations = {
     message: "Message",
     submit: "Submit",
     sendMessage: "Send Message",
+  },
+  adminSidebar: {
+    dashboard: "Dashboard",
+    orders: "Orders",
+    drivers: "Drivers",
+    liveStatus: "Live Status",
+    transactions: "Transactions",
+    exactFile: "EXACT FILE",
+    contacts: "Contacts"
+  },
+  adminDashboard: {
+    pageNotFound: "Page not found"
   }
 };
 
@@ -159,6 +171,18 @@ const nlTranslations = {
     message: "Bericht",
     submit: "Versturen",
     sendMessage: "Bericht verzenden",
+  },
+  adminSidebar: {
+    dashboard: "Dashboard",
+    orders: "Ritten",
+    drivers: "Chauffeurs",
+    liveStatus: "Live Status",
+    transactions: "Transacties",
+    exactFile: "EXACT BESTAND",
+    contacts: "Contacten"
+  },
+  adminDashboard: {
+    pageNotFound: "Pagina niet gevonden"
   }
 };
 

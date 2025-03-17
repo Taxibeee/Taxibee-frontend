@@ -21,13 +21,31 @@ import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts'
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
-// Placeholder for Contacts page
+import { useTranslation } from 'react-i18next';
 
 interface AdminDashboardProps {
   selectedPage: string;
 }
 
+interface SidebarItem {
+  text: string;
+  icon: React.ReactNode;
+  path: string;
+}
+
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
+
+  const { t } = useTranslation();
+
+  const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
+    return items.map((item: SidebarItem) => {
+      return {
+        ...item,
+        text: t(item.text),
+      };
+    })
+  }
+
   // Render the appropriate content based on the selected page
   const renderContent = () => {
     switch (selectedPage) {
@@ -35,7 +53,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
         return (
           <Box>
             <Typography variant="h3" gutterBottom>
-              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+              {t('adminSidebar.dashboard')}
             </Typography>
 
             <SummaryCards />
@@ -58,7 +76,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'orders':
         return (<Box>
           <Typography variant="h3" gutterBottom>
-              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+              {t('adminSidebar.orders')}
             </Typography>
         <AdminOrdersPage />
         </Box>
@@ -66,7 +84,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'live-status':
         return (<Box>
           <Typography variant="h3" gutterBottom>
-              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+              {t('adminSidebar.liveStatus')}
             </Typography>
         <AdminLiveStatusPage />
         </Box>
@@ -74,23 +92,35 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'drivers':
         return <AdminDriversPage />;
       case 'transactions':
-        return <AdminTransactionsPage />;
+        return (<Box>
+          <Typography variant="h3" gutterBottom>
+              {t('adminSidebar.transactions')}
+            </Typography>
+        <AdminTransactionsPage />
+        </Box>
+      );
       case 'exact-file':
-        return <AdminExactFilePage />;
+        return (<Box>
+          <Typography variant="h3" gutterBottom>
+              {t('adminSidebar.exactFile')}
+            </Typography>
+        <AdminExactFilePage />
+        </Box>
+      );
       case 'contacts':
         return <Box>
           <Typography variant="h3" gutterBottom>
-              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+              {t('adminContactsPage.contacts')}
             </Typography>
           <AdminContactsPage /> 
         </Box>
       default:
-        return <div>Page not found</div>;
+        return <div>{t('adminDashboard.pageNotFound')}</div>;
     }
   };
 
   return (
-    <DashboardLayout menuItems={sidebarItemsAdmin}>
+    <DashboardLayout menuItems={provideTranslatedText({ items: sidebarItemsAdmin })}>
       {renderContent()}
     </DashboardLayout>
   );

@@ -15,37 +15,37 @@ export interface SidebarItem {
 
 export const sidebarItemsAdmin: SidebarItem[] = [
     {
-        text: 'Dashboard',
+        text: 'adminSidebar.dashboard',
         icon: <DashboardIcon />,
         path: '/admin/dashboard',
     },
     {
-        text: 'Orders',
+        text: 'adminSidebar.orders',
         icon: <ReceiptIcon />,
         path: '/admin/orders',
     },
     {
-        text: 'Live Status',
+        text: 'adminSidebar.liveStatus',
         icon: <SignalCellularAltIcon />,
         path: '/admin/live-status',
     },
     {
-        text: 'Drivers',
+        text: 'adminSidebar.drivers',
         icon: <PersonIcon />,
         path: '/admin/drivers',
     },
     {
-        text: 'Transactions',
+        text: 'adminSidebar.transactions',
         icon: <AttachMoneyIcon />,
         path: '/admin/transactions',
     },
     {
-        text: "EXACT FILE",
+        text: "adminSidebar.exactFile",
         icon: <DescriptionIcon />,
         path: '/admin/exact-file',
     },
     {
-        text: 'Contacts',
+        text: 'adminSidebar.contacts',
         icon: <ContactsIcon />,
         path: '/admin/contacts',
     }

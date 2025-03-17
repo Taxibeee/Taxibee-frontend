@@ -11,6 +11,7 @@ import {
   useTheme
 } from '@mui/material';
 import { useAdminQueries } from '../../hooks';
+import { useTranslation } from 'react-i18next';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -22,6 +23,9 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 const SummaryCards: React.FC = () => {
+  const { t } = useTranslation();
+
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -46,7 +50,7 @@ const SummaryCards: React.FC = () => {
     <Box sx= {{
       p: 1,
     }}>
-      <Typography variant="overline">Weekly Summary</Typography>
+      <Typography variant="overline">{t('adminDashboard.summaryCards.weeklySummary')}</Typography>
     <Stack container spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
       <Grid2 item xs={12} sm={6} md={3}>
         <Card elevation={1}>
@@ -54,7 +58,7 @@ const SummaryCards: React.FC = () => {
             {isLoading ? (
               <LoadingSkeleton />
             ) : isError ? (
-              <Typography color="error">Failed to load data</Typography>
+              <Typography color="error">{t('adminDashboard.summaryCards.failedToLoadData')}</Typography>
             ) : (
               <Box sx={{
                 height: '170px',
@@ -69,7 +73,7 @@ const SummaryCards: React.FC = () => {
                     {formatCurrency(data?.total_revenue)}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" gutterBottom>
-                    Total Revenue
+                    {t('adminDashboard.summaryCards.totalRevenue')}
                   </Typography>
     
               </Box>
@@ -84,7 +88,7 @@ const SummaryCards: React.FC = () => {
             {isLoading ? (
               <LoadingSkeleton />
             ) : isError ? (
-              <Typography color="error">Failed to load data</Typography>
+              <Typography color="error">{t('adminDashboard.summaryCards.failedToLoadData')}</Typography>
             ) : (
               <Box sx={{
                 height: '170px',
@@ -98,7 +102,7 @@ const SummaryCards: React.FC = () => {
                   {data?.total_orders || 0}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" gutterBottom>
-                  Total Orders
+                  {t('adminDashboard.summaryCards.totalOrders')}
                 </Typography>
               </Box>
             )}
@@ -116,7 +120,7 @@ const SummaryCards: React.FC = () => {
                 sx={{ borderRadius: 1 }}
               />
             ) : isError ? (
-              <Typography color="error">Failed to load data</Typography>
+              <Typography color="error">{t('adminDashboard.summaryCards.failedToLoadData')}</Typography>
             ) : (
               <Box sx={{
                 height: '55px',
@@ -127,7 +131,7 @@ const SummaryCards: React.FC = () => {
                 </Typography>
               </Typography>
               <Typography variant="caption" color="text.secondary" gutterBottom>
-                Total Distance
+                {t('adminDashboard.summaryCards.totalDistance')}
               </Typography>
               </Box>
             )}
@@ -144,7 +148,7 @@ const SummaryCards: React.FC = () => {
               sx={{ borderRadius: 1 }}
             />
             ) : isError ? (
-              <Typography color="error">Failed to load data</Typography>
+              <Typography color="error">{t('adminDashboard.summaryCards.failedToLoadData')}</Typography>
             ) : (
               <Box sx={{
                 height: '55px',
@@ -155,7 +159,7 @@ const SummaryCards: React.FC = () => {
                   : '$0.00'}
               </Typography>
               <Typography variant="caption" color="text.secondary" gutterBottom>
-                Average Revenue per Order
+                {t('adminDashboard.summaryCards.averageRevenuePerOrder')}
               </Typography>
               </Box>
             )}

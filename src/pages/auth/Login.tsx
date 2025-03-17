@@ -5,7 +5,6 @@ import { useAuth } from '../../store/hooks';
 import { 
   Box, 
   FormControl,
-  Alert,
   FormLabel, 
   RadioGroup, 
   FormControlLabel, 
@@ -13,12 +12,13 @@ import {
   Button,
   Container,
   Typography,
-  InputLabel,
   InputAdornment,
   IconButton,
   TextField,
   Paper,
-  OutlinedInput
+  useMediaQuery,
+  useTheme,
+
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -27,7 +27,7 @@ import logo from '../../assets/F3-02.png'
 
 import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
-
+import { CustomAlert } from '../../utils/customAlert';
 
 // Define interfaces for our types
 interface LocationState {
@@ -42,11 +42,70 @@ interface FormState {
   role: 'admin' | 'driver';
 }
 
+interface PasswordFieldProps {
+  id: string;
+  name: string;
+  value: string;
+  showPassword: boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleClickShowPassword: () => void;
+  handleMouseDownPassword: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+const PasswordField: React.FC<PasswordFieldProps> = ({
+  id,
+  name,
+  value,
+  showPassword,
+  handleChange,
+  handleClickShowPassword,
+  handleMouseDownPassword,
+}) => (
+  <Box sx={{
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: '100%',
+  }}>
+  <TextField
+    id={id}
+    name={name}
+    type={showPassword ? 'text' : 'password'}
+    value={value}
+    onChange={handleChange}
+    variant="filled"
+    label="Password"
+    fullWidth
+    sx={{
+      position: 'absolute',
+    }}
+  />
+  <InputAdornment
+    sx={{
+      p: 2
+    }}
+  >
+    <IconButton
+      aria-label={
+        showPassword ? 'hide the password' : 'display password'
+      }
+      onClick={handleClickShowPassword}
+      onMouseDown={handleMouseDownPassword}
+      edge="end"
+    >
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+    </InputAdornment>
+  </Box>
+);
+
+
 
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // State with explicit typing
   const [formData, setFormData] = useState<FormState>({
@@ -151,89 +210,89 @@ const Login: React.FC = () => {
         margin: 0,
         width: '100%',
       }}
+    >{!isMobile && <Box
+      sx={{
+        width: '40%',
+        backgroundColor: 'black',
+        color: 'white',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      <Box
-        sx={{
-          width: '40%',
-          backgroundColor: 'black',
-          color: 'white',
+      <video
+        autoPlay
+        muted
+        loop
+        style={{
+          position: 'absolute',
+          width: '100%',
           height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
-          overflow: 'hidden',
+          objectFit: 'cover',
+          zIndex: 0,
         }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 0,
-          }}
-        >
-          <source src={taxisHomePageVideo} type="video/mp4" />
-          {t('app.videoNoSupport')}
-        </video>
+        <source src={taxisHomePageVideo} type="video/mp4" />
+        {t('app.videoNoSupport')}
+      </video>
 
-        {/* overlay to make text more readable */}
+      {/* overlay to make text more readable */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
+          zIndex: 1,
+        }}
+      />
+      <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+      <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+        <LanguageSwitcher />
+      </Paper>
+    </Box>
+      {/* Logo and Welcome text container */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 300,
+          left: 10,
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* Logo */}
         <Box
+          component="img"
+          src={logo}
+          alt="Taxibee Logo"
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.75)', // opacity 
-            zIndex: 1,
+            width: 150, // Adjust size as needed
+            height: 'auto',
+            objectFit: 'contain',
           }}
         />
-        <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
-        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
-          <LanguageSwitcher />
-        </Paper>
-      </Box>
-        {/* Logo and Welcome text container */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 300,
-            left: 10,
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
+        
+        {/* Welcome text */}
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            fontFamily: 'Comic Sans MS, sans-serif',
+            color: 'white',
           }}
         >
-          {/* Logo */}
-          <Box
-            component="img"
-            src={logo}
-            alt="Taxibee Logo"
-            sx={{
-              width: 150, // Adjust size as needed
-              height: 'auto',
-              objectFit: 'contain',
-            }}
-          />
-          
-          {/* Welcome text */}
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontFamily: 'Comic Sans MS, sans-serif',
-              color: 'white',
-            }}
-          >
-            {t('loginPage.heroText')}
-          </Typography>
-        </Box>
+          {t('loginPage.heroText')}
+        </Typography>
       </Box>
+    </Box>}
+      
     <Box
       sx={{
         display: 'flex',
@@ -242,11 +301,18 @@ const Login: React.FC = () => {
         margin: '0 auto',
         backgroundColor: '#f5f5f5',
         height: '100vh',
-        width: '60%',
+        width: isMobile? '100%': '60%',
         padding: 3,
         paddingTop: 30,
       }}
     >
+      {isMobile && (
+        <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+          <LanguageSwitcher />
+        </Paper>
+        </Box>
+      )}
       <Box
         sx={{
           display: 'flex',
@@ -264,9 +330,9 @@ const Login: React.FC = () => {
         </Typography>
         
         {(error || localError) && (          
-          <Alert severity="error" sx={{ mb: 2, mt: 2 }} >
-            {error || localError}          
-          </Alert>
+          <CustomAlert severity="error" sx={{ mb: 2, mt: 2 }} >
+            {error || localError}
+          </CustomAlert>
         )}
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
@@ -294,36 +360,14 @@ const Login: React.FC = () => {
             }}
           />
           <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-password">{t('auth.password')}</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
+            <PasswordField
+              id="filled-adornment-password"
               name="password"
-              type={showPassword ? 'text' : 'password'}
               value={formData.password}
-              sx={{
-                backgroundColor: 'white',
-                '&:hover': {
-                  backgroundColor: 'white',
-                },
-                '&.Mui-focused': {
-                  backgroundColor: 'white',
-                }
-              }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={
-                    showPassword ? 'hide the password' : 'display the password'
-                  }
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            onChange={handleInputChange}
+              handleChange={handleInputChange}
+              showPassword={showPassword}
+              handleClickShowPassword={handleClickShowPassword}
+              handleMouseDownPassword={handleMouseDownPassword}
             />
           </FormControl>
 

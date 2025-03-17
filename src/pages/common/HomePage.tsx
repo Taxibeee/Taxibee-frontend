@@ -536,7 +536,7 @@ const HomePage: React.FC = () => {
         </DialogTitle>
       <DialogContent sx={{ mt: 2 }}>
         <DialogContentText sx={{ mb: 2 }}>
-          Please fill out the form below and we'll get back to you as soon as possible.
+          {t('contactForm.instruction')}
       </DialogContentText>
         <TextField
           autoFocus

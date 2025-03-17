@@ -62,6 +62,7 @@ const enTranslations = {
     delete: "Delete",
   },
   contactForm: {
+    instruction: "Please fill out the form below and we'll get back to you as soon as possible.",
     contactUs: "Contact Us",
     name: "Name",
     email: "Email",
@@ -131,6 +132,7 @@ const nlTranslations = {
     delete: "Verwijderen",
   },
   contactForm: {
+    instruction: "Vul het onderstaande formulier in en we nemen zo spoedig mogelijk contact met u op.",
     contactUs: "Neem contact op",
     name: "Naam",
     email: "E-mail",

@@ -13,16 +13,20 @@ import {
   Button,
   Container,
   Typography,
-  FilledInput,
   InputLabel,
   InputAdornment,
   IconButton,
-  TextField
+  TextField,
+  Paper,
+  OutlinedInput
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../assets/F3-02.png'
 // import logo2 from '../../assets/F4-03.png'
+
+import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 
 // Define interfaces for our types
@@ -41,6 +45,8 @@ interface FormState {
 
 
 const Login: React.FC = () => {
+  const { t } = useTranslation();
+
 
   // State with explicit typing
   const [formData, setFormData] = useState<FormState>({
@@ -71,7 +77,6 @@ const Login: React.FC = () => {
   useEffect(() => {
     // Only redirect if authenticated AND we have a role AND we're not in a loading/submitting state
     if (isAuthenticated && userRole && !isSubmitting && !loading) {
-      console.log('isAuthenticated', isAuthenticated, 'userRole', userRole, 'isSubmitting', isSubmitting, 'loading', loading)
       switch(userRole) {
         case 'admin':
           navigate('/admin/dashboard');
@@ -91,7 +96,7 @@ const Login: React.FC = () => {
     const { username, password, role } = formData;
 
     if (!username || !password) {
-      setLocalError('Please enter both username and password');
+      setLocalError(t('loginPage.missingInputError'));
       return;
     }
 
@@ -103,7 +108,7 @@ const Login: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log('Login error', err);
-      setLocalError(err?.message || 'Invalid Credentials. Please try again.');
+      setLocalError(err?.message || t('loginPage.noCredError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -174,7 +179,7 @@ const Login: React.FC = () => {
           }}
         >
           <source src={taxisHomePageVideo} type="video/mp4" />
-          Your browser does not support the video tag.
+          {t('app.videoNoSupport')}
         </video>
 
         {/* overlay to make text more readable */}
@@ -189,7 +194,11 @@ const Login: React.FC = () => {
             zIndex: 1,
           }}
         />
-        
+        <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
+        <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
+          <LanguageSwitcher />
+        </Paper>
+      </Box>
         {/* Logo and Welcome text container */}
         <Box
           sx={{
@@ -221,7 +230,7 @@ const Login: React.FC = () => {
               color: 'white',
             }}
           >
-            Welcome Onboard!
+            {t('loginPage.heroText')}
           </Typography>
         </Box>
       </Box>
@@ -250,18 +259,8 @@ const Login: React.FC = () => {
           padding: 3,
         }}
       >
-        {/* <Box
-            component="img"
-            src={logo2}
-            alt="Taxibee Logo"
-            sx={{
-              width: 150, // Adjust size as needed
-              height: 'auto',
-              objectFit: 'contain',
-            }}
-          /> */}
         <Typography variant="h4" align="center" sx={{ mb: 2 }}>
-          Sign In to Taxibee
+          {t('loginPage.title')}
         </Typography>
         
         {(error || localError) && (          
@@ -273,7 +272,7 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <TextField
             fullWidth
-            label="Username"
+            label={t('auth.username')}
             name="username"
             value={formData.username}
             onChange={handleInputChange}
@@ -295,9 +294,9 @@ const Login: React.FC = () => {
             }}
           />
           <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-            <FilledInput
-              id="filled-adornment-password"
+            <InputLabel htmlFor="filled-adornment-password">{t('auth.password')}</InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
               name="password"
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
@@ -330,7 +329,7 @@ const Login: React.FC = () => {
 
           
           <FormControl component="fieldset" sx={{ mt: 2, width: '100%' }}>
-            <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>Role</FormLabel>
+            <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>{t('auth.role')}</FormLabel>
             <RadioGroup
               aria-label="role"
               name="role"
@@ -347,7 +346,7 @@ const Login: React.FC = () => {
                     },
                   }}
                 />} 
-                label="Admin" 
+                label={t('auth.admin')}
               />
               <FormControlLabel 
                 value="driver" 
@@ -358,7 +357,7 @@ const Login: React.FC = () => {
                     },
                   }}
                 />} 
-                label="Driver" 
+                label={t('auth.driver')}
               />
             </RadioGroup>
           </FormControl>
@@ -370,7 +369,7 @@ const Login: React.FC = () => {
             sx={{ mt: 3, mb: 2, backgroundColor: '#fecc04', color: 'black', p: 1.1 }}
             disabled={loading || isSubmitting}
           >
-            {loading ? 'Logging In...' : 'Sign In'}
+            {loading ? 'Logging In...' : t('auth.login')}
           </Button>
         </form>
         </Box>
@@ -378,7 +377,7 @@ const Login: React.FC = () => {
         to="/"
         style={{ marginTop: '1rem' }}
       >
-        Back to Home
+        {t('loginPage.backToHome')}
       </Link>
     </Box>
     </Container>

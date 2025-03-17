@@ -6,7 +6,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const enTranslations = {
   app: {
     title: "Taxibee",
-    slogan: "Taxi fleet management with ease"
+    slogan: "Taxi fleet management with ease",
+    videoNoSupport: "Your browser does not support the video tag."
   },
   homepage: {
     heroTitle: "Taxi fleet management with ease",
@@ -31,6 +32,15 @@ const enTranslations = {
       desc: "Taxibee is a taxi fleet management system that provides a comprehensive solution for taxi companies and drivers. It offers a range of features including real-time tracking, analytics, and a user-friendly interface for efficient management.",
       copyright: "Taxibee. All rights reserved."
     }
+  },
+  loginPage: {
+    title: "Sign In to Taxibee",
+    heroText: "Welcome Onboard!",
+    backToHome: "Back to Home",
+    noCredError: "Invalid Credentials. Please try again.",
+    missingInputError: "Please enter both username and password",
+    error: "An error occurred. Please try again later.",
+    loading: "Loading..."
   },
   nav: {
     dashboard: "Dashboard",
@@ -76,7 +86,8 @@ const enTranslations = {
 const nlTranslations = {
   app: {
     title: "Taxibee",
-    slogan: "Taxi vlootbeheer met gemak"
+    slogan: "Taxi vlootbeheer met gemak",
+    videoNoSupport: "Uw browser ondersteunt geen video tag."
   },
   homepage: {
     heroTitle: "Eenvoudig beheer van taxivloot",
@@ -101,6 +112,15 @@ const nlTranslations = {
       desc: "Taxibee is een taxi vlootbeheersysteem dat een compleet beheersysteem biedt voor taxibedrijven en chauffeurs. Het biedt een reeks functies, van real-time tracking, analytics en een gebruikersvriendelijke interface voor efficiënte beheer.",
       copyright: "Taxibee. Alle rechten voorbehouden."
     }
+  },
+  loginPage: {
+    title: "Log in op Taxibee",
+    heroText: "Welkom op board!",
+    backToHome: "Terug naar thuis",
+    noCredError: "Ongeldige gegevens. Probeer opnieuw.",
+    loading: "Laden...",
+    missingInputError: "Voer gebruikersnaam en wachtwoord in",
+    error: "Er is een fout opgetreden. Probeer het later opnieuw."
   },
   nav: {
     dashboard: "Dashboard",

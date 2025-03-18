@@ -7,7 +7,8 @@ import {
   Box,
   Typography,
   ListItemIcon,
-  SelectChangeEvent
+  SelectChangeEvent,
+  Chip
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 
@@ -39,6 +40,20 @@ const LanguageSwitcher: React.FC = () => {
           <MenuItem value="nl">{t('common.dutch')}</MenuItem>
         </Select>
       </FormControl>
+      <Chip
+        label="Beta"
+        color="primary"
+        size="small"
+        sx={{
+          ml: 1,
+          height: '20px',
+          '& .MuiChip-label': {
+            px: 1,
+            fontSize: '0.625rem',
+          },
+          backgroundColor: 'warning.main',
+        }}
+      />
     </Box>
   );
 };

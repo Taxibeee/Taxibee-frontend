@@ -26,3 +26,31 @@ export interface DriverEarnings {
     average_price_per_mile: number;
 }
 
+export interface Driver {
+    taxibee_id: number;
+    bolt_driver_uuid: string;
+    bolt_partner_uuid: string;
+    chauffeurskaartnr: string;
+    phone: string;
+    email: string;
+    exact_debnr: string;
+    state: string;
+    mypos_operator_code: string;
+    full_name: string;
+    company_id: string;
+    inactivity_reason: string | null;
+    today_terminal_name: string | null;
+}
+
+export interface DriversResponse {
+    data: Driver[];
+}
+
+export interface DriverStatus {
+    driver_uuid: string;
+    driver_name: string;
+    phone: string;
+    current_status: string;
+    last_updated: string | null;
+    status_duration: string | null;
+}

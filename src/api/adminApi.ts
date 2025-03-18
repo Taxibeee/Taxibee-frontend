@@ -1,75 +1,9 @@
 import api from './api';
 import { OrdersResponse } from '../types/order.types';
 import { ContactResponse } from '../types/contact.types';
-// Define response types
-
-export interface WeekAnalytics {
-    total_revenue: number;
-    total_orders: number;
-    total_distance: number;
-}
-
-export interface RevenueByPaymentMethod {
-    [key: string]: number;
-}
-
-export interface RevenueByDriver {
-    driver_uuid: string;
-    driver_name: string;
-    total_revenue: number;
-}
-
-export interface WeekDayAnalytics {
-    day: string;
-    total_revenue: number;
-    total_orders: number;
-    total_distance: number;
-}
-
-export interface DriverStatus {
-    driver_uuid: string;
-    driver_name: string;
-    phone: string;
-    current_status: string;
-    last_updated: string | null;
-    status_duration: string | null;
-}
-
-export interface Driver {
-    taxibee_id: number;
-    bolt_driver_uuid: string;
-    bolt_partner_uuid: string;
-    chauffeurskaartnr: string;
-    phone: string;
-    email: string;
-    exact_debnr: string;
-    state: string;
-    mypos_operator_code: string;
-    full_name: string;
-    company_id: string;
-    inactivity_reason: string | null;
-    today_terminal_name: string | null;
-}
-
-export interface DriversResponse {
-    data: Driver[];
-}
-
-export interface Transaction {
-    payment_reference: string;
-    transaction_date: number;
-    transaction_date_formatted?: string;
-    terminal_name: string;
-    operator_code: string;
-    transaction_amount: number;
-    bolt_driver_uuids: string;
-    driver_names?: string[];
-}
-
-export interface UnaccountedTransactionsResponse {
-    transactions: Transaction[];
-    driver_options: { uuid: string; name: string }[];
-}
+import { DriverStatus, DriversResponse } from '../types/driver.types';
+import { Transaction, UnaccountedTransactionsResponse } from '../types/transaction.types';
+import { WeekAnalytics, WeekDayAnalytics, RevenueByPaymentMethod, RevenueByDriver  } from '../types/analytics.types';
 
 
 // Admin API functions
@@ -144,8 +78,21 @@ const adminApi = {
     },
 
     getTransactionsByTerminal: async (
-        params: { terminal_name?: string; start_date?: number; end_date?: number } = {}
-    ): Promise<{ terminals: { [key: string]: { transactions: Transaction[]; total_amount: number; count: number } }; total_amount: number; total_count: number }> => {
+        params: { 
+            terminal_name?: string; 
+            start_date?: number; 
+            end_date?: number 
+        } = {}
+    ): Promise<{ 
+        terminals: { 
+            [key: string]: { 
+                transactions: Transaction[]; 
+                total_amount: number; 
+                count: number 
+            }}; 
+                total_amount: number; 
+                total_count: number 
+            }> => {
         const queryParams = new URLSearchParams();
         if (params.terminal_name) queryParams.append('terminal_name', params.terminal_name);
         if (params.start_date) queryParams.append('start_date', params.start_date.toString());
@@ -153,6 +100,7 @@ const adminApi = {
 
         const url = queryParams.toString() ? `/admin/getTransactionsByTerminalName?${queryParams.toString()}` : '/admin/getTransactionsByTerminalName';
         const response = await api.get(url);
+        console.log(response.data.message)
         return response.data.data;
     },
 

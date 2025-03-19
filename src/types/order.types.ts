@@ -10,7 +10,8 @@ export interface Order {
     terminal_name: string | null;
     pickup_address: string | null;
     ride_distance: number | null;
-    order_created_timestamp: string | null;
+    payment_confirmed_timestamp: number | null;
+    order_created_timestamp: number | null;
     order_accepted_timestamp: number | null;
     order_pickup_timestamp: number | null;
     order_dropoff_timestamp: number | null;

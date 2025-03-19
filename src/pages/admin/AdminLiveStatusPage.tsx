@@ -35,9 +35,34 @@ import PersonIcon from "@mui/icons-material/Person"
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAdminQueries } from '../../hooks';
-import { DriverStatus } from '../../api/adminApi';
+import { DriverStatus } from '../../types/driver.types';
 
 import { formatPhone } from '../../utils/formatPhone';
+
+
+interface SearchFieldProps {
+  searchTerm: string;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, handleSearchChange }) => (
+  <Box sx={{ display: 'flex', mb: 2 }}>
+    <TextField
+    variant="outlined"
+    placeholder="Search by driver name or phone"
+    value={searchTerm}
+    onChange={handleSearchChange}
+    size="small"
+    sx={{ width: '300px' }}
+        
+
+  />
+    <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
+  </Box>
+);
+
 
 const AdminLiveStatusPage: React.FC = () => {
   // State for filters
@@ -301,20 +326,9 @@ const AdminLiveStatusPage: React.FC = () => {
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               {/* Left side - Search and Filter */}
               <Box display="flex" gap={2} flex={1}>
-                <TextField
-                  variant="outlined"
-                  placeholder="Search by driver name or phone"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  size="small"
-                  sx={{ width: '300px' }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
+                <SearchField
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
                 />
     
                 <FormControl size="small" sx={{ width: '200px' }}>

@@ -11,13 +11,13 @@ import {
   Avatar,
   Chip,
   CircularProgress,
-  Alert,
   Typography,
   Box,
   Button
 } from '@mui/material';
 import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
 import { useDriverQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -48,7 +48,7 @@ const RecentOrdersList: React.FC<RecentOrdersListProps> = ({
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
-          <Alert severity="error">Failed to load orders data.</Alert>
+          <CustomAlert severity="error">Failed to load orders data.</CustomAlert>
         ) : !data || data.length === 0 ? (
           <Typography>No recent orders found.</Typography>
         ) : (

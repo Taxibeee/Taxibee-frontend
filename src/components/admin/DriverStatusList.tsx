@@ -11,13 +11,13 @@ import {
   Avatar,
   Chip,
   CircularProgress,
-  Alert,
   Typography,
   Button
 } from '@mui/material';
 import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
 import { useNavigate } from 'react-router-dom';
 import { useAdminQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 const DriverStatusList: React.FC = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const DriverStatusList: React.FC = () => {
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
-          <Alert severity="error">Failed to load driver status data.</Alert>
+          <CustomAlert severity="error">Failed to load driver status data.</CustomAlert>
         ) : !data || data.length === 0 ? (
           <Typography>No active drivers at the moment.</Typography>
         ) : (

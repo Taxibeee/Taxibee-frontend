@@ -3,12 +3,12 @@ import {
   Card,
   Skeleton,
   CardContent,
-  Alert,
   Typography,
   Box
 } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useAdminQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -75,7 +75,7 @@ const RevenueByMethodChart: React.FC = () => {
            />
          </Box>
         ) : isError ? (
-          <Alert severity="error">Failed to load payment method data.</Alert>
+          <CustomAlert severity="error">Failed to load payment method data.</CustomAlert>
         ) : !data || Object.keys(data).length === 0 ? (
           <Typography>No payment data available.</Typography>
         ) : (

@@ -42,7 +42,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useAdminQueries } from '../../hooks';
-import { Driver } from '../../api/adminApi';
+import { Driver } from '../../types/driver.types';
 import { Order } from '../../types/order.types';
 import { WhatsApp } from '@mui/icons-material';
 import { RadioButtonChecked } from '@mui/icons-material';

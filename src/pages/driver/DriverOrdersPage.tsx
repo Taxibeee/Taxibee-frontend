@@ -13,7 +13,6 @@ import {
   Paper,
   Chip,
   CircularProgress,
-  Alert,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -26,13 +25,13 @@ import {
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDriverQueries } from '../../hooks';
-import { Order } from '../../api/driverApi';
+import { Order } from '../../types/order.types';
+import { CustomAlert } from '../../utils/customAlert';
 
 interface DriverOrdersPageProps {
   period: string;
   onPeriodChange?: (period: string) => void;
 }
-
 
 const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({ 
   period: externalPeriod,
@@ -163,9 +162,9 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
               <CircularProgress />
             </Box>
           ) : isError ? (
-            <Alert severity="error">Failed to load orders data.</Alert>
+            <CustomAlert severity="error">Failed to load orders data.</CustomAlert>
           ) : !data || data.length === 0 ? (
-            <Alert severity="info">No orders found for the selected period.</Alert>
+            <CustomAlert severity="info">No orders found for the selected period.</CustomAlert>
           ) : (
             <TableContainer component={Paper}>
               <Table>

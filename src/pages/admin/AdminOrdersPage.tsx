@@ -28,7 +28,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import { useAdminQueries } from '../../hooks';
-import { Order } from '../../api/adminApi';
+import { Order } from '../../types/order.types';
 
 const AdminOrdersPage: React.FC = () => {
   // State for pagination and filters
@@ -40,6 +40,35 @@ const AdminOrdersPage: React.FC = () => {
   // Fetch orders with pagination
   const { useAllOrders } = useAdminQueries();
   const { data, isLoading, isError } = useAllOrders(page, 25);
+
+  interface SearchFieldProps {
+    searchTerm: string;
+    handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  }
+
+  const SearchField: React.FC<SearchFieldProps> = ({
+    searchTerm,
+    handleSearchChange
+  }) => {
+    return (
+      <Box sx={{ display: 'flex', mb: 2 }}>
+        <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search by order reference, driver name, or pickup address"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{ mb: 3, width: '40%' }}
+          />
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+      </Box>
+    )
+  }
+
+  
+
 
   const TableRowSkeleton = () => (
     <TableRow>
@@ -152,20 +181,9 @@ const AdminOrdersPage: React.FC = () => {
             alignItems: 'center',
             mb: 2
           }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search by order reference, driver name, or pickup address"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            sx={{ mb: 3, width: '40%' }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
+          <SearchField
+            searchTerm={searchTerm}
+            handleSearchChange={handleSearchChange}
           />
           </Box>
 
@@ -188,7 +206,7 @@ const AdminOrdersPage: React.FC = () => {
                       <TableRowSkeleton />
                     ) : isError ? (
                       <TableRow>
-                        <TableCell colSpan={8} align="center">
+                        <TableCell align="center">
                           Error loading orders
                         </TableCell>
                       </TableRow>
@@ -233,7 +251,7 @@ const AdminOrdersPage: React.FC = () => {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={8} align="center">
+                        <TableCell align="center">
                           No orders found
                         </TableCell>
                       </TableRow>

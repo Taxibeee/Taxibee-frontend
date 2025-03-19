@@ -10,7 +10,6 @@ import {
   ListItemAvatar,
   Avatar,
   CircularProgress,
-  Alert,
   Typography
 } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
@@ -18,6 +17,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SpeedIcon from '@mui/icons-material/Speed';
 import { useDriverQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -52,7 +52,7 @@ const DriverPerformanceList: React.FC<DriverPerformanceListProps> = ({ period })
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
-          <Alert severity="error">Failed to load earnings data.</Alert>
+          <CustomAlert severity="error">Failed to load earnings data.</CustomAlert>
         ) : !data ? (
           <Typography>No earnings data available.</Typography>
         ) : (

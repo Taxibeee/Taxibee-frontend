@@ -4,7 +4,6 @@ import {
   CardContent,
   Divider,
   Skeleton,
-  Alert,
   Typography,
   Box,
   useTheme,
@@ -21,6 +20,7 @@ import {
   SparkLineChart,
   LineChart
 } from '@mui/x-charts';
+import { CustomAlert } from '../../utils/customAlert';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 
@@ -132,7 +132,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
            />
             </Box>
           ) : isError ? (
-            <Alert severity="error">Failed to load weekday analytics data.</Alert>
+            <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
           ) : !data || data.length === 0 ? (
             <Typography>No data available for this week yet.</Typography>
           ) : (

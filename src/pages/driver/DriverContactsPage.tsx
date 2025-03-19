@@ -1,12 +1,12 @@
-import { Box, Alert, List, ListItem, ListItemAvatar, ListItemText, NativeSelect, IconButton, Typography } from '@mui/material';
+import { Box,  List, ListItem, ListItemAvatar, ListItemText, IconButton, Typography } from '@mui/material';
 import { Avatar, CircularProgress } from '@mui/joy';
 import React from 'react';
 
 import { useDriverQueries } from '../../hooks';
-import { Contact } from '../../api/adminApi';
+import { Contact } from '../../types/contact.types';
 
 import { WhatsApp, Email, Phone } from '@mui/icons-material';
-
+import { CustomAlert } from '../../utils/customAlert';
 
 const DriverContactsPage: React.FC = () => {
 
@@ -54,7 +54,7 @@ const DriverContactsPage: React.FC = () => {
     }
 
     if (error) {
-        return <Alert severity="error">{error}</Alert>;
+        return <CustomAlert severity="error">{error.toString()}</CustomAlert>;
     }
 
     return (

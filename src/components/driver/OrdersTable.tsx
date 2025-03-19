@@ -12,12 +12,12 @@ import {
   TableRow,
   Chip,
   CircularProgress,
-  Alert,
   Typography,
   Box,
   Button
 } from '@mui/material';
 import { useDriverQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -74,7 +74,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => 
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
-          <Alert severity="error">Failed to load orders data.</Alert>
+          <CustomAlert severity="error">Failed to load orders data.</CustomAlert>
         ) : !data || data.length === 0 ? (
           <Typography>No orders found for the selected period.</Typography>
         ) : (

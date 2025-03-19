@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  Switch,
   Tooltip,
   Typography
 } from '@mui/material';

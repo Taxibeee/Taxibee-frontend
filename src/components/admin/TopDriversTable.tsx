@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
-  Alert,
   Typography,
   LinearProgress,
   Box,
@@ -17,6 +16,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAdminQueries } from '../../hooks';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -38,7 +38,7 @@ const TopDriversTable: React.FC = () => {
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
-          <Alert severity="error">Failed to load driver revenue data.</Alert>
+          <CustomAlert severity="error">Failed to load driver revenue data.</CustomAlert>
         ) : !data || data.length === 0 ? (
           <Typography>No driver revenue data available.</Typography>
         ) : (

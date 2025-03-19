@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Card,
@@ -21,7 +21,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Alert,
   Divider,
   FormControl,
   InputLabel,
@@ -34,6 +33,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../api/api';
 import { formatApiError } from '../../api/api';
+import { CustomAlert } from '../../utils/customAlert';
 
 // Define interface for Exact Debnr data
 interface ExactDebnr {
@@ -49,6 +49,35 @@ interface ExactDebnr {
   cash_received: number;
   card_terminal_value: number;
 }
+
+interface SearchFieldProps {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, setSearchTerm }) => {
+
+   // Handle search input change
+   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  return <Box sx={{
+    display: 'flex'
+  }} >
+  <TextField
+    fullWidth
+    variant="outlined"
+    placeholder="Search by driver name or debnr"
+    onChange={handleSearchChange}
+    value={searchTerm}
+  />
+  <InputAdornment position="start">
+    <SearchIcon />
+  </InputAdornment>
+  </Box>
+};
+
 
 const AdminExactFilePage: React.FC = () => {
   // State for search, dialog and export settings
@@ -114,10 +143,6 @@ const AdminExactFilePage: React.FC = () => {
     }
   };
 
-  // Handle search input change
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
 
   // Handle export button click
   const handleExportClick = () => {
@@ -133,8 +158,8 @@ const AdminExactFilePage: React.FC = () => {
   };
 
   // Handle year change
-  const handleYearChange = (event: SelectChangeEvent<number>, child: ReactNode) => {
-    setYear(event.target.value);
+  const handleYearChange = (event: SelectChangeEvent<number>) => {
+    setYear(parseInt(event.target.value.toString()));
   };
 
   // Format currency
@@ -176,31 +201,20 @@ const AdminExactFilePage: React.FC = () => {
           </Box>
 
           {exportSuccess && (
-            <Alert severity="success" sx={{ mb: 3 }}>
+            <CustomAlert severity="success" sx={{ mb: 3 }}>
               Export successful! The file has been downloaded to your device.
-            </Alert>
+            </CustomAlert>
           )}
 
           {exportError && (
-            <Alert severity="error" sx={{ mb: 3 }}>
+            <CustomAlert severity="error" sx={{ mb: 3 }}>
               {exportError}
-            </Alert>
+            </CustomAlert>
           )}
 
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search by driver name or Exact Debnr number"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            sx={{ mb: 3 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
+          <SearchField
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
           />
 
           {isLoading ? (
@@ -208,9 +222,9 @@ const AdminExactFilePage: React.FC = () => {
               <CircularProgress />
             </Box>
           ) : isError ? (
-            <Alert severity="error">
+            <CustomAlert severity="error">
               Error loading Exact Debnr data: {error instanceof Error ? error.message : 'Unknown error'}
-            </Alert>
+            </CustomAlert>
           ) : (
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }}>
@@ -248,7 +262,7 @@ const AdminExactFilePage: React.FC = () => {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={7} align="center">
+                      <TableCell align="center">
                         No Exact Debnr data found
                       </TableCell>
                     </TableRow>
@@ -274,23 +288,22 @@ const AdminExactFilePage: React.FC = () => {
           <Divider sx={{ mb: 3 }} />
           
           <Grid2 container spacing={2}>
-            <Grid2 item xs={12} sm={6}>
+            <Grid2 item size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Week Number"
                 type="number"
                 value={weekNumber}
                 onChange={handleWeekNumberChange}
-                InputProps={{ inputProps: { min: 1, max: 53 } }}
               />
             </Grid2>
-            <Grid2 item xs={12} sm={6}>
+            <Grid2 item size={{ xs: 12, sm: 6 }} >
               <FormControl fullWidth>
                 <InputLabel id="year-select-label">Year</InputLabel>
                 <Select
                   labelId="year-select-label"
                   value={year}
-                  onChange={(event, child) => handleYearChange(event, child)}
+                  onChange={(event) => handleYearChange(event)}
                   label="Year"
                 >
                   {getYearOptions().map((year) => (
@@ -301,9 +314,9 @@ const AdminExactFilePage: React.FC = () => {
             </Grid2>
           </Grid2>
           
-          <Alert severity="info" sx={{ mt: 3 }}>
+          <CustomAlert severity="info" sx={{ mt: 3 }}>
             The export will include all drivers who have an Exact Debnr number assigned.
-          </Alert>
+          </CustomAlert>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmDialogOpen(false)}>

@@ -12,10 +12,8 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/hooks';
-import PasswordChangeDialog from '../shared/PasswordChangeDialog';
 import LanguageSwitcher from '../shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
@@ -27,11 +25,8 @@ const UserMenu: React.FC = () => {
   const { t } = useTranslation();
   
   // State for user menu
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [  anchorEl, setAnchorEl  ] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
-  
-  // State for password dialog
-  const [passwordDialogOpen, setPasswordDialogOpen] = useState<boolean>(false);
 
   // Handle menu open/close
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,17 +47,6 @@ const UserMenu: React.FC = () => {
   const handleLogout = () => {
     logout();
     navigate('/login');
-  };
-
-
-  // Handle password dialog
-  const handleOpenPasswordDialog = () => {
-    setPasswordDialogOpen(true);
-    handleMenuClose();
-  };
-
-  const handleClosePasswordDialog = () => {
-    setPasswordDialogOpen(false);
   };
 
   // Get user initials for avatar
@@ -144,14 +128,6 @@ const UserMenu: React.FC = () => {
           <LanguageSwitcher />
         </MenuItem>
         
-        
-        <MenuItem onClick={handleOpenPasswordDialog}>
-          <ListItemIcon>
-            <LockIcon fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="inherit">Change Password</Typography>
-        </MenuItem>
-        
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
@@ -159,12 +135,6 @@ const UserMenu: React.FC = () => {
           <Typography variant="inherit">{t('auth.logout')}</Typography>
         </MenuItem>
       </Menu>
-
-      {/* Password Change Dialog */}
-      <PasswordChangeDialog 
-        open={passwordDialogOpen}
-        onClose={handleClosePasswordDialog}
-      />
     </>
   );
 };

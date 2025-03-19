@@ -2,8 +2,6 @@
 export { default as DashboardLayout } from './layout/DashboardLayout';
 export { default as UserMenu } from './layout/UserMenu';
 
-// Shared components
-export { default as PasswordChangeDialog } from './shared/PasswordChangeDialog';
 
 // Admin components
 export { default as SummaryCards } from './admin/SummaryCards';

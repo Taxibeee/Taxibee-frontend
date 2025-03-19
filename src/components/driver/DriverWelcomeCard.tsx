@@ -6,7 +6,6 @@ import {
   Box,
   Button
 } from '@mui/material';
-import { useAuth } from '../../store/hooks';
 import { useDriverQueries } from '../../hooks';
 
 interface DriverWelcomeCardProps {
@@ -18,7 +17,6 @@ const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
   selectedPeriod, 
   onPeriodChange 
 }) => {
-  const { currentUser } = useAuth();
   const { useDriverProfile } = useDriverQueries();
   const { data: profile } = useDriverProfile();
 
@@ -26,7 +24,7 @@ const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
     <Card elevation={2} sx={{ mb: 3 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>
-          Welcome back, {profile?.full_name || currentUser?.name || 'Driver'}!
+          Welcome back, {profile?.full_name || 'Driver'}!
         </Typography>
         <Typography variant="body2" color="textSecondary">
           Here's your driving summary for the {selectedPeriod}.

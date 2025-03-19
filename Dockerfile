@@ -4,7 +4,7 @@ WORKDIR /app
 
 ## Copy package files first to leverage Docker cache
 COPY package.json package-lock.json ./
-RUN npm ci --production
+RUN npm ci 
 
 # Copy the rest of the application
 COPY . .
@@ -19,7 +19,7 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy static assets from builder stage to nginx serving directory
-COPY --from=builder /app/build /usr/share/nginx/html 
+COPY --from=builder /app/dist /usr/share/nginx/html 
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget --quiet --tries=1 --spider http://localhost:80/ || exit 1

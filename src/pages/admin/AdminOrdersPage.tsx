@@ -284,14 +284,14 @@ const AdminOrdersPage: React.FC = () => {
         </DialogTitle>
         <DialogContent dividers>
           {selectedOrder && (
-            <Grid2 container spacing={3}>
-              <Grid2 item xs={12}>
+            <Grid2 spacing={3}>
+              <Grid2 size={{ xs: 12 }} >
                 <Typography variant="subtitle1" gutterBottom>
                   Basic Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }} >
                     <Typography variant="body2" color="text.secondary">
                       Driver
                     </Typography>
@@ -299,7 +299,7 @@ const AdminOrdersPage: React.FC = () => {
                       {selectedOrder.driver_name || 'N/A'}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }} >
                     <Typography variant="body2" color="text.secondary">
                       Status
                     </Typography>
@@ -309,7 +309,7 @@ const AdminOrdersPage: React.FC = () => {
                       size="small"
                     />
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }} >
                     <Typography variant="body2" color="text.secondary">
                       Created At
                     </Typography>
@@ -317,7 +317,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatTimestamp(selectedOrder.order_created_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }} >
                     <Typography variant="body2" color="text.secondary">
                       Finished At
                     </Typography>
@@ -328,13 +328,13 @@ const AdminOrdersPage: React.FC = () => {
                 </Grid2>
               </Grid2>
 
-              <Grid2 item xs={12}>
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Location Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12 }}>
                     <Typography variant="body2" color="text.secondary">
                       Pickup Address
                     </Typography>
@@ -342,7 +342,7 @@ const AdminOrdersPage: React.FC = () => {
                       {selectedOrder.pickup_address || 'N/A'}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Distance
                     </Typography>
@@ -352,7 +352,7 @@ const AdminOrdersPage: React.FC = () => {
                         : 'N/A'}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Vehicle
                     </Typography>
@@ -363,13 +363,13 @@ const AdminOrdersPage: React.FC = () => {
                 </Grid2>
               </Grid2>
 
-              <Grid2 item xs={12}>
+              <Grid2 size={{ xs: 12}} >
                 <Typography variant="subtitle1" gutterBottom>
                   Payment Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }} >
                     <Typography variant="body2" color="text.secondary">
                       Payment Method
                     </Typography>
@@ -379,7 +379,7 @@ const AdminOrdersPage: React.FC = () => {
                       size="small"
                     />
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Total Price
                     </Typography>
@@ -387,7 +387,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.ride_price)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Base Fare
                     </Typography>
@@ -395,7 +395,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.ride_price ? selectedOrder.ride_price - (selectedOrder.booking_fee || 0) - (selectedOrder.toll_fee || 0) : null)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Booking Fee
                     </Typography>
@@ -403,7 +403,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.booking_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }} >
                     <Typography variant="body2" color="text.secondary">
                       Toll Fee
                     </Typography>
@@ -411,7 +411,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.toll_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }} >
                     <Typography variant="body2" color="text.secondary">
                       Tip
                     </Typography>
@@ -419,7 +419,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.tip)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }} >
                     <Typography variant="body2" color="text.secondary">
                       Discount
                     </Typography>
@@ -427,7 +427,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.in_app_discount)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }} >
                     <Typography variant="body2" color="text.secondary">
                       Driver Commission
                     </Typography>
@@ -435,7 +435,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.commission)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Driver Net Earnings
                     </Typography>
@@ -443,7 +443,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.net_earnings)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Confirmed
                     </Typography>

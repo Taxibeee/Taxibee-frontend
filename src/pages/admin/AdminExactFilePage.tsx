@@ -287,8 +287,8 @@ const AdminExactFilePage: React.FC = () => {
           
           <Divider sx={{ mb: 3 }} />
           
-          <Grid2 container spacing={2}>
-            <Grid2 item size={{ xs: 12, sm: 6 }}>
+          <Grid2 spacing={2}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Week Number"
@@ -297,7 +297,7 @@ const AdminExactFilePage: React.FC = () => {
                 onChange={handleWeekNumberChange}
               />
             </Grid2>
-            <Grid2 item size={{ xs: 12, sm: 6 }} >
+            <Grid2 size={{ xs: 12, sm: 6 }} >
               <FormControl fullWidth>
                 <InputLabel id="year-select-label">Year</InputLabel>
                 <Select

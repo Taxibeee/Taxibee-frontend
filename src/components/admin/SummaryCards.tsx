@@ -51,8 +51,8 @@ const SummaryCards: React.FC = () => {
       p: 1,
     }}>
       <Typography variant="overline">{t('adminDashboard.summaryCards.weeklySummary')}</Typography>
-    <Stack container spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
-      <Grid2 item xs={12} sm={6} md={3}>
+    <Stack spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
+      <Grid2 size={{ xs: 12, sm: 6, md: 3 }} >
         <Card elevation={1}>
           <CardContent>
             {isLoading ? (
@@ -81,7 +81,7 @@ const SummaryCards: React.FC = () => {
           </CardContent>
         </Card>
       </Grid2>
-      <Grid2 item xs={12} sm={6} md={3}>
+      <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
         <Card elevation={1}>
           <CardContent>
             

@@ -185,11 +185,11 @@ const AdminLiveStatusPage: React.FC = () => {
 
   return (
     <Box>
-      <Grid2 container spacing={3}>
+      <Grid2 spacing={3}>
         {/* Status Summary Cards */}
-        <Grid2 item size={{ xs: 12 }}>
-          <Grid2 container spacing={2}>
-            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid2 size={{ xs: 12 }}>
+          <Grid2 spacing={2}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
                   <Box
@@ -221,7 +221,7 @@ const AdminLiveStatusPage: React.FC = () => {
             </Grid2>
             
             {/* Waiting Orders Card */}
-            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ position:'relative', height: '100px', p: 4 }}>
                   <Box
@@ -253,7 +253,7 @@ const AdminLiveStatusPage: React.FC = () => {
             </Grid2>
 
             {/* Has Order Card */}
-            <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
                   <Box
@@ -285,7 +285,7 @@ const AdminLiveStatusPage: React.FC = () => {
             </Grid2>
 
           {/* Unknown Status Card */}
-          <Grid2 item size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
               <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
                 <Box
@@ -320,7 +320,7 @@ const AdminLiveStatusPage: React.FC = () => {
         </Grid2>
 
         {/* Main Table Card */}
-        <Grid2 item size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
           <Card>
             <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>

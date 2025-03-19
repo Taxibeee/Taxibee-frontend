@@ -80,7 +80,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
       position: 'absolute',
     }}
   />
-  <InputAdornment
+  <InputAdornment position='start'
     sx={{
       p: 2
     }}
@@ -164,10 +164,13 @@ const Login: React.FC = () => {
 
     try {
       await login(username, password, role);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      console.log('Login error', err);
-      setLocalError(err?.message || t('loginPage.noCredError'));
+    } catch (err: unknown) {
+      // Type guard to ensure err is an Error object
+      if (err instanceof Error) {
+        setLocalError(err.message || t('loginPage.noCredError'));
+      } else {
+        setLocalError(t('loginPage.noCredError'));
+      }
     } finally {
       setIsSubmitting(false);
     }

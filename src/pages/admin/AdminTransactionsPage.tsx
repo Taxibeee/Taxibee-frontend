@@ -212,8 +212,8 @@ const AdminTransactionsPage: React.FC = () => {
 
           {/* Weekday Tab */}
           <TabPanel value={tabValue} index={0}>
-            <Grid2 container spacing={3}>
-              <Grid2 item size={{ xs: 12, md: 4 }}>
+            <Grid2 spacing={3}>
+              <Grid2 size={{ xs: 12, md: 4 }}>
                 <FormControl fullWidth>
                   <InputLabel id="weekday-filter-label">Filter by Weekday</InputLabel>
                   <Select
@@ -232,7 +232,7 @@ const AdminTransactionsPage: React.FC = () => {
                 </FormControl>
               </Grid2>
 
-              <Grid2 item size={{ xs: 12 }}>
+              <Grid2 size={{ xs: 12 }}>
                 {weekdayLoading ? (
                   <Box display="flex" justifyContent="center" p={3}>
                     <CircularProgress />
@@ -364,11 +364,11 @@ const AdminTransactionsPage: React.FC = () => {
               </Grid2>
             </Grid2>
           </TabPanel>
-
+xs
           {/* Terminal Tab */}
           <TabPanel value={tabValue} index={1}>
-            <Grid2 container spacing={3}>
-              <Grid2 item size={{ xs: 12, md: 4 }} >
+            <Grid2 spacing={3}>
+              <Grid2 size={{ xs: 12, md: 4 }} >
                 <FormControl fullWidth>
                   <InputLabel id="terminal-filter-label">Filter by Terminal</InputLabel>
                   <Select
@@ -387,7 +387,7 @@ const AdminTransactionsPage: React.FC = () => {
                 </FormControl>
               </Grid2>
 
-              <Grid2 item size={{ xs: 12 }} >
+              <Grid2 size={{ xs: 12 }} >
                 {terminalLoading ? (
                   <Box display="flex" justifyContent="center" p={3}>
                     <CircularProgress />
@@ -624,14 +624,14 @@ const AdminTransactionsPage: React.FC = () => {
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
-              <Grid2 container spacing={2} sx={{ mb: 3 }}>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
+              <Grid2 spacing={2} sx={{ mb: 3 }}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" color="text.secondary">
                     Reference
                   </Typography>
                   <Typography variant="body1">{selectedTransaction.payment_reference}</Typography>
                 </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" color="text.secondary">
                     Date
                   </Typography>
@@ -640,13 +640,13 @@ const AdminTransactionsPage: React.FC = () => {
                       formatTimestamp(selectedTransaction.transaction_date)}
                   </Typography>
                 </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" color="text.secondary">
                     Terminal
                   </Typography>
                   <Typography variant="body1">{selectedTransaction.terminal_name || 'N/A'}</Typography>
                 </Grid2>
-                <Grid2 item size={{ xs: 12, sm: 6 }}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" color="text.secondary">
                     Amount
                   </Typography>
@@ -655,7 +655,7 @@ const AdminTransactionsPage: React.FC = () => {
                   </Typography>
                 </Grid2>
                 {selectedTransaction.driver_names && selectedTransaction.driver_names.length > 0 && (
-                  <Grid2 item size={{  xs: 12  }} >
+                  <Grid2 size={{  xs: 12  }} >
                     <Typography variant="body2" color="text.secondary">
                       Current Drivers
                     </Typography>

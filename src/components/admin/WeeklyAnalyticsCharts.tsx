@@ -137,9 +137,9 @@ const WeeklyAnalyticsCharts: React.FC = () => {
             <Typography>No data available for this week yet.</Typography>
           ) : (
             <Box>
-              <Grid2 container spacing={2}>
+              <Grid2 spacing={2}>
                 {/* Revenue Sparkline */}
-                <Grid2 item size={{ xs: 6 }}>
+                <Grid2 size={{ xs: 6 }}>
                   <Box 
                     onClick={() => handleChartClick('revenue')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
@@ -158,7 +158,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
                 </Grid2>
 
                 {/* Orders Sparkline */}
-                <Grid2 item size={{ xs: 6 }}>
+                <Grid2 size={{ xs: 6 }}>
                   <Box 
                     onClick={() => handleChartClick('orders')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
@@ -176,7 +176,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
                 </Grid2>
 
                 {/* Average Order Value */}
-                <Grid2 item size={{ xs: 12 }}>
+                <Grid2 size={{ xs: 12 }}>
                   <Box 
                     onClick={() => handleChartClick('average')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}

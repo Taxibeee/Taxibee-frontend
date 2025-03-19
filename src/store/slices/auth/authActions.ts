@@ -1,4 +1,5 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, Store } from "@reduxjs/toolkit";
+import { RootState } from "../..";
 import authService from "../../../services/authService";
 import {
     authStart,
@@ -9,11 +10,13 @@ import {
     logout,
 } from "./authSlice";
 import { LoginRequest, UpdatePasswordRequest } from "../../../types/auth.types";
+import { AxiosError } from "axios";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let store: any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const injectStore = (_store: any) => {
+
+
+let store: Store<RootState>;
+
+export const injectStore = (_store: Store<RootState>) => {
     store = _store;
 };
 
@@ -39,12 +42,23 @@ export const loginUser = createAsyncThunk(
             }));
 
             return response;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            // Handle API errors
-            const errorMessage = error.response?.data?.detail || 'An error occurred during login.';
-            dispatch(loginFailure(errorMessage));
 
+        } catch (error: unknown) {
+            let errorMessage = 'An error occurred during login.';
+
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            } else if (error && typeof error === 'object' && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'object' && 'detail' in error.response.data) {
+                errorMessage = error.response.data.detail as string;
+            } else if (error && typeof error === 'object' && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'string') {
+                errorMessage = error.response.data;
+            } else if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+                errorMessage = error.message;
+            }
+
+
+            
+            dispatch(loginFailure(errorMessage));
             return rejectWithValue(errorMessage);
         }
     }
@@ -78,10 +92,19 @@ export const updateUserPassword = createAsyncThunk(
             dispatch(updatePasswordSuccess());
 
             return response;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            // Handle API errors
-            const errorMessage = error.response?.data?.detail || 'An error occurred during password update.';
+        } catch (error: unknown) {
+            let errorMessage = 'An error occurred during password update.';
+
+            if (error && typeof error === 'object' && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'object' && 'detail' in error.response.data) {
+                errorMessage = error.response.data.detail as string;
+            } else if (error && typeof error === 'object' && 'response' in error && error.response && typeof error.response === 'object' && 'data' in error.response && error.response.data && typeof error.response.data === 'string') {
+                errorMessage = error.response.data;
+            } else if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+                errorMessage = error.message;
+            }
+
+
+
             dispatch(updatePasswordFailure(errorMessage));
 
             return rejectWithValue(errorMessage);
@@ -94,17 +117,16 @@ export const updateUserPassword = createAsyncThunk(
  * Can be imported in API services to automatically logout on auth errors
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleAuthError = (error: any) => {
-    if (error.response && error.response.status === 401 && store) {
-        // Dispatch logout action to clear auth state
+export const handleAuthError = (error: unknown) => {
+    if (error && isAxiosError(error) && error.response?.status === 401 && store) {
         store.dispatch(logout());
-
-        // Optionally redirect to login page
-        // This approach avoids directly depending on react-router in this file
         window.location.href = '/login';
     }
-
     return Promise.reject(error);
-}
+};
 
+function isAxiosError(error: unknown): error is AxiosError {
+    return error !== null && 
+           typeof error === 'object' && 
+           'isAxiosError' in error;
+}

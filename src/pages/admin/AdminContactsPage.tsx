@@ -57,7 +57,7 @@ const AdminContactsPage: React.FC = () => {
     }
 
     if (error) {
-        return <CustomAlert severity="error"><Box>{error}</Box></CustomAlert>;
+        return <CustomAlert severity="error"><Box>{error.toString()}</Box></CustomAlert>;
     }
 
     return (

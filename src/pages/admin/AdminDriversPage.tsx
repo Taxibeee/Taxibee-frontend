@@ -179,7 +179,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
       p: 0.5,
       borderRadius: 2,
     }}>
-      <InputAdornment>
+      <InputAdornment position='start'>
         <SearchIcon />
       </InputAdornment>
       <TextField
@@ -572,8 +572,8 @@ const AdminDriversPage: React.FC = () => {
                     }
                   }}>
                   <TabPanel value={tabValue} index={0}>
-                    <Grid2 container spacing={3} p={2}>
-                      <Grid2 item xs={12} sm={6}>
+                    <Grid2 spacing={3} p={2}>
+                      <Grid2 size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle2" color="text.secondary">
                           {t('adminDriversPage.personalInformation')}
                         </Typography>
@@ -600,7 +600,7 @@ const AdminDriversPage: React.FC = () => {
                         </Box>
                       </Grid2>
                       
-                      <Grid2 item xs={12} sm={6}>
+                      <Grid2 size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle2" color="text.secondary">
                           {t('adminDriversPage.systemInformation')}
                         </Typography>

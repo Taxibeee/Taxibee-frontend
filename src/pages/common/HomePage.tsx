@@ -261,8 +261,8 @@ const HomePage: React.FC = () => {
         {/* Hero Content */}
         <Container maxWidth="xl">
           <Fade in={heroVisible} timeout={1500}>
-            <Grid2 container spacing={4} sx={{ position: 'relative', zIndex: 1 }}>
-              <Grid2 item xs={12} md={7}>
+            <Grid2 spacing={4} sx={{ position: 'relative', zIndex: 1 }}>
+              <Grid2 size={{ xs: 12, md: 7 }} >
                 <Box sx={{ textAlign: isMobile ? 'center' : 'left' }}>
                   <Box
                     component="img"
@@ -396,8 +396,8 @@ const HomePage: React.FC = () => {
                 {t('homepage.features.title')}
               </Typography>
               
-              <Grid2 container spacing={isTablet ? 3 : 4}>
-                <Grid2 item size={{ xs: 12, md: 4 }} >
+              <Grid2 spacing={isTablet ? 3 : 4}>
+                <Grid2 size={{ xs: 12, md: 4 }} >
                   <Card 
                     elevation={0}
                     sx={{ 
@@ -423,7 +423,7 @@ const HomePage: React.FC = () => {
                   </Card>
                 </Grid2>
                 
-                <Grid2 item size={{ xs: 12, md: 4 }} >
+                <Grid2 size={{ xs: 12, md: 4 }} >
                   <Card 
                     elevation={0}
                     sx={{ 
@@ -448,7 +448,7 @@ const HomePage: React.FC = () => {
                   </Card>
                 </Grid2>
                 
-                <Grid2 item size={{ xs: 12, md: 4 }} >
+                <Grid2 size={{ xs: 12, md: 4 }} >
                   <Card 
                     elevation={0}
                     sx={{ 
@@ -486,8 +486,8 @@ const HomePage: React.FC = () => {
         mt: 'auto'
       }}>
         <Container>
-          <Grid2 container spacing={3} alignItems="center">
-            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+          <Grid2 spacing={3} alignItems="center">
+            <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
               <Box
                 component="img"
                 src={logo}
@@ -503,7 +503,7 @@ const HomePage: React.FC = () => {
               </Typography>
             </Grid2>
             
-            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: 'center' }}>
+            <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: 'center' }}>
               <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', md: 'center' }}>
                 <IconButton color="inherit">
                   <PhoneIcon />
@@ -514,7 +514,7 @@ const HomePage: React.FC = () => {
               </Stack>
             </Grid2>
             
-            <Grid2 item size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
+            <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
                 © {new Date().getFullYear()} {t('homepage.footer.copyright')}
               </Typography>

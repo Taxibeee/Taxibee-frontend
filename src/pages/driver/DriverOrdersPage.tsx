@@ -243,14 +243,14 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
         </DialogTitle>
         <DialogContent dividers>
           {selectedOrder && (
-            <Grid2 container spacing={3}>
-              <Grid2 item xs={12}>
+            <Grid2 spacing={3}>
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Basic Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Order Reference
                     </Typography>
@@ -258,7 +258,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {selectedOrder.order_reference}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Status
                     </Typography>
@@ -268,7 +268,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       size="small"
                     />
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Created At
                     </Typography>
@@ -276,7 +276,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_created_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Finished At
                     </Typography>
@@ -284,7 +284,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_finished_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Vehicle
                     </Typography>
@@ -293,7 +293,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {selectedOrder.vehicle_license_plate ? ` (${selectedOrder.vehicle_license_plate})` : ''}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Terminal Name
                     </Typography>
@@ -304,13 +304,13 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                 </Grid2>
               </Grid2>
 
-              <Grid2 item xs={12}>
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Location Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12 }}>
                     <Typography variant="body2" color="text.secondary">
                       Pickup Address
                     </Typography>
@@ -318,7 +318,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {selectedOrder.pickup_address || 'N/A'}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Distance
                     </Typography>
@@ -329,13 +329,13 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                 </Grid2>
               </Grid2>
 
-              <Grid2 item xs={12}>
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Payment Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid2 spacing={2}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Method
                     </Typography>
@@ -345,7 +345,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       size="small"
                     />
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Total Price
                     </Typography>
@@ -353,7 +353,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.ride_price)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Booking Fee
                     </Typography>
@@ -361,7 +361,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.booking_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Toll Fee
                     </Typography>
@@ -369,7 +369,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.toll_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Tip
                     </Typography>
@@ -377,7 +377,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.tip)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Cash Discount
                     </Typography>
@@ -385,7 +385,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.cash_discount)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       In-App Discount
                     </Typography>
@@ -393,7 +393,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.in_app_discount)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={4}>
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Commission
                     </Typography>
@@ -401,7 +401,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatCurrency(selectedOrder.commission)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12}>
+                  <Grid2 size={{ xs: 12 }}>
                     <Typography variant="body2" color="text.secondary">
                       Net Earnings
                     </Typography>
@@ -412,13 +412,13 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                 </Grid2>
               </Grid2>
 
-              <Grid2 item xs={12}>
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Trip Timeline
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid2 spacing={2}>
+                <Grid2 size={{ xs: 12 }}>
                     <Typography variant="body2" color="text.secondary">
                       Created
                     </Typography>
@@ -426,7 +426,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_created_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Accepted
                     </Typography>
@@ -434,7 +434,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_accepted_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Pickup
                     </Typography>
@@ -442,7 +442,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_pickup_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Dropoff
                     </Typography>
@@ -450,7 +450,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_dropoff_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Finished
                     </Typography>
@@ -458,7 +458,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       {formatTimestamp(selectedOrder.order_finished_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Confirmed
                     </Typography>

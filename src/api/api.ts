@@ -2,7 +2,16 @@ import axios, { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestCo
 import { ApiError } from '../types/auth.types';
 
 // Create axios instance for API calls
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export interface CustomWindow extends Window {
+  __ENV__?: { 
+    VITE_API_BASE_URL?: string;
+    VITE_EMAILJS_SERVICE_ID?: string;
+    VITE_EMAILJS_TEMPLATE_ID?: string;
+    VITE_EMAILJS_PUBLIC_KEY?: string;
+  };
+}
+const API_BASE_URL = (window as CustomWindow).__ENV__?.VITE_API_BASE_URL;
 
 
 const api: AxiosInstance = axios.create({

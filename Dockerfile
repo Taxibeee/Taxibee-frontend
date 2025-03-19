@@ -2,27 +2,31 @@
 FROM node:23.10.0 AS builder
 WORKDIR /app
 
-## Copy package files first to leverage Docker cache
+# Copy package files and install dependencies
 COPY package.json package-lock.json ./
-RUN npm ci 
+RUN npm ci
 
-# Copy the rest of the application
+# Copy the rest of your source code
 COPY . .
 
-# Build the application
-RUN npm run build 
+# Build the app (assumes Vite outputs to 'dist')
+RUN npm run build
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
+# Stage 2: Run the Node.js server dynamically
+FROM node:23.10.0 AS runner
+WORKDIR /app
 
-# remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# Copy the node_modules folder from builder stage so that dependencies like dotenv are available
+COPY --from=builder /app/node_modules ./node_modules
 
-# Copy static assets from builder stage to nginx serving directory
-COPY --from=builder /app/dist /usr/share/nginx/html 
+# Copy the build output from the builder stage
+COPY --from=builder /app/dist ./dist
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost:80/ || exit 1
+# Copy the Node.js server script
+COPY --from=builder /app/server.js .
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Set environment variable for Cloud Run and expose port 8080
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["node", "server.js"]

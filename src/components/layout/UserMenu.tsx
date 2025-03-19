@@ -8,7 +8,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -18,6 +18,8 @@ import { useAuth } from '../../store/hooks';
 import PasswordChangeDialog from '../shared/PasswordChangeDialog';
 import LanguageSwitcher from '../shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+
+
 
 const UserMenu: React.FC = () => {
   const { logout, currentUser } = useAuth();
@@ -65,10 +67,12 @@ const UserMenu: React.FC = () => {
 
   // Get user initials for avatar
   const getUserInitials = () => {
-    if (currentUser?.name) {
+    if (!currentUser) return 'U';
+  
+    if (currentUser.role === 'admin' && currentUser.name) {
       return currentUser.name.charAt(0).toUpperCase();
     }
-    if (currentUser?.full_name) {
+    if (currentUser.role === 'driver' && currentUser.full_name) {
       return currentUser.full_name.charAt(0).toUpperCase();
     }
     return 'U';
@@ -94,14 +98,11 @@ const UserMenu: React.FC = () => {
       </Box>
       
       <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={menuOpen}
-        onClose={handleMenuClose}
-        onClick={handleMenuClose}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        PaperProps={{
+      anchorEl={anchorEl}
+      open={Boolean(menuOpen)}
+      onClose={handleMenuClose}
+      slotProps={{
+        paper: {
           elevation: 0,
           sx: {
             overflow: 'visible',
@@ -126,8 +127,9 @@ const UserMenu: React.FC = () => {
               zIndex: 0,
             },
           },
-        }}
-      >
+        },
+      }}
+    >
         <MenuItem onClick={() => handleNavigate('/profile')}>
           <ListItemIcon>
             <PersonIcon fontSize="small" />

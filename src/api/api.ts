@@ -11,7 +11,7 @@ export interface CustomWindow extends Window {
     VITE_EMAILJS_PUBLIC_KEY?: string;
   };
 }
-const API_BASE_URL = (window as CustomWindow).__ENV__?.VITE_API_BASE_URL;
+const API_BASE_URL = (window as CustomWindow).__ENV__?.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
 
 
 const api: AxiosInstance = axios.create({

@@ -501,13 +501,7 @@ const Login: React.FC = () => {
           </FormControl>
 
           <FormControl component='fieldset' sx={{ mt: 2, width: '100%' }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', backgroundColor: '#e0e0e0', border: '0.5px solid gray', borderRadius: '4px', '&:hover': { backgroundColor: '#e0e0e0'}, '&:active': { backgroundColor: '#e0e0e0'} }}
-            onClick={(e: React.MouseEvent<HTMLInputElement>) => {
-              const selectELement = e.currentTarget.querySelector('[role="combobox"]');
-              if (selectELement) {
-                (selectELement as HTMLElement).click();
-              }
-            }}
+            <Box sx={{ width: '300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', backgroundColor: '#e0e0e0', border: '0.5px solid gray', borderRadius: '4px', '&:hover': { backgroundColor: '#e0e0e0'}, '&:active': { backgroundColor: '#e0e0e0'} }}
             >
                 <Select<string, false>
                   value={formData.role} 
@@ -521,9 +515,6 @@ const Login: React.FC = () => {
                         backgroundColor: 'transparent',
                         borderRadius: '4px',
                         border: '1px solid #e0e0e0',
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                        }
                       }
                     }
                   }}

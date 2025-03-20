@@ -5,10 +5,6 @@ import { useAuth } from '../../store/hooks';
 import { 
   Box, 
   FormControl,
-  FormLabel, 
-  RadioGroup, 
-  FormControlLabel, 
-  Radio,
   Button,
   Container,
   Typography,
@@ -18,8 +14,11 @@ import {
   Paper,
   useMediaQuery,
   useTheme,
-
 } from '@mui/material';
+
+import { Select as BaseSelect, SelectProps, Option as BaseOption, optionClasses } from '@mui/base';
+import { styled } from '@mui/system';
+import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../assets/F3-02.png'
@@ -28,6 +27,110 @@ import logo from '../../assets/F3-02.png'
 import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 import { CustomAlert } from '../../utils/customAlert';
+
+const Select = React.forwardRef(function CustomSelect<
+  TValue extends string,
+  Multiple extends boolean,
+>(props: SelectProps<TValue, Multiple>, ref: React.ForwardedRef<HTMLButtonElement>) {
+  const slots: SelectProps<TValue, Multiple>['slots'] = {
+    root: Button,
+    listbox: Listbox,
+    popup: Popup,
+    ...props.slots,
+  };
+
+  return <BaseSelect {...props} ref={ref} slots={slots} />;
+}) as <TValue extends string, Multiple extends boolean>(
+  props: SelectProps<TValue, Multiple> & React.RefAttributes<HTMLButtonElement>,
+) => React.JSX.Element;
+
+const Option = styled(BaseOption)(
+  ({ theme }) => `
+  list-style: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: default;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &.${optionClasses.selected} {
+    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
+    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+  }
+
+  &.${optionClasses.highlighted} {
+    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
+    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
+  }
+
+  &.${optionClasses.highlighted}.${optionClasses.selected} {
+    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
+    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+  }
+
+  &.${optionClasses.disabled} {
+    color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
+  }
+
+  &:hover:not(.${optionClasses.disabled}) {
+    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
+    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  }
+  `,
+);
+
+const Listbox = styled('ul')(
+  ({ theme }) => `
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  padding: 6px;
+  margin: 12px 0;
+  min-width: 320px;
+  border-radius: 12px;
+  overflow: auto;
+  outline: 0;
+  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  box-shadow: 0 2px 4px ${
+    theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
+  };
+  `,
+);
+
+const blue = {
+  100: '#DAECFF',
+  200: '#99CCF3',
+  400: '#3399FF',
+  500: '#007FFF',
+  600: '#0072E5',
+  700: '#0059B2',
+  900: '#003A75',
+};
+
+const grey = {
+  50: '#F3F6F9',
+  100: '#E5EAF2',
+  200: '#DAE2ED',
+  300: '#C7D0DD',
+  400: '#B0B8C4',
+  500: '#9DA8B7',
+  600: '#6B7A90',
+  700: '#434D5B',
+  800: '#303740',
+  900: '#1C2025',
+};
+
+const Popup = styled('div')`
+  z-index: 1;
+`;
 
 // Define interfaces for our types
 interface LocationState {
@@ -39,7 +142,7 @@ interface LocationState {
 interface FormState {
   username: string;
   password: string;
-  role: 'admin' | 'driver';
+  role: 'admin' | 'driver' | "";
 }
 
 interface PasswordFieldProps {
@@ -78,11 +181,32 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
     fullWidth
     sx={{
       position: 'absolute',
+      '& .MuiFilledInput-root': {
+        border: 'none',
+        backgroundColor: 'white',
+        '&:hover':{
+          backgroundColor: 'white',
+          border: 'none',
+        },
+        '&.Mui-focused': {
+          border: 'none',
+          backgroundColor: 'white',
+        },
+        '&::before': {
+          border: 'none',
+        },
+        '&::after': {
+          border: 'none',
+        },
+        '&:hover:not(.Mui-disabled):before': {
+          borderBottom: 'none'  // Removes the bottom border on hover
+        }
+      }
     }}
   />
   <InputAdornment position='start'
     sx={{
-      p: 2
+      mb: 2
     }}
   >
     <IconButton
@@ -91,7 +215,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
       }
       onClick={handleClickShowPassword}
       onMouseDown={handleMouseDownPassword}
-      edge="end"
     >
         {showPassword ? <VisibilityOff /> : <Visibility />}
       </IconButton>
@@ -111,7 +234,7 @@ const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormState>({
     username: '',
     password: '',
-    role: 'admin'
+    role: ''
   });
   const [localError, setLocalError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -178,6 +301,9 @@ const Login: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    console.log(formData)
+
 
     // Clear errors when user starts to type
     if(error || localError) {
@@ -374,39 +500,55 @@ const Login: React.FC = () => {
             />
           </FormControl>
 
-          
-          <FormControl component="fieldset" sx={{ mt: 2, width: '100%' }}>
-            <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>{t('auth.role')}</FormLabel>
-            <RadioGroup
-              aria-label="role"
-              name="role"
-              value={formData.role}
-              onChange={handleInputChange}
-              row
+          <FormControl component='fieldset' sx={{ mt: 2, width: '100%' }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', backgroundColor: '#e0e0e0', border: '0.5px solid gray', borderRadius: '4px', '&:hover': { backgroundColor: '#e0e0e0'}, '&:active': { backgroundColor: '#e0e0e0'} }}
+            onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+              const selectELement = e.currentTarget.querySelector('[role="combobox"]');
+              if (selectELement) {
+                (selectELement as HTMLElement).click();
+              }
+            }}
             >
-              <FormControlLabel 
-                value="admin" 
-                control={<Radio
-                  sx={{
-                    '&.Mui-checked': {
-                      color: 'black',
-                    },
+                <Select<string, false>
+                  value={formData.role} 
+                  placeholder={t('auth.role')}
+                  id="named-select"
+                  name='role'
+                  slotProps={{
+                    root: {
+                      style: {
+                        width: '100%',
+                        backgroundColor: 'transparent',
+                        borderRadius: '4px',
+                        border: '1px solid #e0e0e0',
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                        }
+                      }
+                    }
                   }}
-                />} 
-                label={t('auth.admin')}
-              />
-              <FormControlLabel 
-                value="driver" 
-                control={<Radio
-                  sx={{
-                    '&.Mui-checked': {
-                      color: 'black',
-                    },
+                  onChange={(_: React.SyntheticEvent | null, newValue: string | null) => {
+                    if (newValue) {
+                      // Create a synthetic event object that matches what handleInputChange expects
+                      const syntheticEvent = {
+                        target: {
+                          name: 'role',
+                          value: newValue,
+                        } 
+                      } as React.ChangeEvent<HTMLInputElement>;
+                      handleInputChange(syntheticEvent);
+                    }
                   }}
-                />} 
-                label={t('auth.driver')}
-              />
-            </RadioGroup>
+                >
+                  <Option value="admin">{t('auth.admin')}</Option>
+                  <Option value="driver">{t('auth.driver')}</Option>
+                </Select>
+                <UnfoldMoreRoundedIcon
+                  sx={{
+                    p: 0.4
+                  }}
+                />
+              </Box>
           </FormControl>
 
           <Button

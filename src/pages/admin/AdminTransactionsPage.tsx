@@ -30,7 +30,7 @@ import {
 } from '@mui/material';
 import { useAdminQueries } from '../../hooks';
 import { Transaction } from '../../types/transaction.types';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { CustomAlert } from '../../utils/customAlert';
 
 // Define interfaces for the weekday API responses
@@ -84,7 +84,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const AdminTransactionsPage: React.FC = () => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   // States for tabs and filters
   const [tabValue, setTabValue] = useState(0);
@@ -194,9 +194,6 @@ const AdminTransactionsPage: React.FC = () => {
     <Box>
       <Card>
         <CardContent>
-          <Typography variant="h5" gutterBottom>
-            {t('adminTransactionsPage.transactions')}
-          </Typography>
 
           <Tabs
             value={tabValue}
@@ -214,7 +211,10 @@ const AdminTransactionsPage: React.FC = () => {
           <TabPanel value={tabValue} index={0}>
             <Grid2 spacing={3}>
               <Grid2 size={{ xs: 12, md: 4 }}>
-                <FormControl fullWidth>
+                <FormControl fullWidth sx={{
+                  mb: 5,
+                  width: '300px'
+                }}>
                   <InputLabel id="weekday-filter-label">Filter by Weekday</InputLabel>
                   <Select
                     labelId="weekday-filter-label"
@@ -364,12 +364,14 @@ const AdminTransactionsPage: React.FC = () => {
               </Grid2>
             </Grid2>
           </TabPanel>
-xs
           {/* Terminal Tab */}
           <TabPanel value={tabValue} index={1}>
             <Grid2 spacing={3}>
               <Grid2 size={{ xs: 12, md: 4 }} >
-                <FormControl fullWidth>
+                <FormControl fullWidth sx={{
+                  mb: 5,
+                  width: '300px'
+                }} >
                   <InputLabel id="terminal-filter-label">Filter by Terminal</InputLabel>
                   <Select
                     labelId="terminal-filter-label"

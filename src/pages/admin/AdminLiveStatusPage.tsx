@@ -46,15 +46,27 @@ interface SearchFieldProps {
 }
 
 const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, handleSearchChange }) => (
-  <Box sx={{ display: 'flex', mb: 2 }}>
+  <Box sx={{ display: 'flex', mb: 2, justifyContent: 'center', alignItems: 'center' }}>
     <TextField
     variant="outlined"
     placeholder="Search by driver name or phone"
     value={searchTerm}
     onChange={handleSearchChange}
     size="small"
-    sx={{ width: '300px' }}
-        
+    sx={{ 
+      '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              border: 'none'
+            },
+            '&:hover fieldset': {
+              border: 'none'
+            },
+            '&.Mui-focused fieldset': {
+              border: 'none'
+            }
+          }
+    }}
+    
 
   />
     <InputAdornment position="start">
@@ -185,10 +197,10 @@ const AdminLiveStatusPage: React.FC = () => {
 
   return (
     <Box>
-      <Grid2 spacing={3}>
+      <Grid2 container spacing={3}>
         {/* Status Summary Cards */}
         <Grid2 size={{ xs: 12 }}>
-          <Grid2 spacing={2}>
+          <Grid2 container spacing={2}>
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
@@ -323,7 +335,7 @@ const AdminLiveStatusPage: React.FC = () => {
         <Grid2 size={{ xs: 12 }}>
           <Card>
             <CardContent>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Box display="flex" alignItems="center" mb={2}>
               {/* Left side - Search and Filter */}
               <Box display="flex" gap={2} flex={1}>
                 <SearchField

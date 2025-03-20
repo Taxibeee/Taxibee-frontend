@@ -21,14 +21,15 @@ const formatCurrency = (amount: number | undefined | null) => {
 
 // Color palette for chart slices
 const chartColors = [
-  '#1976d2', // Primary blue
-  '#2196f3', // Lighter blue
-  '#0d47a1', // Darker blue
-  '#64b5f6', // Very light blue
-  '#bbdefb', // Pale blue
-  '#3f51b5', // Indigo
-  '#03a9f4', // Light blue
+  '#2E7DAF', // Deep blue
+  '#FF6B6B', // Coral red
+  '#4CAF50', // Green
+  '#FFC107', // Amber
+  '#9C27B0', // Purple
+  '#FF9800', // Orange
+  '#00BCD4', // Cyan
 ];
+
 
 const RevenueByMethodChart: React.FC = () => {
   const { useRevenueByPaymentMethod } = useAdminQueries();

@@ -51,18 +51,30 @@ const AdminOrdersPage: React.FC = () => {
     handleSearchChange
   }) => {
     return (
-      <Box sx={{ display: 'flex', mb: 2 }}>
+      <Box sx={{ display: 'flex', mb: 2, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
         <TextField
             fullWidth
             variant="outlined"
             placeholder="Search by order reference, driver name, or pickup address"
             value={searchTerm}
             onChange={handleSearchChange}
-            sx={{ mb: 3, width: '40%' }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  border: 'none'
+                },
+                '&:hover fieldset': {
+                  border: 'none'
+                },
+                '&.Mui-focused fieldset': {
+                  border: 'none'
+                }
+              }
+            }}
           />
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
       </Box>
     )
   }
@@ -177,7 +189,7 @@ const AdminOrdersPage: React.FC = () => {
         <CardContent>
           <Box sx={{
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             mb: 2
           }}>

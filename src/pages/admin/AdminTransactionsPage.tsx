@@ -548,7 +548,7 @@ const AdminTransactionsPage: React.FC = () => {
                 <Typography variant="h6" gutterBottom>
                   Unaccounted Transactions
                 </Typography>
-                <Typography variant="body2" color="text.secondary" paragraph>
+                <Typography variant="body2" color="text.secondary">
                   These transactions have either multiple drivers assigned or no driver assigned and need to be managed.
                 </Typography>
 

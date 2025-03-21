@@ -61,7 +61,7 @@ const adminApi = {
     // Transactions
     getUnaccountedTransactions: async (): Promise<UnaccountedTransactionsResponse> => {
         const response = await api.get('/admin/getUnaccountedTransactions');
-        return response.data;
+        return response.data.data;
     },
 
     updateTransactionDriver: async (payload: { payment_reference: string, driver_uuids: string }): Promise<{ message: string, success: boolean }> => {

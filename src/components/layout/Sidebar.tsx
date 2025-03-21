@@ -22,6 +22,7 @@ interface SidebarProps {
   onClose: () => void;
   onNavigate: (path: string) => void;
   isMobile: boolean;
+  currentPath: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -29,7 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   open, 
   onClose, 
   onNavigate,
-  isMobile
+  isMobile,
+  currentPath
 }) => {
 
   // Sidebar content - shared between mobile and desktop versions
@@ -43,9 +45,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       {!isMobile && <Box sx={{ display: 'flex', justifyContent: 'center', mt: -5, mb: -4 }}>
         <img src={logo} alt="React" width={200} height={100} />
       </Box>}
-      <List sx={{ p: 1 }}>
+      <List sx={{ p: 0 }}>
         {menuItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
+          <ListItem key={index} disablePadding>
             <ListItemButton
               onClick={() => {
                 onNavigate(item.path);
@@ -55,8 +57,9 @@ const Sidebar: React.FC<SidebarProps> = ({
               }}
               sx={{
                 borderRadius: 1,
+                backgroundColor: currentPath === item.path ? '#FFF27A' : 'transparent',
                 '&:hover': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  backgroundColor: currentPath === item.path ? '#FFF27A' : 'rgba(0, 0, 0, 0.04)',
                 },
               }}
             >
@@ -69,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 primary: {
                   sx: {
                     fontSize: '0.875rem',
-                    fontFamily: '"Comic Sans MS", "Comic Sans"'
+                    color: currentPath === item.path ? 'rgba(0, 0, 0, 0.87)' : 'rgba(0, 0, 0, 0.6)',
                   }
                 }
               }} />

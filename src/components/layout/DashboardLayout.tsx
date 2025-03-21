@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import UserMenu from './UserMenu';
 import { TransitionProps } from '@mui/material/transitions';
+import { useLocation } from 'react-router-dom';
 
 // Define the sidebar item interface
 export interface SidebarItem {
@@ -89,6 +90,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const location = useLocation();
   
   // State for controlling drawer open/close
   const [open, setOpen] = useState(!isMobile);
@@ -168,6 +171,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             onClose={() => setDialogOpen(false)}
             onNavigate={handleNavigate}
             isMobile={true}
+            currentPath={location.pathname}
           />
         </Dialog>
       ) : (
@@ -178,6 +182,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClose={handleDrawerToggle}
           onNavigate={handleNavigate}
           isMobile={false}
+          currentPath={location.pathname}
         />
       )}
       

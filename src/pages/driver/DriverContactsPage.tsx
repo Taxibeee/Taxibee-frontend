@@ -1,128 +1,195 @@
-import { Box,  List, ListItem, ListItemAvatar, ListItemText, IconButton, Typography } from '@mui/material';
-import { Avatar, CircularProgress } from '@mui/joy';
-import React from 'react';
+import { Box, Typography, Card, CardContent, TextField, Stack, Snackbar, Button } from '@mui/material';
+import { CustomWindow } from '../../api/api';
+import emailjs from '@emailjs/browser';
+import React, { useState } from 'react';
 
-import { useDriverQueries } from '../../hooks';
-import { Contact } from '../../types/contact.types';
-
-import { WhatsApp, Email, Phone } from '@mui/icons-material';
 import { CustomAlert } from '../../utils/customAlert';
+
+interface ContactUs {
+    name: string;
+    email: string;
+    message: string;
+}
+
+interface SnackbarAlert {
+    open: boolean;
+    message: string;
+    severity: "success" | "error" | "info" | "warning";
+}
 
 const DriverContactsPage: React.FC = () => {
 
 
-    // Use the appropriate query hook based on role
-    const { useDriverContacts } = useDriverQueries();
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [contactForm, setContactForm] = useState<ContactUs>({
+        name: '',
+        email: '',
+        message: ''
+    });
+    const [snackbar, setSnackbar] = useState<SnackbarAlert>({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
 
-    // Get contacts based on role
-    const { data, isLoading, error } = useDriverContacts();
-
-    const formatPhone = (phone: string) => {
-        const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
-        return formattedPhone;
-    }
-
-    const initiateCall = (phone: string, event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        const formattedPhone = formatPhone(phone);
-        window.open(`tel:${formattedPhone}`, '_blank');
-    }
-
-    const openEmailClient = (email: string, event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        window.open(`mailto:${email}`, '_blank');
-    }
-
-    const openWhatsappChat = (phone: string, event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        const formattedPhone = formatPhone(phone);
-        window.open(`https://wa.me/${formattedPhone}`, '_blank');
-    }
-
-
-    if (isLoading) {
-        return (
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '70vh'
-            }}>
-                <CircularProgress color="warning" />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return <CustomAlert severity="error">{error.toString()}</CustomAlert>;
-    }
+    const handleContactFormChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+        setContactForm({
+          ...contactForm,
+          [e.target.name]: e.target.value
+        });
+      };
+      
+      const handleContactSubmit = async () => {
+        // Basic validation
+        if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+          setSnackbar({
+            open: true,
+            message: 'Please fill in all fields',
+            severity: 'error'
+          });
+          return;
+        }
+      
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(contactForm.email)) {
+          setSnackbar({
+            open: true,
+            message: 'Please enter a valid email address',
+            severity: 'error'
+          });
+          return;
+        }
+        
+        setIsSubmitting(true);
+      
+        try {
+          const templateParams = {
+            from_name: contactForm.name,
+            from_email: contactForm.email,
+            message: contactForm.message,
+            to_email: 'nasrul2001@gmail.com',
+          };
+      
+          const VITE_EMAILJS_PUBLIC_KEY = (window as CustomWindow).__ENV__?.VITE_EMAILJS_PUBLIC_KEY;
+          const VITE_EMAILJS_SERVICE_ID = (window as CustomWindow).__ENV__?.VITE_EMAILJS_SERVICE_ID;
+          const VITE_EMAILJS_TEMPLATE_ID = (window as CustomWindow).__ENV__?.VITE_EMAILJS_TEMPLATE_ID;
+      
+          await emailjs.send(
+            VITE_EMAILJS_SERVICE_ID!,
+            VITE_EMAILJS_TEMPLATE_ID!,
+            templateParams,
+            VITE_EMAILJS_PUBLIC_KEY!
+          );
+      
+          setSnackbar({
+            open: true,
+            message: 'Message sent successfully!',
+            severity: 'success'
+          });
+          // Clear form
+          setContactForm({
+            name: '',
+            email: '',
+            message: ''
+          });
+        } catch (error) {
+          console.error('Error sending email:', error);
+          setSnackbar({
+            open: true,
+            message: 'Error sending message. Please try again later.',
+            severity: 'error'
+          });
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
 
     return (
         <Box>
-            <List>
-                {data?.data?.map((contact: Contact) => {
-                    return <React.Fragment key={contact.phone}>
-                    <ListItem 
-                        alignItems="flex-start"
-                        sx= {{
-                            transition: '0.3s ease-in-out',
-                            maxWidth: '600px',
-                        }}
+            <Card 
+                sx={{ 
+                    maxWidth: '600px',
+                    mt: 4,
+                    mb: 4,
+                    boxShadow: 3
+                }}
+            >
+                <CardContent>
+                    <Typography 
+                        variant="h5" 
+                        component="h2" 
+                        gutterBottom
                     >
-                        <ListItemAvatar>
-                            <Avatar>{contact.name.charAt(0)}</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<Typography variant="body1" color="text.primary">{contact.name}</Typography>}
-                            secondary={
-                                <>
-                                    <Typography component="span" variant="body2" color="text.secondary" >
-                                        {contact.tag.charAt(0).toUpperCase() + contact.tag.slice(1)}
-                                    </Typography>
-                                    <br />
-                                    {`${contact.email}`}
-                                    <br />
-                                    {`${formatPhone(contact.phone)}`}
-                                </>
-                            }
+                        Contact Us
+                    </Typography>
+                    <Stack spacing={3}>
+                        <TextField
+                            name="name"
+                            label="Name"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            value={contactForm.name}
+                            onChange={handleContactFormChange}
                         />
-                        <IconButton
-                            size="small"
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => initiateCall(contact.phone, e)}
+                        <TextField
+                            name="email"
+                            label="Email"
+                            type="email"
+                            fullWidth
+                            variant="outlined"
+                            value={contactForm.email}
+                            onChange={handleContactFormChange}
+                        />
+                        <TextField
+                            name="message"
+                            label="Message"
+                            type="text"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                            value={contactForm.message}
+                            onChange={handleContactFormChange}
+                        />
+                        <Button
+                            variant="contained"
+                            onClick={handleContactSubmit}
+                            disabled={isSubmitting}
                             sx={{
-                                color: 'warning.main',
-                                mt: 1
+                                backgroundColor: '#fecc04',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#e5b800',
+                                }
                             }}
                         >
-                            <Phone />
-                        </IconButton>
-                        <IconButton
-                            size="small"
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => openEmailClient(contact.email, e)}
-                            sx={{
-                                color: 'primary.main',
-                                mt: 1
-                            }}
-                        >
-                            <Email /> 
-                        </IconButton>
-                        <IconButton
-                            size="small"
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => openWhatsappChat(contact.phone, e)}
-                            sx={{
-                                color: 'success.main',
-                                mt: 1
-                            }}
-                        >
-                            <WhatsApp />
-                        </IconButton>
-                    </ListItem>
-
-                    </React.Fragment>
-                 } )}
-            </List>
+                            {isSubmitting ? 'Sending... ' : 'Send Message'}
+                        </Button>
+                    </Stack>
+                </CardContent>
+            </Card>
+    
+            {/* Snackbar Alert */}
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <CustomAlert 
+                    onClose={() => setSnackbar({ ...snackbar, open: false })} 
+                    severity={snackbar.severity}
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </CustomAlert>
+            </Snackbar>
         </Box>
     );
+    
 }
 
 export default DriverContactsPage;

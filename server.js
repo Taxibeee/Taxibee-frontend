@@ -11,9 +11,9 @@ app.use(express.static('dist'));
 app.get('/env.js', (req, res) => {
   const envVars = {
     VITE_API_BASE_URL: 'https://taxibee-backend-396785091400.europe-west4.run.app',
-    VITE_EMAILJS_SERVICE_ID: 'service_zba6zji',
-    VITE_EMAILJS_TEMPLATE_ID: 'template_blqwlmc',
-    VITE_EMAILJS_PUBLIC_KEY: 'VITE_EMAILJS_PUBLIC_KEY=gNOwfuYV3ecRsnzBS',
+    VITE_EMAILJS_SERVICE_ID: 'service_l9r151p',
+    VITE_EMAILJS_TEMPLATE_ID: 'template_96nm86r',
+    VITE_EMAILJS_PUBLIC_KEY: '4UYlb6Y1yXFMNONjx',
   };
   res.type('.js');
   res.send(`window.__ENV__ = ${JSON.stringify(envVars)};`);

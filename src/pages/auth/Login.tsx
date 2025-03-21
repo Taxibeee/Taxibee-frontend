@@ -5,10 +5,6 @@ import { useAuth } from '../../store/hooks';
 import { 
   Box, 
   FormControl,
-  FormLabel, 
-  RadioGroup, 
-  FormControlLabel, 
-  Radio,
   Button,
   Container,
   Typography,
@@ -18,12 +14,12 @@ import {
   Paper,
   useMediaQuery,
   useTheme,
-
+  Tabs,
+  Tab
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../assets/F3-02.png'
-// import logo2 from '../../assets/F4-03.png'
 
 import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
@@ -39,7 +35,7 @@ interface LocationState {
 interface FormState {
   username: string;
   password: string;
-  role: 'admin' | 'driver';
+  role: 'admin' | 'driver' | "";
 }
 
 interface PasswordFieldProps {
@@ -78,11 +74,32 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
     fullWidth
     sx={{
       position: 'absolute',
+      '& .MuiFilledInput-root': {
+        border: 'none',
+        backgroundColor: 'white',
+        '&:hover':{
+          backgroundColor: 'white',
+          border: 'none',
+        },
+        '&.Mui-focused': {
+          border: 'none',
+          backgroundColor: 'white',
+        },
+        '&::before': {
+          border: 'none',
+        },
+        '&::after': {
+          border: 'none',
+        },
+        '&:hover:not(.Mui-disabled):before': {
+          borderBottom: 'none'  // Removes the bottom border on hover
+        }
+      }
     }}
   />
   <InputAdornment position='start'
     sx={{
-      p: 2
+      mb: 2
     }}
   >
     <IconButton
@@ -91,7 +108,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
       }
       onClick={handleClickShowPassword}
       onMouseDown={handleMouseDownPassword}
-      edge="end"
     >
         {showPassword ? <VisibilityOff /> : <Visibility />}
       </IconButton>
@@ -178,7 +194,6 @@ const Login: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     // Clear errors when user starts to type
     if(error || localError) {
       setLocalError('');
@@ -339,6 +354,81 @@ const Login: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Tabs
+            value={formData.role || false}
+            onChange={(_:React.SyntheticEvent, value:string) => {
+              const syntheticEvent = {
+                target: {
+                  name: 'role',
+                  value: value
+                }
+              } as React.ChangeEvent<HTMLInputElement>;
+              handleInputChange(syntheticEvent);
+            }}
+            variant="fullWidth"
+            sx={{
+              minHeight: 'auto',
+              width: '50%',
+              '& .MuiTabs-indicator': {
+                display: 'none'
+              },
+              '& .Mui-selected': {
+                color: 'white !important',
+                backgroundColor: '#1a1a1a !important',
+              },
+              '& .MuiTabs-flexContainer': {
+                borderRadius: '8px',
+                overflow: 'hidden',
+                p: 0,
+              },
+              '& .MuiTab-root': {
+                minHeight: 'auto',
+                padding: '8px 12px',
+                backgroundColor: 'white',
+                transition: 'all 0.3s',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                  color: 'white'
+                },
+                '&:first-of-type': {
+                  borderRadius: 10,
+                  padding: '8px 12px',          
+                },
+                '&:last-of-type': {
+                  borderRadius: 10,
+                  padding: '8px 12px',
+                },
+              },
+              backgroundColor: 'white',
+              borderRadius: 10,
+              p: 0
+            }}
+          >
+            <Tab 
+              label={t('auth.admin')} 
+              value="admin"
+              sx={{
+                textTransform: 'none',
+                '&:hover': {
+                  color: 'black',
+                },
+              }}
+            />
+            <Tab 
+              label={t('auth.driver')} 
+              value="driver"
+              sx={{
+                textTransform: 'none',
+                '&:hover': {
+                  color: 'black',
+                }
+              }}
+            />
+          </Tabs>
+        </Box>
+
+
           <TextField
             fullWidth
             label={t('auth.username')}
@@ -372,41 +462,6 @@ const Login: React.FC = () => {
               handleClickShowPassword={handleClickShowPassword}
               handleMouseDownPassword={handleMouseDownPassword}
             />
-          </FormControl>
-
-          
-          <FormControl component="fieldset" sx={{ mt: 2, width: '100%' }}>
-            <FormLabel component="legend" sx={{ mb: 1, color: 'black' }}>{t('auth.role')}</FormLabel>
-            <RadioGroup
-              aria-label="role"
-              name="role"
-              value={formData.role}
-              onChange={handleInputChange}
-              row
-            >
-              <FormControlLabel 
-                value="admin" 
-                control={<Radio
-                  sx={{
-                    '&.Mui-checked': {
-                      color: 'black',
-                    },
-                  }}
-                />} 
-                label={t('auth.admin')}
-              />
-              <FormControlLabel 
-                value="driver" 
-                control={<Radio
-                  sx={{
-                    '&.Mui-checked': {
-                      color: 'black',
-                    },
-                  }}
-                />} 
-                label={t('auth.driver')}
-              />
-            </RadioGroup>
           </FormControl>
 
           <Button

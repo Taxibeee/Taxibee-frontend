@@ -32,14 +32,6 @@ const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
         <Box sx={{ mt: 2, mb: 1 }}>
           <Button
             size="small"
-            variant={selectedPeriod === 'today' ? 'contained' : 'outlined'}
-            onClick={() => onPeriodChange('today')}
-            sx={{ mr: 1 }}
-          >
-            Today
-          </Button>
-          <Button
-            size="small"
             variant={selectedPeriod === 'week' ? 'contained' : 'outlined'}
             onClick={() => onPeriodChange('week')}
             sx={{ mr: 1 }}

@@ -18,7 +18,7 @@ const formatCurrency = (amount: number | undefined | null) => {
   if (amount === undefined || amount === null) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'EUR'
   }).format(amount);
 };
 
@@ -39,7 +39,7 @@ const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
   const { data, isLoading, isError } = useDriverEarnings(period);
 
   return (
-    <Grid2 spacing={3} sx={{ mb: 4 }}>
+    <Grid2 container spacing={3} sx={{ mb: 4 }}>
       <Grid2 size={{ xs: 12, sm: 6, md: 3 }} >
         <Card elevation={2}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

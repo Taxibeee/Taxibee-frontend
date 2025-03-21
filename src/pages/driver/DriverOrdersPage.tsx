@@ -131,18 +131,6 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
             </Typography>
             <ButtonGroup variant="outlined" size="small">
               <Button 
-                onClick={() => handlePeriodChange('today')}
-                variant={selectedPeriod === 'today' ? 'contained' : 'outlined'}
-              >
-                Today
-              </Button>
-              <Button 
-                onClick={() => handlePeriodChange('yesterday')}
-                variant={selectedPeriod === 'yesterday' ? 'contained' : 'outlined'}
-              >
-                Yesterday
-              </Button>
-              <Button 
                 onClick={() => handlePeriodChange('week')}
                 variant={selectedPeriod === 'week' ? 'contained' : 'outlined'}
               >

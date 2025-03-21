@@ -8,10 +8,67 @@ import {
   Box,
   Stack,
   useMediaQuery,
-  useTheme
+  useTheme,
+  alpha
 } from '@mui/material';
 import { useAdminQueries } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+
+const cardBackgrounds = {
+  revenue: {
+    background: `linear-gradient(135deg, ${alpha('#2E7DAF', 0.05)} 0%, ${alpha('#2E7DAF', 0.1)} 100%)`,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: 'radial-gradient(circle at 100% 0%, transparent 25px, rgba(46, 125, 175, 0.03) 25px)',
+      borderRadius: 1,
+    }
+  },
+  orders: {
+    background: `linear-gradient(135deg, ${alpha('#FF6B6B', 0.05)} 0%, ${alpha('#FF6B6B', 0.1)} 100%)`,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: 'radial-gradient(circle at 0% 100%, transparent 25px, rgba(255, 107, 107, 0.03) 25px)',
+      borderRadius: 1,
+    }
+  },
+  distance: {
+    background: `linear-gradient(135deg, ${alpha('#4CAF50', 0.05)} 0%, ${alpha('#4CAF50', 0.1)} 100%)`,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: 'radial-gradient(circle at 100% 100%, transparent 25px, rgba(76, 175, 80, 0.03) 25px)',
+      borderRadius: 1,
+    }
+  },
+  average: {
+    background: `linear-gradient(135deg, ${alpha('#FFC107', 0.05)} 0%, ${alpha('#FFC107', 0.1)} 100%)`,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: 'radial-gradient(circle at 0% 0%, transparent 25px, rgba(255, 193, 7, 0.03) 25px)',
+      borderRadius: 1,
+    }
+  }
+};
+
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -53,7 +110,21 @@ const SummaryCards: React.FC = () => {
       <Typography variant="overline">{t('adminDashboard.summaryCards.weeklySummary')}</Typography>
     <Stack spacing={3} sx={{ mb: 4, flex: 1 }} direction={isMobile ? 'column' : 'row'}>
       <Grid2 size={{ xs: 12, sm: 6, md: 3 }} >
-        <Card elevation={1}>
+        <Card elevation={1}
+          sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            ...cardBackgrounds.revenue,
+            transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: (theme) => theme.shadows[4],
+              '&::before': {
+                opacity: 0.15
+              }
+            }
+          }}
+        >
           <CardContent>
             {isLoading ? (
               <LoadingSkeleton />
@@ -82,7 +153,21 @@ const SummaryCards: React.FC = () => {
         </Card>
       </Grid2>
       <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
-        <Card elevation={1}>
+        <Card elevation={1}
+          sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            ...cardBackgrounds.orders,
+            transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: (theme) => theme.shadows[4],
+              '&::before': {
+                opacity: 0.15
+              }
+            }
+          }}
+        >
           <CardContent>
             
             {isLoading ? (
@@ -110,7 +195,21 @@ const SummaryCards: React.FC = () => {
         </Card>
       </Grid2>
       <Stack direction="column" spacing={2} sx={{ flex: 1 }}>
-        <Card elevation={1}>
+        <Card elevation={1}
+          sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            ...cardBackgrounds.distance,
+            transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: (theme) => theme.shadows[4],
+              '&::before': {
+                opacity: 0.15
+              }
+            }
+          }}
+        >
           <CardContent>
             {isLoading ? (
               <Skeleton 
@@ -137,7 +236,21 @@ const SummaryCards: React.FC = () => {
             )}
           </CardContent>
         </Card>
-        <Card elevation={1}>
+        <Card elevation={1}
+          sx={{
+            position: 'relative',
+            overflow: 'hidden',
+            ...cardBackgrounds.average,
+            transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: (theme) => theme.shadows[4],
+              '&::before': {
+                opacity: 0.15
+              }
+            }
+          }}
+        >
           <CardContent>
             
             {isLoading ? (

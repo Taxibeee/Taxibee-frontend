@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -47,6 +49,7 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "postcss": "^8.5.2",
+    "prettier": "^3.2.5",
     "tailwindcss": "^4.0.6",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",

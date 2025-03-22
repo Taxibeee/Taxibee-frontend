@@ -1,7 +1,7 @@
 // src/components/layout/Sidebar.tsx
 import React from 'react';
-import { 
-  Box, 
+import {
+  Box,
   Drawer,
   List,
   ListItem,
@@ -25,26 +25,28 @@ interface SidebarProps {
   currentPath: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  menuItems, 
-  open, 
-  onClose, 
+const Sidebar: React.FC<SidebarProps> = ({
+  menuItems,
+  open,
+  onClose,
   onNavigate,
   isMobile,
-  currentPath
+  currentPath,
 }) => {
-
   // Sidebar content - shared between mobile and desktop versions
   const sidebarContent = (
     <Box
       sx={{
-        mt: isMobile ? 2: -6, // Adjust the margin top if needed
-        }}
-      >
-      {!isMobile && <Toolbar />} {/* This provides space at the top for the AppBar in desktop mode */}
-      {!isMobile && <Box sx={{ display: 'flex', justifyContent: 'center', mt: -5, mb: -4 }}>
-        <img src={logo} alt="React" width={200} height={100} />
-      </Box>}
+        mt: isMobile ? 2 : -6, // Adjust the margin top if needed
+      }}
+    >
+      {!isMobile && <Toolbar />}{' '}
+      {/* This provides space at the top for the AppBar in desktop mode */}
+      {!isMobile && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: -5, mb: -4 }}>
+          <img src={logo} alt="React" width={200} height={100} />
+        </Box>
+      )}
       <List sx={{ p: 0 }}>
         {menuItems.map((item, index) => (
           <ListItem key={index} disablePadding>
@@ -63,19 +65,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                 },
               }}
             >
-              {item.icon && (
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-              )}
-              <ListItemText primary={item.text} slotProps={{
-                primary: {
-                  sx: {
-                    fontSize: '0.875rem',
-                    color: currentPath === item.path ? 'rgba(0, 0, 0, 0.87)' : 'rgba(0, 0, 0, 0.6)',
-                  }
-                }
-              }} />
+              {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+              <ListItemText
+                primary={item.text}
+                slotProps={{
+                  primary: {
+                    sx: {
+                      fontSize: '0.875rem',
+                      color:
+                        currentPath === item.path ? 'rgba(0, 0, 0, 0.87)' : 'rgba(0, 0, 0, 0.6)',
+                    },
+                  },
+                }}
+              />
             </ListItemButton>
           </ListItem>
         ))}

@@ -9,169 +9,170 @@ import { formatApiError } from '../api/api';
  */
 
 export const useAdminQueries = () => {
-    const queryClient = useQueryClient();
-    
-    // Orders queries
-    const useAllOrders = (page: number = 1, pageSize: number = 25) => {
-        return useQuery({
-            queryKey: ['admin', 'allOrders', page, pageSize],
-            queryFn: () => adminApi.getAllOrders(page, pageSize) as Promise<OrdersResponse>,
-        })
-    }
+  const queryClient = useQueryClient();
 
-    const useDriverOrders = (driverUuid: string, page: number = 1, pageSize: number = 25) => {
-        return useQuery({
-            queryKey: [ 'admin', 'driverOrders', driverUuid, page, pageSize ],
-            queryFn: () => adminApi.getDriverOrders(driverUuid, page, pageSize),
-            enabled: !!driverUuid, // Only run the query if driverUuid is provided
-        })
-    }
+  // Orders queries
+  const useAllOrders = (page: number = 1, pageSize: number = 25) => {
+    return useQuery({
+      queryKey: ['admin', 'allOrders', page, pageSize],
+      queryFn: () => adminApi.getAllOrders(page, pageSize) as Promise<OrdersResponse>,
+    });
+  };
 
+  const useDriverOrders = (driverUuid: string, page: number = 1, pageSize: number = 25) => {
+    return useQuery({
+      queryKey: ['admin', 'driverOrders', driverUuid, page, pageSize],
+      queryFn: () => adminApi.getDriverOrders(driverUuid, page, pageSize),
+      enabled: !!driverUuid, // Only run the query if driverUuid is provided
+    });
+  };
 
-    // Analytics queries
-    const useWeekAnalytics = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'weekAnalytics' ],
-            queryFn: adminApi.getWeekAnalytics,
+  // Analytics queries
+  const useWeekAnalytics = () => {
+    return useQuery({
+      queryKey: ['admin', 'weekAnalytics'],
+      queryFn: adminApi.getWeekAnalytics,
+    });
+  };
+
+  const useWeekDayAnalytics = () => {
+    return useQuery({
+      queryKey: ['admin', 'weekDayAnalytics'],
+      queryFn: adminApi.getWeekdayAnalytics,
+    });
+  };
+
+  // Revenue queries
+  const useRevenueByPaymentMethod = () => {
+    return useQuery({
+      queryKey: ['admin', 'revenueByMethod'],
+      queryFn: adminApi.getRevenueByPaymentMethod,
+    });
+  };
+
+  const useRevenueByDriver = () => {
+    return useQuery({
+      queryKey: ['admin', 'revenueByDriver'],
+      queryFn: adminApi.getRevenueByDriver,
+    });
+  };
+
+  // Driver queries
+  const useAllDrivers = () => {
+    return useQuery({
+      queryKey: ['admin', 'allDrivers'],
+      queryFn: adminApi.getAllDrivers,
+    });
+  };
+
+  const useLiveDriverStatus = (refreshInterval: number = 60000) => {
+    return useQuery({
+      queryKey: ['admin', 'liveDriverStatus'],
+      queryFn: adminApi.getLiveDriverStatus,
+      refetchInterval: refreshInterval, // Refresh automatically at the given interval
+      refetchIntervalInBackground: false, // Only refetch when the tab is focused
+    });
+  };
+
+  const useUpdateDriversTable = () => {
+    return useMutation({
+      mutationFn: adminApi.updateDriversTable,
+      onSuccess: () => {
+        // Invalidate related queries when drivers are updated
+        queryClient.invalidateQueries({
+          queryKey: ['admin', 'allDrivers'],
         });
-    };
-
-    const useWeekDayAnalytics = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'weekDayAnalytics' ],
-            queryFn: adminApi.getWeekdayAnalytics,
+        queryClient.invalidateQueries({
+          queryKey: ['admin', 'liveDriverStatus'],
         });
-    };
+      },
+      onError: (error: unknown) => {
+        console.error('Failed to update drivers:', error);
+        return formatApiError(error).message;
+      },
+    });
+  };
 
-    // Revenue queries
-    const useRevenueByPaymentMethod = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'revenueByMethod' ],
-            queryFn: adminApi.getRevenueByPaymentMethod,
-        });
-    };
+  // Transaction queries
+  const useUnaccountedTransactions = () => {
+    return useQuery({
+      queryKey: ['admin', 'unaccountedTransactions'],
+      queryFn: adminApi.getUnaccountedTransactions,
+    });
+  };
 
-    const useRevenueByDriver = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'revenueByDriver' ],
-            queryFn: adminApi.getRevenueByDriver,
+  const useUpdateTransactionDriver = () => {
+    return useMutation({
+      mutationFn: adminApi.updateTransactionDriver,
+      onSuccess: () => {
+        // Invalidate transaction queries when a transaction is updated
+        queryClient.invalidateQueries({
+          queryKey: ['admin', 'unaccountedTransactions'],
         });
-    };
+        queryClient.invalidateQueries({
+          queryKey: ['admin', 'transactionsByWeekday'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['admin', 'transactionsByTerminal'],
+        });
+      },
+      onError: (error: unknown) => {
+        console.error('Failed to update transaction driver: ', formatApiError(error));
+        return formatApiError(error).message;
+      },
+    });
+  };
 
-    // Driver queries 
-    const useAllDrivers = () => {
-        return useQuery({
-            queryKey: [  'admin', 'allDrivers' ],
-            queryFn: adminApi.getAllDrivers,
-        });
-    };
+  const useTransactionsByWeekday = (weekday?: string) => {
+    return useQuery({
+      queryKey: ['admin', 'transactionsByWeekday', weekday],
+      queryFn: () => adminApi.getTransactionsByWeekday(weekday),
+    });
+  };
 
-    const useLiveDriverStatus = (refreshInterval: number = 60000) => {
-        return useQuery({
-            queryKey: [ 'admin', 'liveDriverStatus' ],
-            queryFn: adminApi.getLiveDriverStatus,
-            refetchInterval: refreshInterval, // Refresh automatically at the given interval
-            refetchIntervalInBackground: false, // Only refetch when the tab is focused
-        });
-    };
+  const useTransactionsByTerminal = (
+    params: { terminal_name?: string; start_date?: number; end_date?: number } = {}
+  ) => {
+    return useQuery({
+      queryKey: ['admin', 'transactionsByTerminal', params],
+      queryFn: () => adminApi.getTransactionsByTerminal(params),
+    });
+  };
 
-    const useUpdateDriversTable = () => {
-        return useMutation({
-            mutationFn: adminApi.updateDriversTable,
-            onSuccess: () => {
-                // Invalidate related queries when drivers are updated
-                queryClient.invalidateQueries({ 
-                    queryKey: [ 'admin', 'allDrivers' ]
-                });
-                queryClient.invalidateQueries({
-                    queryKey: [ 'admin', 'liveDriverStatus' ]
-                });
-            },
-            onError: (error: unknown) => {
-                console.error('Failed to update drivers:', error);
-                return formatApiError(error).message;
-            }
-        });
-    };
+  // Contacts
+  const useAdminContacts = () => {
+    return useQuery({
+      queryKey: ['admin', 'contacts'],
+      queryFn: adminApi.getContacts,
+    });
+  };
 
-    // Transaction queries
-    const useUnaccountedTransactions = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'unaccountedTransactions' ],
-            queryFn: adminApi.getUnaccountedTransactions,
-        });
-    };
+  // Return all the query hooks
+  return {
+    // Orders
+    useAllOrders,
+    useDriverOrders,
 
-    const useUpdateTransactionDriver = () => {
-        return useMutation({
-            mutationFn: adminApi.updateTransactionDriver,
-            onSuccess: () => {
-                // Invalidate transaction queries when a transaction is updated
-                queryClient.invalidateQueries({
-                    queryKey: [ 'admin', 'unaccountedTransactions'],
-                });
-                queryClient.invalidateQueries({
-                    queryKey: [ 'admin', 'transactionsByWeekday' ],
-                });
-                queryClient.invalidateQueries({
-                    queryKey: [ 'admin', 'transactionsByTerminal' ]
-                });
-            },
-            onError: (error: unknown) => {
-                console.error('Failed to update transaction driver: ', formatApiError(error));
-                return formatApiError(error).message;
-            }
-        });
-    };
+    // Analytics
+    useWeekAnalytics,
+    useWeekDayAnalytics,
 
-    const useTransactionsByWeekday = (weekday?: string) => {
-        return useQuery({
-            queryKey: [ 'admin', 'transactionsByWeekday', weekday ],
-            queryFn: () => adminApi.getTransactionsByWeekday(weekday),
-        });
-    };
+    // Revenue
+    useRevenueByPaymentMethod,
+    useRevenueByDriver,
 
-    const useTransactionsByTerminal = (params: { terminal_name?: string; start_date?: number; end_date?: number } = {}) => {
-        return useQuery({
-          queryKey: ['admin', 'transactionsByTerminal', params],
-          queryFn: () => adminApi.getTransactionsByTerminal(params),
-        });
-    };
+    // Drivers
+    useAllDrivers,
+    useLiveDriverStatus,
+    useUpdateDriversTable,
+
+    // Transactions
+    useUnaccountedTransactions,
+    useUpdateTransactionDriver,
+    useTransactionsByWeekday,
+    useTransactionsByTerminal,
 
     // Contacts
-    const useAdminContacts = () => {
-        return useQuery({
-            queryKey: [ 'admin', 'contacts' ],
-            queryFn: adminApi.getContacts,
-        });
-    }; 
-       
-    // Return all the query hooks
-    return {
-        // Orders
-        useAllOrders,
-        useDriverOrders,
-
-        // Analytics
-        useWeekAnalytics,
-        useWeekDayAnalytics,
-
-        // Revenue
-        useRevenueByPaymentMethod,
-        useRevenueByDriver,
-
-        // Drivers
-        useAllDrivers,
-        useLiveDriverStatus,
-        useUpdateDriversTable,
-
-        // Transactions
-        useUnaccountedTransactions,
-        useUpdateTransactionDriver,
-        useTransactionsByWeekday,
-        useTransactionsByTerminal,
-
-        // Contacts
-        useAdminContacts
-    }
-}
+    useAdminContacts,
+  };
+};

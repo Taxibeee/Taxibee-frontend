@@ -99,30 +99,31 @@ const AdminTransactionsPage: React.FC = () => {
     useTransactionsByWeekday,
     useTransactionsByTerminal,
     useUnaccountedTransactions,
-    useUpdateTransactionDriver
+    useUpdateTransactionDriver,
   } = useAdminQueries();
 
   // Weekday query: API returns different shape depending on whether a weekday is provided
   const {
     data: weekdayData,
     isLoading: weekdayLoading,
-    isError: weekdayError
+    isError: weekdayError,
   } = useTransactionsByWeekday(weekday || undefined);
 
   // Terminal query: when filtering by terminal, the API returns a flat structure.
   const {
     data: terminalData,
     isLoading: terminalLoading,
-    isError: terminalError
+    isError: terminalError,
   } = useTransactionsByTerminal(terminal ? { terminal_name: terminal } : {});
 
   const {
     data: unaccountedData,
     isLoading: unaccountedLoading,
-    isError: unaccountedError
+    isError: unaccountedError,
   } = useUnaccountedTransactions();
 
-  const { mutate: updateTransactionDriver, isPending: isUpdatingDriver } = useUpdateTransactionDriver();
+  const { mutate: updateTransactionDriver, isPending: isUpdatingDriver } =
+    useUpdateTransactionDriver();
 
   // Handlers for tab and filter changes
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -159,12 +160,12 @@ const AdminTransactionsPage: React.FC = () => {
       updateTransactionDriver(
         {
           payment_reference: selectedTransaction.payment_reference,
-          driver_uuids: selectedDriverUuid
+          driver_uuids: selectedDriverUuid,
         },
         {
           onSuccess: () => {
             handleCloseDriverAssignDialog();
-          }
+          },
         }
       );
     }
@@ -178,14 +179,14 @@ const AdminTransactionsPage: React.FC = () => {
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
   // Get unique terminal names from the summary response (only when no terminal filter is applied)
   const getUniqueTerminals = (): string[] => {
     if (!terminalData || !('terminals' in terminalData)) return [];
-    return Object.keys(terminalData.terminals).filter((name) => name);
+    return Object.keys(terminalData.terminals).filter(name => name);
   };
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -194,7 +195,6 @@ const AdminTransactionsPage: React.FC = () => {
     <Box>
       <Card>
         <CardContent>
-
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
@@ -211,10 +211,13 @@ const AdminTransactionsPage: React.FC = () => {
           <TabPanel value={tabValue} index={0}>
             <Grid2 spacing={3}>
               <Grid2 size={{ xs: 12, md: 4 }}>
-                <FormControl fullWidth sx={{
-                  mb: 5,
-                  width: '300px'
-                }}>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    mb: 5,
+                    width: '300px',
+                  }}
+                >
                   <InputLabel id="weekday-filter-label">Filter by Weekday</InputLabel>
                   <Select
                     labelId="weekday-filter-label"
@@ -223,7 +226,7 @@ const AdminTransactionsPage: React.FC = () => {
                     label="Filter by Weekday"
                   >
                     <MenuItem value="">All Week</MenuItem>
-                    {daysOfWeek.map((day) => (
+                    {daysOfWeek.map(day => (
                       <MenuItem key={day} value={day}>
                         {day}
                       </MenuItem>
@@ -238,15 +241,13 @@ const AdminTransactionsPage: React.FC = () => {
                     <CircularProgress />
                   </Box>
                 ) : weekdayError ? (
-                  <CustomAlert severity="error">
-                    Failed to load transaction data
-                  </CustomAlert>
+                  <CustomAlert severity="error">Failed to load transaction data</CustomAlert>
                 ) : !weekdayData ? (
                   <Typography color="error">No transaction data available</Typography>
                 ) : weekday ? (
                   // Single weekday view: cast to WeekdaySingleResponse via unknown
                   (() => {
-                    const data = (weekdayData as unknown) as WeekdaySingleResponse;
+                    const data = weekdayData as unknown as WeekdaySingleResponse;
                     return (
                       <Box>
                         <Box
@@ -254,11 +255,14 @@ const AdminTransactionsPage: React.FC = () => {
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'space-between',
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}
                         >
                           <Typography variant="h6">{weekday} Transactions</Typography>
-                          <Chip label={`Total: ${formatCurrency(data.total_amount || 0)}`} color="primary" />
+                          <Chip
+                            label={`Total: ${formatCurrency(data.total_amount || 0)}`}
+                            color="primary"
+                          />
                         </Box>
 
                         <TableContainer component={Paper}>
@@ -288,9 +292,12 @@ const AdminTransactionsPage: React.FC = () => {
                                       {formatCurrency(transaction.transaction_amount)}
                                     </TableCell>
                                     <TableCell>
-                                      {transaction.driver_names && transaction.driver_names.length > 0
-                                        ? transaction.driver_names.join(', ')
-                                        : <Chip label="Unassigned" size="small" color="warning" />}
+                                      {transaction.driver_names &&
+                                      transaction.driver_names.length > 0 ? (
+                                        transaction.driver_names.join(', ')
+                                      ) : (
+                                        <Chip label="Unassigned" size="small" color="warning" />
+                                      )}
                                     </TableCell>
                                   </TableRow>
                                 ))
@@ -310,7 +317,7 @@ const AdminTransactionsPage: React.FC = () => {
                 ) : (
                   // Weekly summary view: cast to WeekdaySummaryResponse via unknown
                   (() => {
-                    const data = (weekdayData as unknown) as WeekdaySummaryResponse;
+                    const data = weekdayData as unknown as WeekdaySummaryResponse;
                     return (
                       <Box>
                         <Box
@@ -318,7 +325,7 @@ const AdminTransactionsPage: React.FC = () => {
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'space-between',
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}
                         >
                           <Typography variant="h6">Weekly Transactions Summary</Typography>
@@ -342,7 +349,9 @@ const AdminTransactionsPage: React.FC = () => {
                                 <TableRow key={day} hover>
                                   <TableCell>{day}</TableCell>
                                   <TableCell align="right">{dayData.count}</TableCell>
-                                  <TableCell align="right">{formatCurrency(dayData.total_amount)}</TableCell>
+                                  <TableCell align="right">
+                                    {formatCurrency(dayData.total_amount)}
+                                  </TableCell>
                                 </TableRow>
                               ))}
                               <TableRow sx={{ bgcolor: 'action.hover' }}>
@@ -367,11 +376,14 @@ const AdminTransactionsPage: React.FC = () => {
           {/* Terminal Tab */}
           <TabPanel value={tabValue} index={1}>
             <Grid2 spacing={3}>
-              <Grid2 size={{ xs: 12, md: 4 }} >
-                <FormControl fullWidth sx={{
-                  mb: 5,
-                  width: '300px'
-                }} >
+              <Grid2 size={{ xs: 12, md: 4 }}>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    mb: 5,
+                    width: '300px',
+                  }}
+                >
                   <InputLabel id="terminal-filter-label">Filter by Terminal</InputLabel>
                   <Select
                     labelId="terminal-filter-label"
@@ -380,7 +392,7 @@ const AdminTransactionsPage: React.FC = () => {
                     label="Filter by Terminal"
                   >
                     <MenuItem value="">All Terminals</MenuItem>
-                    {getUniqueTerminals().map((name) => (
+                    {getUniqueTerminals().map(name => (
                       <MenuItem key={name} value={name}>
                         {name}
                       </MenuItem>
@@ -389,21 +401,19 @@ const AdminTransactionsPage: React.FC = () => {
                 </FormControl>
               </Grid2>
 
-              <Grid2 size={{ xs: 12 }} >
+              <Grid2 size={{ xs: 12 }}>
                 {terminalLoading ? (
                   <Box display="flex" justifyContent="center" p={3}>
                     <CircularProgress />
                   </Box>
                 ) : terminalError ? (
-                  <CustomAlert severity="error">
-                    Failed to load terminal data
-                  </CustomAlert>
+                  <CustomAlert severity="error">Failed to load terminal data</CustomAlert>
                 ) : !terminalData ? (
                   <Typography color="error">No terminal data available</Typography>
                 ) : terminal ? (
                   // Single terminal view (flat structure)
                   (() => {
-                    const data = (terminalData as unknown) as {
+                    const data = terminalData as unknown as {
                       transactions: Transaction[];
                       total_amount: number;
                       count: number;
@@ -415,11 +425,14 @@ const AdminTransactionsPage: React.FC = () => {
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'space-between',
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}
                         >
                           <Typography variant="h6">Terminal: {terminal}</Typography>
-                          <Chip label={`Total: ${formatCurrency(data.total_amount || 0)}`} color="primary" />
+                          <Chip
+                            label={`Total: ${formatCurrency(data.total_amount || 0)}`}
+                            color="primary"
+                          />
                         </Box>
 
                         <TableContainer component={Paper}>
@@ -447,9 +460,12 @@ const AdminTransactionsPage: React.FC = () => {
                                       {formatCurrency(transaction.transaction_amount)}
                                     </TableCell>
                                     <TableCell>
-                                      {transaction.driver_names && transaction.driver_names.length > 0
-                                        ? transaction.driver_names.join(', ')
-                                        : <Chip label="Unassigned" size="small" color="warning" />}
+                                      {transaction.driver_names &&
+                                      transaction.driver_names.length > 0 ? (
+                                        transaction.driver_names.join(', ')
+                                      ) : (
+                                        <Chip label="Unassigned" size="small" color="warning" />
+                                      )}
                                     </TableCell>
                                   </TableRow>
                                 ))
@@ -469,7 +485,7 @@ const AdminTransactionsPage: React.FC = () => {
                 ) : (
                   // All terminals summary view (nested structure)
                   (() => {
-                    const data = (terminalData as unknown) as {
+                    const data = terminalData as unknown as {
                       terminals: {
                         [key: string]: {
                           transactions: Transaction[];
@@ -487,11 +503,14 @@ const AdminTransactionsPage: React.FC = () => {
                             mb: 2,
                             display: 'flex',
                             justifyContent: 'space-between',
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}
                         >
                           <Typography variant="h6">Terminal Transactions Summary</Typography>
-                          <Chip label={`Total: ${formatCurrency(data.total_amount || 0)}`} color="primary" />
+                          <Chip
+                            label={`Total: ${formatCurrency(data.total_amount || 0)}`}
+                            color="primary"
+                          />
                         </Box>
 
                         <TableContainer component={Paper}>
@@ -508,7 +527,9 @@ const AdminTransactionsPage: React.FC = () => {
                                 <TableRow key={name} hover>
                                   <TableCell>{name || 'Unknown'}</TableCell>
                                   <TableCell align="right">{termData.count}</TableCell>
-                                  <TableCell align="right">{formatCurrency(termData.total_amount)}</TableCell>
+                                  <TableCell align="right">
+                                    {formatCurrency(termData.total_amount)}
+                                  </TableCell>
                                 </TableRow>
                               ))}
                               <TableRow sx={{ bgcolor: 'action.hover' }}>
@@ -549,7 +570,8 @@ const AdminTransactionsPage: React.FC = () => {
                   Unaccounted Transactions
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  These transactions have either multiple drivers assigned or no driver assigned and need to be managed.
+                  These transactions have either multiple drivers assigned or no driver assigned and
+                  need to be managed.
                 </Typography>
 
                 <TableContainer component={Paper}>
@@ -601,9 +623,7 @@ const AdminTransactionsPage: React.FC = () => {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell align="center">
-                            No unaccounted transactions found
-                          </TableCell>
+                          <TableCell align="center">No unaccounted transactions found</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -616,7 +636,12 @@ const AdminTransactionsPage: React.FC = () => {
       </Card>
 
       {/* Driver Assignment Dialog */}
-      <Dialog open={driverAssignDialogOpen} onClose={handleCloseDriverAssignDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={driverAssignDialogOpen}
+        onClose={handleCloseDriverAssignDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Assign Driver to Transaction</DialogTitle>
         <DialogContent>
           {selectedTransaction && (
@@ -646,7 +671,9 @@ const AdminTransactionsPage: React.FC = () => {
                   <Typography variant="body2" color="text.secondary">
                     Terminal
                   </Typography>
-                  <Typography variant="body1">{selectedTransaction.terminal_name || 'N/A'}</Typography>
+                  <Typography variant="body1">
+                    {selectedTransaction.terminal_name || 'N/A'}
+                  </Typography>
                 </Grid2>
                 <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" color="text.secondary">
@@ -656,14 +683,17 @@ const AdminTransactionsPage: React.FC = () => {
                     {formatCurrency(selectedTransaction.transaction_amount)}
                   </Typography>
                 </Grid2>
-                {selectedTransaction.driver_names && selectedTransaction.driver_names.length > 0 && (
-                  <Grid2 size={{  xs: 12  }} >
-                    <Typography variant="body2" color="text.secondary">
-                      Current Drivers
-                    </Typography>
-                    <Typography variant="body1">{selectedTransaction.driver_names.join(', ')}</Typography>
-                  </Grid2>
-                )}
+                {selectedTransaction.driver_names &&
+                  selectedTransaction.driver_names.length > 0 && (
+                    <Grid2 size={{ xs: 12 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        Current Drivers
+                      </Typography>
+                      <Typography variant="body1">
+                        {selectedTransaction.driver_names.join(', ')}
+                      </Typography>
+                    </Grid2>
+                  )}
               </Grid2>
 
               <Typography variant="subtitle2" gutterBottom>
@@ -682,7 +712,7 @@ const AdminTransactionsPage: React.FC = () => {
                   <MenuItem value="">
                     <em>Select a driver</em>
                   </MenuItem>
-                  {unaccountedData?.driver_options.map((driver) => (
+                  {unaccountedData?.driver_options.map(driver => (
                     <MenuItem key={driver.uuid} value={driver.uuid}>
                       {driver.name}
                     </MenuItem>

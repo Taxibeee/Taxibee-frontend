@@ -19,25 +19,27 @@ export const useDriverQueries = () => {
   const useDriverEarnings = (period: string = 'week') => {
     return useQuery<DriverEarnings, Error>({
       queryKey: ['driver', 'earnings', period],
-      queryFn: () => driverApi.getDriverEarnings(period),      
+      queryFn: () => driverApi.getDriverEarnings(period),
     });
   };
 
   // Orders query with parameters
-  const useDriverOrders = (params: { period: string; limit?: number; offset?: number } = { period: 'week' }) => {
+  const useDriverOrders = (
+    params: { period: string; limit?: number; offset?: number } = { period: 'week' }
+  ) => {
     return useQuery<Order[], Error>({
       queryKey: ['driver', 'orders', params],
-      queryFn: () => driverApi.getDriverOrders(params),      
+      queryFn: () => driverApi.getDriverOrders(params),
     });
   };
 
   // Contacts query
   const useDriverContacts = () => {
     return useQuery({
-      queryKey: [ 'driver', 'contacts' ],
+      queryKey: ['driver', 'contacts'],
       queryFn: driverApi.getContacts,
     });
-  }
+  };
 
   // Return all the query hooks
   return {
@@ -46,6 +48,6 @@ export const useDriverQueries = () => {
     useDriverOrders,
 
     // Contacts,
-    useDriverContacts
+    useDriverContacts,
   };
 };

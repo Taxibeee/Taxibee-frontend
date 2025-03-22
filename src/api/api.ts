@@ -4,33 +4,35 @@ import { ApiError } from '../types/auth.types';
 // Create axios instance for API calls
 
 export interface CustomWindow extends Window {
-  __ENV__?: { 
+  __ENV__?: {
     VITE_API_BASE_URL?: string;
     VITE_EMAILJS_SERVICE_ID?: string;
     VITE_EMAILJS_TEMPLATE_ID?: string;
     VITE_EMAILJS_PUBLIC_KEY?: string;
   };
 }
-const API_BASE_URL = (window as CustomWindow).__ENV__?.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
-
+const API_BASE_URL =
+  (window as CustomWindow).__ENV__?.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL;
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
-
-api.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  const token = localStorage.getItem('token');
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const token = localStorage.getItem('token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error: AxiosError): Promise<AxiosError> => {
+    return Promise.reject(error);
   }
-  return config;
-}, (error: AxiosError): Promise<AxiosError> => {
-  return Promise.reject(error);
-});
+);
 
 // Response interceptor to handle errors
 api.interceptors.response.use(
@@ -55,18 +57,16 @@ api.interceptors.response.use(
       // Redirect to login
       window.location.href = '/login';
     }
-    
+
     // Format error for consistent error handling
     const formattedError: ApiError = {
       message: (response?.data as { detail?: string })?.detail || 'An error occurred',
-      status: response?.status
+      status: response?.status,
     };
 
     return Promise.reject(formattedError);
-
   }
 );
-
 
 export default api;
 
@@ -74,13 +74,16 @@ export default api;
 export const formatApiError = (error: unknown): ApiError => {
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError;
-    return { 
-      message: (axiosError.response?.data as { detail?: string })?.detail || axiosError.message || 'API request failed',
-      status: axiosError.response?.status
+    return {
+      message:
+        (axiosError.response?.data as { detail?: string })?.detail ||
+        axiosError.message ||
+        'API request failed',
+      status: axiosError.response?.status,
     };
   }
 
   return {
-    message: error instanceof Error ? error.message : 'An unexpected error occurred'
-  }
-}
+    message: error instanceof Error ? error.message : 'An unexpected error occurred',
+  };
+};

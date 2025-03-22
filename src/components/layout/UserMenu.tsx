@@ -17,15 +17,13 @@ import { useAuth } from '../../store/hooks';
 import LanguageSwitcher from '../shared/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
-
-
 const UserMenu: React.FC = () => {
   const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+
   // State for user menu
-  const [  anchorEl, setAnchorEl  ] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
   // Handle menu open/close
@@ -52,7 +50,7 @@ const UserMenu: React.FC = () => {
   // Get user initials for avatar
   const getUserInitials = () => {
     if (!currentUser) return 'U';
-  
+
     if (currentUser.role === 'admin' && currentUser.name) {
       return currentUser.name.charAt(0).toUpperCase();
     }
@@ -80,40 +78,40 @@ const UserMenu: React.FC = () => {
           </IconButton>
         </Tooltip>
       </Box>
-      
+
       <Menu
-      anchorEl={anchorEl}
-      open={Boolean(menuOpen)}
-      onClose={handleMenuClose}
-      slotProps={{
-        paper: {
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
+        anchorEl={anchorEl}
+        open={Boolean(menuOpen)}
+        onClose={handleMenuClose}
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
             },
           },
-        },
-      }}
-    >
+        }}
+      >
         <MenuItem onClick={() => handleNavigate('/profile')}>
           <ListItemIcon>
             <PersonIcon fontSize="small" />
@@ -122,12 +120,12 @@ const UserMenu: React.FC = () => {
         </MenuItem>
 
         <Divider />
-        
+
         {/* Language Switcher */}
         <MenuItem>
           <LanguageSwitcher />
         </MenuItem>
-        
+
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

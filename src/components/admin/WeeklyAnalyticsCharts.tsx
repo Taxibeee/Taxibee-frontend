@@ -11,15 +11,11 @@ import {
   DialogTitle,
   DialogContent,
   Grid2,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAdminQueries } from '../../hooks';
-import { 
-  BarChart, 
-  SparkLineChart,
-  LineChart
-} from '@mui/x-charts';
+import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 
 type ChartType = 'revenue' | 'orders' | 'average';
@@ -38,9 +34,9 @@ const WeeklyAnalyticsCharts: React.FC = () => {
       days: data.map(item => item.day),
       revenue: data.map(item => item.total_revenue || 0),
       orders: data.map(item => item.total_orders || 0),
-      avgOrders: data.map(item => 
+      avgOrders: data.map(item =>
         item.total_orders > 0 ? item.total_revenue / item.total_orders : 0
-      )
+      ),
     };
   };
 
@@ -64,12 +60,14 @@ const WeeklyAnalyticsCharts: React.FC = () => {
             }))}
             xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
             yAxis={[{ label: 'Revenue (€)' }]}
-            series={[{
-              dataKey: 'revenue',
-              label: 'Daily Revenue',
-              area: true,
-              showMark: true,
-            }]}
+            series={[
+              {
+                dataKey: 'revenue',
+                label: 'Daily Revenue',
+                area: true,
+                showMark: true,
+              },
+            ]}
             height={400}
             colors={[theme.palette.primary.main]}
           />
@@ -97,12 +95,14 @@ const WeeklyAnalyticsCharts: React.FC = () => {
             }))}
             xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
             yAxis={[{ label: 'Average Order Value (€)' }]}
-            series={[{
-              dataKey: 'average',
-              label: 'Avg. Order Value',
-              area: true,
-              showMark: true,
-            }]}
+            series={[
+              {
+                dataKey: 'average',
+                label: 'Avg. Order Value',
+                area: true,
+                showMark: true,
+              },
+            ]}
             height={400}
             colors={[theme.palette.success.main]}
           />
@@ -112,24 +112,32 @@ const WeeklyAnalyticsCharts: React.FC = () => {
 
   return (
     <>
-      <Card elevation={1} sx={{
-        pb: 0.8
-      }}>
+      <Card
+        elevation={1}
+        sx={{
+          pb: 0.8,
+        }}
+      >
         <CardContent>
           {isLoading ? (
-            <Box display="flex" justifyContent="center" p={3} sx={{
-              height: 350,
-              width: '100%'
-            }}>
-              <Skeleton 
-             variant="rectangular" 
-             width='100%'
-             height='100%'
-             animation="wave"
-             sx={{
-               transform: 'none', // This prevents the skeleton from being squished
-             }}
-           />
+            <Box
+              display="flex"
+              justifyContent="center"
+              p={3}
+              sx={{
+                height: 350,
+                width: '100%',
+              }}
+            >
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="100%"
+                animation="wave"
+                sx={{
+                  transform: 'none', // This prevents the skeleton from being squished
+                }}
+              />
             </Box>
           ) : isError ? (
             <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
@@ -140,7 +148,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
               <Grid2 spacing={2}>
                 {/* Revenue Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <Box 
+                  <Box
                     onClick={() => handleChartClick('revenue')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
                   >
@@ -159,7 +167,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
 
                 {/* Orders Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <Box 
+                  <Box
                     onClick={() => handleChartClick('orders')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
                   >
@@ -177,7 +185,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
 
                 {/* Average Order Value */}
                 <Grid2 size={{ xs: 12 }}>
-                  <Box 
+                  <Box
                     onClick={() => handleChartClick('average')}
                     sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
                   >
@@ -208,12 +216,7 @@ const WeeklyAnalyticsCharts: React.FC = () => {
       </Card>
 
       {/* Detailed Chart Dialog */}
-      <Dialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        maxWidth="md"
-        fullWidth
-      >
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>
           {selectedChart === 'revenue' && 'Revenue Analysis'}
           {selectedChart === 'orders' && 'Orders Analysis'}

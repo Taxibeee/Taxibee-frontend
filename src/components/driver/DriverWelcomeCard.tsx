@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Button
-} from '@mui/material';
+import { Card, CardContent, Typography, Box, Button } from '@mui/material';
 import { useDriverQueries } from '../../hooks';
 
 interface DriverWelcomeCardProps {
@@ -13,9 +7,9 @@ interface DriverWelcomeCardProps {
   onPeriodChange: (period: string) => void;
 }
 
-const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({ 
-  selectedPeriod, 
-  onPeriodChange 
+const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
+  selectedPeriod,
+  onPeriodChange,
 }) => {
   const { useDriverProfile } = useDriverQueries();
   const { data: profile } = useDriverProfile();

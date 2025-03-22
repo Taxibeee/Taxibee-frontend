@@ -26,7 +26,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  SelectChangeEvent
+  SelectChangeEvent,
 } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
@@ -56,28 +56,30 @@ interface SearchFieldProps {
 }
 
 const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, setSearchTerm }) => {
-
-   // Handle search input change
-   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle search input change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  return <Box sx={{
-    display: 'flex'
-  }} >
-  <TextField
-    fullWidth
-    variant="outlined"
-    placeholder="Search by driver name or debnr"
-    onChange={handleSearchChange}
-    value={searchTerm}
-  />
-  <InputAdornment position="start">
-    <SearchIcon />
-  </InputAdornment>
-  </Box>
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+      }}
+    >
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Search by driver name or debnr"
+        onChange={handleSearchChange}
+        value={searchTerm}
+      />
+      <InputAdornment position="start">
+        <SearchIcon />
+      </InputAdornment>
+    </Box>
+  );
 };
-
 
 const AdminExactFilePage: React.FC = () => {
   // State for search, dialog and export settings
@@ -108,7 +110,7 @@ const AdminExactFilePage: React.FC = () => {
         } catch (error) {
           throw formatApiError(error);
         }
-      }
+      },
     });
   };
 
@@ -120,20 +122,26 @@ const AdminExactFilePage: React.FC = () => {
     try {
       setExportSuccess(false);
       setExportError(null);
-      
-      const response = await api.get(`/admin/exportExactDebnrCsv?week_number=${weekNumber}&year=${year}`, {
-        responseType: 'blob'
-      });
-      
+
+      const response = await api.get(
+        `/admin/exportExactDebnrCsv?week_number=${weekNumber}&year=${year}`,
+        {
+          responseType: 'blob',
+        }
+      );
+
       // Create a download link and trigger it
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Self-billing-week-${year}-${weekNumber.toString().padStart(2, '0')}.csv`);
+      link.setAttribute(
+        'download',
+        `Self-billing-week-${year}-${weekNumber.toString().padStart(2, '0')}.csv`
+      );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       setExportSuccess(true);
       setConfirmDialogOpen(false);
     } catch (err) {
@@ -142,7 +150,6 @@ const AdminExactFilePage: React.FC = () => {
       setConfirmDialogOpen(false);
     }
   };
-
 
   // Handle export button click
   const handleExportClick = () => {
@@ -166,15 +173,18 @@ const AdminExactFilePage: React.FC = () => {
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
   // Filter data based on search term
-  const filteredData = data?.filter(item => 
-    item.driver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (item.exact_debnr_number && item.exact_debnr_number.toLowerCase().includes(searchTerm.toLowerCase()))
-  ) || [];
+  const filteredData =
+    data?.filter(
+      item =>
+        item.driver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.exact_debnr_number &&
+          item.exact_debnr_number.toLowerCase().includes(searchTerm.toLowerCase()))
+    ) || [];
 
   // Get available years for the selector (current year and 2 years back)
   const getYearOptions = () => {
@@ -186,10 +196,10 @@ const AdminExactFilePage: React.FC = () => {
     <Box>
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography variant="h5">
-              Exact Debnr Management
-            </Typography>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}
+          >
+            <Typography variant="h5">Exact Debnr Management</Typography>
             <Button
               variant="contained"
               color="primary"
@@ -212,10 +222,7 @@ const AdminExactFilePage: React.FC = () => {
             </CustomAlert>
           )}
 
-          <SearchField
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
+          <SearchField searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
           {isLoading ? (
             <Box display="flex" justifyContent="center" p={3}>
@@ -223,7 +230,8 @@ const AdminExactFilePage: React.FC = () => {
             </Box>
           ) : isError ? (
             <CustomAlert severity="error">
-              Error loading Exact Debnr data: {error instanceof Error ? error.message : 'Unknown error'}
+              Error loading Exact Debnr data:{' '}
+              {error instanceof Error ? error.message : 'Unknown error'}
             </CustomAlert>
           ) : (
             <TableContainer component={Paper}>
@@ -241,7 +249,7 @@ const AdminExactFilePage: React.FC = () => {
                 </TableHead>
                 <TableBody>
                   {filteredData.length > 0 ? (
-                    filteredData.map((item) => (
+                    filteredData.map(item => (
                       <TableRow key={item.bolt_driver_uuid} hover>
                         <TableCell>{item.driver_name}</TableCell>
                         <TableCell>
@@ -257,14 +265,14 @@ const AdminExactFilePage: React.FC = () => {
                         <TableCell align="right">
                           {formatCurrency(item.tips_bolt + item.tips_mypos)}
                         </TableCell>
-                        <TableCell align="right">{formatCurrency(item.card_terminal_value)}</TableCell>
+                        <TableCell align="right">
+                          {formatCurrency(item.card_terminal_value)}
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell align="center">
-                        No Exact Debnr data found
-                      </TableCell>
+                      <TableCell align="center">No Exact Debnr data found</TableCell>
                     </TableRow>
                   )}
                 </TableBody>
@@ -275,18 +283,16 @@ const AdminExactFilePage: React.FC = () => {
       </Card>
 
       {/* Export Confirmation Dialog */}
-      <Dialog
-        open={confirmDialogOpen}
-        onClose={() => setConfirmDialogOpen(false)}
-      >
+      <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
         <DialogTitle>Confirm Export</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
-            You are about to export the Exact Debnr data as a CSV file. Please confirm the week number and year for the export:
+            You are about to export the Exact Debnr data as a CSV file. Please confirm the week
+            number and year for the export:
           </DialogContentText>
-          
+
           <Divider sx={{ mb: 3 }} />
-          
+
           <Grid2 spacing={2}>
             <Grid2 size={{ xs: 12, sm: 6 }}>
               <TextField
@@ -297,31 +303,31 @@ const AdminExactFilePage: React.FC = () => {
                 onChange={handleWeekNumberChange}
               />
             </Grid2>
-            <Grid2 size={{ xs: 12, sm: 6 }} >
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel id="year-select-label">Year</InputLabel>
                 <Select
                   labelId="year-select-label"
                   value={year}
-                  onChange={(event) => handleYearChange(event)}
+                  onChange={event => handleYearChange(event)}
                   label="Year"
                 >
-                  {getYearOptions().map((year) => (
-                    <MenuItem key={year} value={year}>{year}</MenuItem>
+                  {getYearOptions().map(year => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Grid2>
           </Grid2>
-          
+
           <CustomAlert severity="info" sx={{ mt: 3 }}>
             The export will include all drivers who have an Exact Debnr number assigned.
           </CustomAlert>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialogOpen(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
           <Button onClick={exportExactDebnrCsv} variant="contained" color="primary">
             Export
           </Button>

@@ -23,7 +23,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Skeleton
+  Skeleton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
@@ -46,41 +46,43 @@ const AdminOrdersPage: React.FC = () => {
     handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   }
 
-  const SearchField: React.FC<SearchFieldProps> = ({
-    searchTerm,
-    handleSearchChange
-  }) => {
+  const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, handleSearchChange }) => {
     return (
-      <Box sx={{ display: 'flex', mb: 2, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
+      <Box
+        sx={{
+          display: 'flex',
+          mb: 2,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
         <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search by order reference, driver name, or pickup address"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  border: 'none'
-                },
-                '&:hover fieldset': {
-                  border: 'none'
-                },
-                '&.Mui-focused fieldset': {
-                  border: 'none'
-                }
-              }
-            }}
-          />
+          fullWidth
+          variant="outlined"
+          placeholder="Search by order reference, driver name, or pickup address"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                border: 'none',
+              },
+              '&:hover fieldset': {
+                border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                border: 'none',
+              },
+            },
+          }}
+        />
       </Box>
-    )
-  }
-
-  
-
+    );
+  };
 
   const TableRowSkeleton = () => (
     <TableRow>
@@ -122,7 +124,7 @@ const AdminOrdersPage: React.FC = () => {
     if (amount === null) return '€0.00';
     return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
@@ -149,14 +151,18 @@ const AdminOrdersPage: React.FC = () => {
   };
 
   // Filter orders based on search term
-  const filteredOrders = data?.data.filter(order => 
-    order.order_reference?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.driver_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.pickup_address?.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const filteredOrders =
+    data?.data.filter(
+      order =>
+        order.order_reference?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.driver_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.pickup_address?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
 
   // Get payment method color
-  const getPaymentMethodColor = (method: string | null): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getPaymentMethodColor = (
+    method: string | null
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (method?.toLowerCase()) {
       case 'cash':
         return 'success';
@@ -170,7 +176,9 @@ const AdminOrdersPage: React.FC = () => {
   };
 
   // Get order status color
-  const getOrderStatusColor = (status: string | null): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getOrderStatusColor = (
+    status: string | null
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (status?.toLowerCase()) {
       case 'finished':
         return 'success';
@@ -187,131 +195,116 @@ const AdminOrdersPage: React.FC = () => {
     <Box>
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            mb: 2
-          }}>
-          <SearchField
-            searchTerm={searchTerm}
-            handleSearchChange={handleSearchChange}
-          />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              mb: 2,
+            }}
+          >
+            <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
           </Box>
 
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Reference</TableCell>
-                      <TableCell>Created</TableCell>
-                      <TableCell>Driver</TableCell>
-                      <TableCell>Pickup</TableCell>
-                      <TableCell>Price</TableCell>
-                      <TableCell>Payment</TableCell>
-                      <TableCell>Status</TableCell>
-                      <TableCell align="center">Info</TableCell>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Reference</TableCell>
+                  <TableCell>Created</TableCell>
+                  <TableCell>Driver</TableCell>
+                  <TableCell>Pickup</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Payment</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell align="center">Info</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {isLoading ? (
+                  <TableRowSkeleton />
+                ) : isError ? (
+                  <TableRow>
+                    <TableCell align="center">Error loading orders</TableCell>
+                  </TableRow>
+                ) : filteredOrders.length > 0 ? (
+                  filteredOrders.map(order => (
+                    <TableRow key={order.order_reference} hover>
+                      <TableCell>{order.order_reference}</TableCell>
+                      <TableCell>{formatTimestamp(order.order_created_timestamp)}</TableCell>
+                      <TableCell>{order.driver_name || 'N/A'}</TableCell>
+                      <TableCell>
+                        {order.pickup_address
+                          ? order.pickup_address.length > 30
+                            ? `${order.pickup_address.substring(0, 30)}...`
+                            : order.pickup_address
+                          : 'N/A'}
+                      </TableCell>
+                      <TableCell>{formatCurrency(order.ride_price)}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={order.payment_method || 'Unknown'}
+                          color={getPaymentMethodColor(order.payment_method)}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={order.order_status || 'Unknown'}
+                          color={getOrderStatusColor(order.order_status)}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          size="small"
+                          onClick={() => handleViewDetails(order)}
+                          aria-label="view details"
+                        >
+                          <InfoIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {isLoading ? (
-                      <TableRowSkeleton />
-                    ) : isError ? (
-                      <TableRow>
-                        <TableCell align="center">
-                          Error loading orders
-                        </TableCell>
-                      </TableRow>
-                    ) : filteredOrders.length > 0 ? (
-                      filteredOrders.map((order) => (
-                        <TableRow key={order.order_reference} hover>
-                          <TableCell>{order.order_reference}</TableCell>
-                          <TableCell>{formatTimestamp(order.order_created_timestamp)}</TableCell>
-                          <TableCell>{order.driver_name || 'N/A'}</TableCell>
-                          <TableCell>
-                            {order.pickup_address
-                              ? order.pickup_address.length > 30
-                                ? `${order.pickup_address.substring(0, 30)}...`
-                                : order.pickup_address
-                              : 'N/A'}
-                          </TableCell>
-                          <TableCell>{formatCurrency(order.ride_price)}</TableCell>
-                          <TableCell>
-                            <Chip
-                              label={order.payment_method || 'Unknown'}
-                              color={getPaymentMethodColor(order.payment_method)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip 
-                              label={order.order_status || 'Unknown'}
-                              color={getOrderStatusColor(order.order_status)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <IconButton
-                              size="small"
-                              onClick={() => handleViewDetails(order)}
-                              aria-label="view details"
-                            >
-                              <InfoIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell align="center">
-                          No orders found
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell align="center">No orders found</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-              <Box display="flex" justifyContent="center" p={2}>
-                <Pagination
-                  count={data?.total_pages || 0}
-                  page={page}
-                  onChange={handlePageChange}
-                  color="primary"
-                />
-              </Box>
-            
+          <Box display="flex" justifyContent="center" p={2}>
+            <Pagination
+              count={data?.total_pages || 0}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </Box>
         </CardContent>
       </Card>
 
       {/* Order Details Dialog */}
-      <Dialog
-        open={detailsOpen}
-        onClose={handleCloseDetails}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          Order Details - {selectedOrder?.order_reference}
-        </DialogTitle>
+      <Dialog open={detailsOpen} onClose={handleCloseDetails} maxWidth="md" fullWidth>
+        <DialogTitle>Order Details - {selectedOrder?.order_reference}</DialogTitle>
         <DialogContent dividers>
           {selectedOrder && (
             <Grid2 spacing={3}>
-              <Grid2 size={{ xs: 12 }} >
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Basic Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
                 <Grid2 spacing={2}>
-                  <Grid2 size={{ xs: 12, sm: 6 }} >
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Driver
                     </Typography>
-                    <Typography variant="body1">
-                      {selectedOrder.driver_name || 'N/A'}
-                    </Typography>
+                    <Typography variant="body1">{selectedOrder.driver_name || 'N/A'}</Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 6 }} >
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Status
                     </Typography>
@@ -321,7 +314,7 @@ const AdminOrdersPage: React.FC = () => {
                       size="small"
                     />
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 6 }} >
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Created At
                     </Typography>
@@ -329,7 +322,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatTimestamp(selectedOrder.order_created_timestamp)}
                     </Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 6 }} >
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Finished At
                     </Typography>
@@ -350,9 +343,7 @@ const AdminOrdersPage: React.FC = () => {
                     <Typography variant="body2" color="text.secondary">
                       Pickup Address
                     </Typography>
-                    <Typography variant="body1">
-                      {selectedOrder.pickup_address || 'N/A'}
-                    </Typography>
+                    <Typography variant="body1">{selectedOrder.pickup_address || 'N/A'}</Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
@@ -369,19 +360,20 @@ const AdminOrdersPage: React.FC = () => {
                       Vehicle
                     </Typography>
                     <Typography variant="body1">
-                      {selectedOrder.vehicle_model || 'N/A'} ({selectedOrder.vehicle_license_plate || 'N/A'})
+                      {selectedOrder.vehicle_model || 'N/A'} (
+                      {selectedOrder.vehicle_license_plate || 'N/A'})
                     </Typography>
                   </Grid2>
                 </Grid2>
               </Grid2>
 
-              <Grid2 size={{ xs: 12}} >
+              <Grid2 size={{ xs: 12 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Payment Information
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
                 <Grid2 spacing={2}>
-                  <Grid2 size={{ xs: 12, sm: 6 }} >
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Payment Method
                     </Typography>
@@ -404,7 +396,13 @@ const AdminOrdersPage: React.FC = () => {
                       Base Fare
                     </Typography>
                     <Typography variant="body1">
-                      {formatCurrency(selectedOrder.ride_price ? selectedOrder.ride_price - (selectedOrder.booking_fee || 0) - (selectedOrder.toll_fee || 0) : null)}
+                      {formatCurrency(
+                        selectedOrder.ride_price
+                          ? selectedOrder.ride_price -
+                              (selectedOrder.booking_fee || 0) -
+                              (selectedOrder.toll_fee || 0)
+                          : null
+                      )}
                     </Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 12, sm: 4 }}>
@@ -415,7 +413,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.booking_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 4 }} >
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Toll Fee
                     </Typography>
@@ -423,15 +421,13 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.toll_fee)}
                     </Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 4 }} >
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Tip
                     </Typography>
-                    <Typography variant="body1">
-                      {formatCurrency(selectedOrder.tip)}
-                    </Typography>
+                    <Typography variant="body1">{formatCurrency(selectedOrder.tip)}</Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 4 }} >
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Discount
                     </Typography>
@@ -439,7 +435,7 @@ const AdminOrdersPage: React.FC = () => {
                       {formatCurrency(selectedOrder.in_app_discount)}
                     </Typography>
                   </Grid2>
-                  <Grid2 size={{ xs: 12, sm: 4 }} >
+                  <Grid2 size={{ xs: 12, sm: 4 }}>
                     <Typography variant="body2" color="text.secondary">
                       Driver Commission
                     </Typography>

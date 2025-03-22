@@ -24,7 +24,6 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
   // State for selected period
   const [selectedPeriod, setSelectedPeriod] = useState<string>('week');
 
-
   // Handle period change
   const handlePeriodChange = (period: string) => {
     setSelectedPeriod(period);
@@ -37,7 +36,7 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
         return (
           <Box>
             {/* Welcome Card */}
-            <DriverWelcomeCard 
+            <DriverWelcomeCard
               selectedPeriod={selectedPeriod}
               onPeriodChange={handlePeriodChange}
             />
@@ -51,38 +50,31 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
                 <DriverPerformanceList period={selectedPeriod} />
               </Box>
               <Box sx={{ flex: 1 }}>
-                <RecentOrdersList 
+                <RecentOrdersList
                   period={selectedPeriod}
-                  onViewAllClick={() => window.location.href = '/driver/orders'}
+                  onViewAllClick={() => (window.location.href = '/driver/orders')}
                 />
               </Box>
             </Box>
           </Box>
         );
       case 'orders':
-        return (
-          <DriverOrdersPage
-            period={selectedPeriod}
-            onPeriodChange={handlePeriodChange}
-          />
-        );
+        return <DriverOrdersPage period={selectedPeriod} onPeriodChange={handlePeriodChange} />;
       case 'contacts':
-        return <Box>
-          <Typography variant="h4" gutterBottom>
-            {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
-          </Typography>
-          <DriverContactsPage />
-        </Box>
+        return (
+          <Box>
+            <Typography variant="h4" gutterBottom>
+              {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+            </Typography>
+            <DriverContactsPage />
+          </Box>
+        );
       default:
         return <div>Page not found</div>;
     }
   };
 
-  return (
-    <DashboardLayout menuItems={sidebarItemsDriver}>
-      {renderContent()}
-    </DashboardLayout>
-  );
+  return <DashboardLayout menuItems={sidebarItemsDriver}>{renderContent()}</DashboardLayout>;
 };
 
 export default DriverDashboard;

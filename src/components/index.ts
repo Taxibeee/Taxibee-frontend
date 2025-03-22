@@ -2,7 +2,6 @@
 export { default as DashboardLayout } from './layout/DashboardLayout';
 export { default as UserMenu } from './layout/UserMenu';
 
-
 // Admin components
 export { default as SummaryCards } from './admin/SummaryCards';
 export { default as WeeklyAnalyticsTable } from './admin/WeeklyAnalyticsCharts';

@@ -17,8 +17,8 @@ import AdminContactsPage from './AdminContactsPage';
 
 // Import dashboard components for the main dashboard
 import SummaryCards from '../../components/admin/SummaryCards';
-import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts'; 
-import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart'; 
+import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts';
+import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart';
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,6 @@ interface SidebarItem {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
-
   const { t } = useTranslation();
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
@@ -43,8 +42,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
         ...item,
         text: t(item.text),
       };
-    })
-  }
+    });
+  };
 
   // Render the appropriate content based on the selected page
   const renderContent = () => {
@@ -57,8 +56,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
             </Typography>
 
             <SummaryCards />
-            
-            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
+
+            <Box
+              sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}
+            >
               <Box sx={{ flex: 4 }}>
                 <WeeklyAnalyticsCharts />
               </Box>
@@ -66,54 +67,59 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
                 <RevenueByMethodChart />
               </Box>
 
-
               <Box sx={{ flex: 4 }}>
                 <TopDriversTable />
               </Box>
-              </Box>
+            </Box>
           </Box>
         );
       case 'orders':
-        return (<Box>
-          <Typography variant="h3" gutterBottom>
+        return (
+          <Box>
+            <Typography variant="h3" gutterBottom>
               {t('adminSidebar.orders')}
             </Typography>
-        <AdminOrdersPage />
-        </Box>
-      );
+            <AdminOrdersPage />
+          </Box>
+        );
       case 'live-status':
-        return (<Box>
-          <Typography variant="h3" gutterBottom>
+        return (
+          <Box>
+            <Typography variant="h3" gutterBottom>
               {t('adminSidebar.liveStatus')}
             </Typography>
-        <AdminLiveStatusPage />
-        </Box>
-      );
+            <AdminLiveStatusPage />
+          </Box>
+        );
       case 'drivers':
         return <AdminDriversPage />;
       case 'transactions':
-        return (<Box>
-          <Typography variant="h3" gutterBottom>
+        return (
+          <Box>
+            <Typography variant="h3" gutterBottom>
               {t('adminSidebar.transactions')}
             </Typography>
-        <AdminTransactionsPage />
-        </Box>
-      );
+            <AdminTransactionsPage />
+          </Box>
+        );
       case 'exact-file':
-        return (<Box>
-          <Typography variant="h3" gutterBottom>
+        return (
+          <Box>
+            <Typography variant="h3" gutterBottom>
               {t('adminSidebar.exactFile')}
             </Typography>
-        <AdminExactFilePage />
-        </Box>
-      );
+            <AdminExactFilePage />
+          </Box>
+        );
       case 'contacts':
-        return <Box>
-          <Typography variant="h3" gutterBottom>
+        return (
+          <Box>
+            <Typography variant="h3" gutterBottom>
               {t('adminContactsPage.contacts')}
             </Typography>
-          <AdminContactsPage /> 
-        </Box>
+            <AdminContactsPage />
+          </Box>
+        );
       default:
         return <div>{t('adminDashboard.pageNotFound')}</div>;
     }

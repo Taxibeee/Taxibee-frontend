@@ -1,7 +1,8 @@
 /* src/index.css */
 @import 'tailwindcss';
 
-body, html {
+body,
+html {
   box-sizing: border-box;
   overflow-x: hidden;
 }

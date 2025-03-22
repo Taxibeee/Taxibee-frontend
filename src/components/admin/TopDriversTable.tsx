@@ -12,7 +12,7 @@ import {
   Typography,
   LinearProgress,
   Box,
-  Button
+  Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAdminQueries } from '../../hooks';
@@ -23,7 +23,7 @@ const formatCurrency = (amount: number | undefined | null) => {
   if (amount === undefined || amount === null) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format(amount);
 };
 
@@ -52,15 +52,14 @@ const TopDriversTable: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.slice(0, 5).map((driver) => {
+                {data.slice(0, 5).map(driver => {
                   const totalRevenue = data.reduce(
                     (sum, current) => sum + current.total_revenue,
                     0
                   );
-                  const percentage = totalRevenue > 0 
-                    ? (driver.total_revenue / totalRevenue) * 100 
-                    : 0;
-                  
+                  const percentage =
+                    totalRevenue > 0 ? (driver.total_revenue / totalRevenue) * 100 : 0;
+
                   return (
                     <TableRow key={driver.driver_uuid}>
                       <TableCell component="th" scope="row">
@@ -81,20 +80,32 @@ const TopDriversTable: React.FC = () => {
               </TableBody>
             </Table>
             {data.length > 5 && (
-              <Box sx={{ textAlign: 'center', mt: 2, display:'flex', justifyContent: 'space-between', flexDirection: 'row', gap: 0, p: 0 }}>
-                <Typography variant="caption" color="textSecondary"
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  mt: 2,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  gap: 0,
+                  p: 0,
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  color="textSecondary"
                   sx={{
-                    mt: 5
+                    mt: 5,
                   }}
                 >
                   Top performance drivers
                 </Typography>
-                <Button 
-                  variant="text" 
+                <Button
+                  variant="text"
                   size="small"
                   onClick={() => navigate('/admin/drivers')}
                   sx={{
-                    mt: 4
+                    mt: 4,
                   }}
                 >
                   View All Drivers

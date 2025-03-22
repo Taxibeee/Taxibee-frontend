@@ -34,13 +34,13 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 // Styled main content area
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme }) => ({
   flexGrow: 1,
@@ -53,8 +53,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 }));
 
 // StyledAppBar component
-const StyledAppBar = styled(AppBar, { 
-  shouldForwardProp: (prop) => prop !== 'open' 
+const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: prop => prop !== 'open',
 })<{
   open?: boolean;
 }>(({ theme, open }) => ({
@@ -83,16 +83,13 @@ interface DashboardLayoutProps {
   menuItems: SidebarItem[];
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 
-  children, 
-  menuItems 
-}) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const location = useLocation();
-  
+
   // State for controlling drawer open/close
   const [open, setOpen] = useState(!isMobile);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -116,30 +113,29 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <Box sx={{ display: 'flex' }}>
-      
       {/* App Bar - Always full width at the top */}
       <StyledAppBar position="fixed" open={!isMobile && open}>
         <Toolbar>
           {isMobile && (
             <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-            edge="start"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
+              edge="start"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
           )}
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {""}
+            {''}
           </Typography>
-          
+
           {/* User Menu with avatar */}
           <UserMenu />
         </Toolbar>
       </StyledAppBar>
-      
+
       {isMobile ? (
         // Mobile: Full-screen dialog
         <Dialog
@@ -159,13 +155,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <CloseIcon />
               </IconButton>
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                {""}
+                {''}
               </Typography>
               <UserMenu />
             </Toolbar>
           </AppBar>
           {/* Render sidebar content inside dialog */}
-          <Sidebar 
+          <Sidebar
             menuItems={menuItems}
             open={true}
             onClose={() => setDialogOpen(false)}
@@ -176,7 +172,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </Dialog>
       ) : (
         // Desktop: Persistent drawer that starts below the AppBar
-        <Sidebar 
+        <Sidebar
           menuItems={menuItems}
           open={open}
           onClose={handleDrawerToggle}
@@ -185,7 +181,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           currentPath={location.pathname}
         />
       )}
-      
+
       {/* Main Content */}
       <Main open={open}>
         <Toolbar /> {/* This creates space beneath the AppBar */}

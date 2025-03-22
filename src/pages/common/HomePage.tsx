@@ -30,7 +30,7 @@ import {
   DialogContentText,
   DialogContent,
   Snackbar,
-  Paper
+  Paper,
 } from '@mui/material';
 
 // Icons
@@ -52,9 +52,9 @@ interface ContactUs {
 }
 
 interface SnackbarAlert {
-    open: boolean;
-    message: string;
-    severity: 'success' | 'error' | 'warning' | 'info';
+  open: boolean;
+  message: string;
+  severity: 'success' | 'error' | 'warning' | 'info';
 }
 
 const HomePage: React.FC = () => {
@@ -66,48 +66,48 @@ const HomePage: React.FC = () => {
 
   const { t } = useTranslation();
 
-  const [ snackbar, setSnackbar ] = useState<SnackbarAlert>({
+  const [snackbar, setSnackbar] = useState<SnackbarAlert>({
     open: false,
     message: '',
-    severity: 'success' 
-  }) 
+    severity: 'success',
+  });
 
   const handleSnackbarClose = () => {
     setSnackbar({
-        ...snackbar, open: false
-    })
-  }
+      ...snackbar,
+      open: false,
+    });
+  };
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
-
-  const [ openContactDialog, setOpenContactDialog ] = useState<boolean>(false);
-  const [ contactForm, setContactForm ] = useState<ContactUs>({
+  const [openContactDialog, setOpenContactDialog] = useState<boolean>(false);
+  const [contactForm, setContactForm] = useState<ContactUs>({
     name: '',
     email: '',
-    message: ''
-  })
+    message: '',
+  });
 
   const handleContactDialogOpen = () => {
     setOpenContactDialog(true);
-  }
+  };
 
   const handleContactDialogClose = () => {
     setOpenContactDialog(false);
     setContactForm({
-        name: '',
-        email: '',
-        message: ''
-    })
-  }
+      name: '',
+      email: '',
+      message: '',
+    });
+  };
 
-  const handleContactFormChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleContactFormChange = (
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setContactForm({
       ...contactForm,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-
   };
 
   const handleContactSubmit = async () => {
@@ -116,22 +116,22 @@ const HomePage: React.FC = () => {
       setSnackbar({
         open: true,
         message: 'Please fill in all fields',
-        severity: 'error'
-      })
+        severity: 'error',
+      });
       return;
     }
-  
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(contactForm.email)) {
       setSnackbar({
         open: true,
         message: 'Please enter a valid email address',
-        severity: 'error'
-      })
+        severity: 'error',
+      });
       return;
     }
-    
+
     setIsSubmitting(true);
 
     try {
@@ -141,7 +141,7 @@ const HomePage: React.FC = () => {
         message: contactForm.message,
         to_email: 'nasrul2001@gmail.com', // Your email address
       };
-  
+
       // actual EmailJS credentials
       const VITE_EMAILJS_PUBLIC_KEY = (window as CustomWindow).__ENV__?.VITE_EMAILJS_PUBLIC_KEY;
       const VITE_EMAILJS_SERVICE_ID = (window as CustomWindow).__ENV__?.VITE_EMAILJS_SERVICE_ID;
@@ -153,28 +153,24 @@ const HomePage: React.FC = () => {
         templateParams,
         VITE_EMAILJS_PUBLIC_KEY!
       );
-  
+
       setSnackbar({
         open: true,
         message: 'Message sent successfully!',
-        severity: 'success'
-      })
+        severity: 'success',
+      });
       handleContactDialogClose();
     } catch (error) {
       console.error('Error sending email:', error);
       setSnackbar({
         open: true,
         message: 'Error sending message. Please try again later.',
-        severity: 'error'
-      })
-    } finally{
-        setIsSubmitting(false);
+        severity: 'error',
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-
-
-
 
   // Animation states
   const [heroVisible, setHeroVisible] = useState(false);
@@ -183,37 +179,39 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     // Trigger animations after component mounts
     setHeroVisible(true);
-    
+
     const featuresTimer = setTimeout(() => {
       setFeaturesVisible(true);
     }, 500);
-    
+
     return () => clearTimeout(featuresTimer);
   }, []);
-  
+
   // Handle navigation
   const handleNavigation = (path: string) => {
     navigate(path);
   };
-  
+
   // Get dashboard path based on user role
   const getDashboardPath = () => {
     return userRole === 'admin' ? '/admin/dashboard' : '/driver/dashboard';
   };
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh',
-      display: 'flex', 
-      flexDirection: 'column'
-    }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Box sx={{ position: 'absolute', top: 20, right: 20, zIndex: 2 }}>
         <Paper sx={{ p: 1, borderRadius: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
           <LanguageSwitcher />
         </Paper>
       </Box>
       {/* Hero Section */}
-      <Box 
+      <Box
         sx={{
           position: 'relative',
           height: '100vh',
@@ -250,7 +248,7 @@ const HomePage: React.FC = () => {
             <source src={taxisHomePageVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          
+
           {/* Dark overlay */}
           <Box
             sx={{
@@ -262,12 +260,12 @@ const HomePage: React.FC = () => {
             }}
           />
         </Box>
-        
+
         {/* Hero Content */}
         <Container maxWidth="xl">
           <Fade in={heroVisible} timeout={1500}>
             <Grid2 spacing={4} sx={{ position: 'relative', zIndex: 1 }}>
-              <Grid2 size={{ xs: 12, md: 7 }} >
+              <Grid2 size={{ xs: 12, md: 7 }}>
                 <Box sx={{ textAlign: isMobile ? 'center' : 'left' }}>
                   <Box
                     component="img"
@@ -280,46 +278,46 @@ const HomePage: React.FC = () => {
                       filter: 'drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5))',
                     }}
                   />
-                  
-                  <Typography 
-                    variant="h2" 
-                    component="h1" 
+
+                  <Typography
+                    variant="h2"
+                    component="h1"
                     color="white"
-                    sx={{ 
-                      fontWeight: 900, 
+                    sx={{
+                      fontWeight: 900,
                       textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
                       mb: 2,
                       fontSize: isMobile ? '1.5rem' : '2.5rem',
-                      fontFamily: 'Inter, sans-serif'
+                      fontFamily: 'Inter, sans-serif',
                     }}
                   >
                     {t('homepage.heroTitle')}
                   </Typography>
 
-                  <Typography 
-                    variant="body1" 
+                  <Typography
+                    variant="body1"
                     color="white"
-                    sx={{ 
+                    sx={{
                       textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
                     }}
                   >
                     {t('homepage.heroTitle2')}
                   </Typography>
-                  
-                  <Typography 
-                    variant="body1" 
-                    color="gray" 
-                    sx={{ 
+
+                  <Typography
+                    variant="body1"
+                    color="gray"
+                    sx={{
                       textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
                       mb: 4,
-                      maxWidth: '700px'
+                      maxWidth: '700px',
                     }}
                   >
                     {t('homepage.heroDesc')}
                   </Typography>
-                  
-                  <Stack 
-                    direction={{ xs: 'column', sm: 'row' }} 
+
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
                     spacing={2}
                     sx={{
                       justifyContent: isMobile ? 'center' : 'flex-start',
@@ -328,7 +326,11 @@ const HomePage: React.FC = () => {
                     <Button
                       variant="contained"
                       size={isMobile ? 'large' : 'large'}
-                      onClick={isAuthenticated ? () => handleNavigation(getDashboardPath()) : () => handleNavigation('/login')}
+                      onClick={
+                        isAuthenticated
+                          ? () => handleNavigation(getDashboardPath())
+                          : () => handleNavigation('/login')
+                      }
                       endIcon={isAuthenticated ? <DashboardIcon /> : <ArrowForwardIcon />}
                       sx={{
                         backgroundColor: '#fecc04',
@@ -342,9 +344,9 @@ const HomePage: React.FC = () => {
                         width: isMobile ? '100%' : '170px',
                       }}
                     >
-                        {isAuthenticated ? t('nav.dashboard') : t('auth.login')}
+                      {isAuthenticated ? t('nav.dashboard') : t('auth.login')}
                     </Button>
-                    
+
                     <Button
                       variant="outlined"
                       size="large"
@@ -370,18 +372,18 @@ const HomePage: React.FC = () => {
           </Fade>
         </Container>
       </Box>
-      
+
       {/* Features Section */}
       <Box sx={{ py: 8, backgroundColor: '#f9fafb' }}>
         <Container maxWidth="lg">
           <Slide in={featuresVisible} direction="up" timeout={1000}>
             <Box>
-              <Typography 
-                variant="h3" 
-                component="h2" 
-                align="center" 
+              <Typography
+                variant="h3"
+                component="h2"
+                align="center"
                 gutterBottom
-                sx={{ 
+                sx={{
                   fontWeight: 700,
                   mb: 6,
                   fontFamily: 'Helvetica-Neue',
@@ -395,28 +397,28 @@ const HomePage: React.FC = () => {
                     width: 80,
                     height: 4,
                     backgroundColor: '#fecc04',
-                  }
+                  },
                 }}
               >
                 {t('homepage.features.title')}
               </Typography>
-              
+
               <Grid2 spacing={isTablet ? 3 : 4}>
-                <Grid2 size={{ xs: 12, md: 4 }} >
-                  <Card 
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Card
                     elevation={0}
-                    sx={{ 
+                    sx={{
                       height: '100%',
-                      backgroungColor: 'inherit'
+                      backgroungColor: 'inherit',
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                      <LocalTaxiIcon 
-                        sx={{ 
-                          fontSize: 60, 
+                      <LocalTaxiIcon
+                        sx={{
+                          fontSize: 60,
                           color: '#fecc04',
-                          mb: 2 
-                        }} 
+                          mb: 2,
+                        }}
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
                         {t('homepage.features.feature1.title')}
@@ -427,21 +429,21 @@ const HomePage: React.FC = () => {
                     </CardContent>
                   </Card>
                 </Grid2>
-                
-                <Grid2 size={{ xs: 12, md: 4 }} >
-                  <Card 
+
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Card
                     elevation={0}
-                    sx={{ 
+                    sx={{
                       height: '100%',
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                      <AnalyticsIcon 
-                        sx={{ 
-                          fontSize: 60, 
+                      <AnalyticsIcon
+                        sx={{
+                          fontSize: 60,
                           color: '#fecc04',
-                          mb: 2 
-                        }} 
+                          mb: 2,
+                        }}
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
                         {t('homepage.features.feature2.title')}
@@ -452,21 +454,21 @@ const HomePage: React.FC = () => {
                     </CardContent>
                   </Card>
                 </Grid2>
-                
-                <Grid2 size={{ xs: 12, md: 4 }} >
-                  <Card 
+
+                <Grid2 size={{ xs: 12, md: 4 }}>
+                  <Card
                     elevation={0}
-                    sx={{ 
+                    sx={{
                       height: '100%',
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                      <PersonIcon 
-                        sx={{ 
-                          fontSize: 60, 
+                      <PersonIcon
+                        sx={{
+                          fontSize: 60,
                           color: '#fecc04',
-                          mb: 2 
-                        }} 
+                          mb: 2,
+                        }}
                       />
                       <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
                         {t('homepage.features.feature3.title')}
@@ -482,14 +484,16 @@ const HomePage: React.FC = () => {
           </Slide>
         </Container>
       </Box>
-      
+
       {/* Footer */}
-      <Box sx={{ 
-        py: 4, 
-        backgroundColor: '#1a1a1a',
-        color: 'white',
-        mt: 'auto'
-      }}>
+      <Box
+        sx={{
+          py: 4,
+          backgroundColor: '#1a1a1a',
+          color: 'white',
+          mt: 'auto',
+        }}
+      >
         <Container>
           <Grid2 spacing={3} alignItems="center">
             <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
@@ -507,18 +511,18 @@ const HomePage: React.FC = () => {
                 {t('homepage.footer.desc')}
               </Typography>
             </Grid2>
-            
+
             <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: 'center' }}>
               <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', md: 'center' }}>
                 <IconButton color="inherit">
                   <PhoneIcon />
                 </IconButton>
-                <IconButton color="inherit" onClick={handleContactDialogOpen} >
+                <IconButton color="inherit" onClick={handleContactDialogOpen}>
                   <EmailIcon />
                 </IconButton>
               </Stack>
             </Grid2>
-            
+
             <Grid2 size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
                 © {new Date().getFullYear()} {t('homepage.footer.copyright')}
@@ -527,105 +531,98 @@ const HomePage: React.FC = () => {
           </Grid2>
         </Container>
       </Box>
-      <Dialog 
-        open={openContactDialog} 
-        onClose={handleContactDialogClose}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle sx={{ 
-          backgroundColor: '#1a1a1a',
-          color: 'white',
-          fontWeight: 'bold'
-        }}>
+      <Dialog open={openContactDialog} onClose={handleContactDialogClose} maxWidth="sm" fullWidth>
+        <DialogTitle
+          sx={{
+            backgroundColor: '#1a1a1a',
+            color: 'white',
+            fontWeight: 'bold',
+          }}
+        >
           {t('contactForm.contactUs')}
         </DialogTitle>
-      <DialogContent sx={{ mt: 2 }}>
-        <DialogContentText sx={{ mb: 2 }}>
-          {t('contactForm.instruction')}
-      </DialogContentText>
-        <TextField
-          autoFocus
-          name="name"
-          label={t('contactForm.name')}
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={contactForm.name}
-          onChange={handleContactFormChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          name="email"
-          label={t('contactForm.email')}
-          type="email"
-          fullWidth
-          variant="outlined"
-          value={contactForm.email}
-          onChange={handleContactFormChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          name="message"
-          label={t('contactForm.message')}
-          type="text"
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          value={contactForm.message}
-          onChange={handleContactFormChange}
-        />
-    </DialogContent>
-    <DialogActions sx={{ p: 3 }}>
-        <Button 
-          onClick={handleContactDialogClose}
-          variant="outlined"
-          sx={{
+        <DialogContent sx={{ mt: 2 }}>
+          <DialogContentText sx={{ mb: 2 }}>{t('contactForm.instruction')}</DialogContentText>
+          <TextField
+            autoFocus
+            name="name"
+            label={t('contactForm.name')}
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={contactForm.name}
+            onChange={handleContactFormChange}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            name="email"
+            label={t('contactForm.email')}
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={contactForm.email}
+            onChange={handleContactFormChange}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            name="message"
+            label={t('contactForm.message')}
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            value={contactForm.message}
+            onChange={handleContactFormChange}
+          />
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button
+            onClick={handleContactDialogClose}
+            variant="outlined"
+            sx={{
               borderColor: '#fecc04',
               color: 'black',
               '&:hover': {
-              borderColor: '#e5b800',
-              backgroundColor: 'rgba(254, 204, 4, 0.1)',
-              }
-          }}
-        >
-          {t('actions.cancel')}
-        </Button>
-        <Button 
-          onClick={handleContactSubmit}
-          variant="contained"
-          sx={{
+                borderColor: '#e5b800',
+                backgroundColor: 'rgba(254, 204, 4, 0.1)',
+              },
+            }}
+          >
+            {t('actions.cancel')}
+          </Button>
+          <Button
+            onClick={handleContactSubmit}
+            variant="contained"
+            sx={{
               backgroundColor: '#fecc04',
               color: 'black',
               '&:hover': {
-              backgroundColor: '#e5b800',
-              }
-          }}
-        >
+                backgroundColor: '#e5b800',
+              },
+            }}
+          >
             {isSubmitting ? 'Sending.. ' : t('contacts.sendMessage')}
-        </Button>
-    </DialogActions>
-    </Dialog>
-        
-        {/* Snackbar Alert */}
-        <Snackbar
-            open={snackbar.open}
-            autoHideDuration={6000}
-            onClose={handleSnackbarClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-            <CustomAlert 
-                onClose={handleSnackbarClose} 
-                severity={snackbar.severity}
-                variant="filled"
-                sx={{ width: '100%' }}
-            >
-                {snackbar.message}
-            </CustomAlert>
-        </Snackbar>
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <CustomAlert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </CustomAlert>
+      </Snackbar>
     </Box>
   );
 };

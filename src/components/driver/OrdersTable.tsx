@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Typography,
   Box,
-  Button
+  Button,
 } from '@mui/material';
 import { useDriverQueries } from '../../hooks';
 import { CustomAlert } from '../../utils/customAlert';
@@ -24,7 +24,7 @@ const formatCurrency = (amount: number | undefined | null) => {
   if (amount === undefined || amount === null) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format(amount);
 };
 
@@ -39,8 +39,8 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => 
 
   return (
     <Card elevation={2}>
-      <CardHeader 
-        title="Recent Orders" 
+      <CardHeader
+        title="Recent Orders"
         action={
           <Box>
             <Button
@@ -91,18 +91,20 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => 
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((order) => (
+                {data.map(order => (
                   <TableRow key={order.order_reference}>
                     <TableCell>{order.order_created_timestamp}</TableCell>
                     <TableCell>
-                      {order.pickup_address ? 
-                        (order.pickup_address.length > 25 ? 
-                          `${order.pickup_address.substring(0, 25)}...` : 
-                          order.pickup_address) : 
-                        'N/A'}
+                      {order.pickup_address
+                        ? order.pickup_address.length > 25
+                          ? `${order.pickup_address.substring(0, 25)}...`
+                          : order.pickup_address
+                        : 'N/A'}
                     </TableCell>
                     <TableCell>
-                      {order.ride_distance ? `${(order.ride_distance / 1000).toFixed(1)} km` : 'N/A'}
+                      {order.ride_distance
+                        ? `${(order.ride_distance / 1000).toFixed(1)} km`
+                        : 'N/A'}
                     </TableCell>
                     <TableCell align="right">
                       {formatCurrency(order.ride_price)}
@@ -117,9 +119,11 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => 
                       <Chip
                         label={order.order_status}
                         color={
-                          order.order_status === 'finished' ? 'success' :
-                          order.order_status === 'canceled' ? 'error' :
-                          'primary'
+                          order.order_status === 'finished'
+                            ? 'success'
+                            : order.order_status === 'canceled'
+                              ? 'error'
+                              : 'primary'
                         }
                         size="small"
                       />

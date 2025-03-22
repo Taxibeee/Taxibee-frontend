@@ -21,7 +21,7 @@ import {
   Grid2,
   Divider,
   IconButton,
-  ButtonGroup
+  ButtonGroup,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDriverQueries } from '../../hooks';
@@ -33,12 +33,12 @@ interface DriverOrdersPageProps {
   onPeriodChange?: (period: string) => void;
 }
 
-const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({ 
+const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
   period: externalPeriod,
-  onPeriodChange: externalPeriodChange
- }) => {
+  onPeriodChange: externalPeriodChange,
+}) => {
   // State for selected period and order details dialog
-  const [ internalPeriod, setInternalPeriod ] = useState<string>('week');
+  const [internalPeriod, setInternalPeriod] = useState<string>('week');
 
   const selectedPeriod = externalPeriod || internalPeriod;
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -51,9 +51,8 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
   // Format timestamp to readable date
   const formatTimestamp = (timestamp: string | number | null): string => {
     if (!timestamp) return 'N/A';
-    const date = typeof timestamp === 'string' 
-      ? timestamp 
-      : new Date(timestamp * 1000).toLocaleString();
+    const date =
+      typeof timestamp === 'string' ? timestamp : new Date(timestamp * 1000).toLocaleString();
     return date;
   };
 
@@ -62,7 +61,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
     if (amount === null) return '€0.00';
     return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
@@ -74,7 +73,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
 
   // Handle period change
   const handlePeriodChange = (period: string) => {
-    if ( externalPeriodChange ) {
+    if (externalPeriodChange) {
       externalPeriodChange(period);
     } else {
       setInternalPeriod(period);
@@ -94,7 +93,9 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
   };
 
   // Get payment method color
-  const getPaymentMethodColor = (method: string | null): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getPaymentMethodColor = (
+    method: string | null
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (method?.toLowerCase()) {
       case 'cash':
         return 'success';
@@ -108,7 +109,9 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
   };
 
   // Get order status color
-  const getOrderStatusColor = (status: string | null): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getOrderStatusColor = (
+    status: string | null
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (status?.toLowerCase()) {
       case 'finished':
         return 'success';
@@ -125,18 +128,18 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
     <Box>
       <Card>
         <CardContent>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography variant="h5">
-              Your Orders
-            </Typography>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}
+          >
+            <Typography variant="h5">Your Orders</Typography>
             <ButtonGroup variant="outlined" size="small">
-              <Button 
+              <Button
                 onClick={() => handlePeriodChange('week')}
                 variant={selectedPeriod === 'week' ? 'contained' : 'outlined'}
               >
                 This Week
               </Button>
-              <Button 
+              <Button
                 onClick={() => handlePeriodChange('month')}
                 variant={selectedPeriod === 'month' ? 'contained' : 'outlined'}
               >
@@ -168,14 +171,14 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.map((order) => (
+                  {data.map(order => (
                     <TableRow key={order.order_reference} hover>
                       <TableCell>{formatTimestamp(order.order_created_timestamp)}</TableCell>
                       <TableCell>
                         {order.pickup_address
-                          ? (order.pickup_address.length > 25
-                              ? `${order.pickup_address.substring(0, 25)}...`
-                              : order.pickup_address)
+                          ? order.pickup_address.length > 25
+                            ? `${order.pickup_address.substring(0, 25)}...`
+                            : order.pickup_address
                           : 'N/A'}
                       </TableCell>
                       <TableCell>{formatDistance(order.ride_distance)}</TableCell>
@@ -220,15 +223,8 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
       </Card>
 
       {/* Order Details Dialog */}
-      <Dialog
-        open={detailsOpen}
-        onClose={handleCloseDetails}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          Order Details - {selectedOrder?.order_reference}
-        </DialogTitle>
+      <Dialog open={detailsOpen} onClose={handleCloseDetails} maxWidth="md" fullWidth>
+        <DialogTitle>Order Details - {selectedOrder?.order_reference}</DialogTitle>
         <DialogContent dividers>
           {selectedOrder && (
             <Grid2 spacing={3}>
@@ -242,9 +238,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                     <Typography variant="body2" color="text.secondary">
                       Order Reference
                     </Typography>
-                    <Typography variant="body1">
-                      {selectedOrder.order_reference}
-                    </Typography>
+                    <Typography variant="body1">{selectedOrder.order_reference}</Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
@@ -277,17 +271,17 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                       Vehicle
                     </Typography>
                     <Typography variant="body1">
-                      {selectedOrder.vehicle_model || 'N/A'} 
-                      {selectedOrder.vehicle_license_plate ? ` (${selectedOrder.vehicle_license_plate})` : ''}
+                      {selectedOrder.vehicle_model || 'N/A'}
+                      {selectedOrder.vehicle_license_plate
+                        ? ` (${selectedOrder.vehicle_license_plate})`
+                        : ''}
                     </Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
                       Terminal Name
                     </Typography>
-                    <Typography variant="body1">
-                      {selectedOrder.terminal_name || 'N/A'}
-                    </Typography>
+                    <Typography variant="body1">{selectedOrder.terminal_name || 'N/A'}</Typography>
                   </Grid2>
                 </Grid2>
               </Grid2>
@@ -302,9 +296,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                     <Typography variant="body2" color="text.secondary">
                       Pickup Address
                     </Typography>
-                    <Typography variant="body1">
-                      {selectedOrder.pickup_address || 'N/A'}
-                    </Typography>
+                    <Typography variant="body1">{selectedOrder.pickup_address || 'N/A'}</Typography>
                   </Grid2>
                   <Grid2 size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" color="text.secondary">
@@ -361,7 +353,12 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                     <Typography variant="body2" color="text.secondary">
                       Tip
                     </Typography>
-                    <Typography variant="body1" color={selectedOrder.tip && selectedOrder.tip > 0 ? "success.main" : "text.primary"}>
+                    <Typography
+                      variant="body1"
+                      color={
+                        selectedOrder.tip && selectedOrder.tip > 0 ? 'success.main' : 'text.primary'
+                      }
+                    >
                       {formatCurrency(selectedOrder.tip)}
                     </Typography>
                   </Grid2>
@@ -406,7 +403,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
                 <Grid2 spacing={2}>
-                <Grid2 size={{ xs: 12 }}>
+                  <Grid2 size={{ xs: 12 }}>
                     <Typography variant="body2" color="text.secondary">
                       Created
                     </Typography>

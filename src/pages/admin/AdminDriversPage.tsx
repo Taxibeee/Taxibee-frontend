@@ -48,7 +48,6 @@ import { WhatsApp } from '@mui/icons-material';
 import { RadioButtonChecked } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -58,7 +57,6 @@ interface TabPanelProps {
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
-
   return (
     <div
       role="tabpanel"
@@ -67,11 +65,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`driver-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ pt: 2 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -84,7 +78,6 @@ interface SearchFieldProps {
   handleFilterDialogClose: () => void;
   handleApplyFilters: (filters: FilterOptions) => void;
   filters: FilterOptions;
-
 }
 interface FilterOptions {
   status: 'all' | 'active' | 'inactive';
@@ -98,18 +91,15 @@ interface FilterDialogProps {
   onApplyFilters: (filters: FilterOptions) => void;
 }
 
-
-const FilterDialog: React.FC<FilterDialogProps> = ({
-  open, onClose, filters, onApplyFilters
-}) => {
-  const [ localFilters, setLocalFilters ] = useState<FilterOptions>(filters);
+const FilterDialog: React.FC<FilterDialogProps> = ({ open, onClose, filters, onApplyFilters }) => {
+  const [localFilters, setLocalFilters] = useState<FilterOptions>(filters);
   const { t } = useTranslation();
 
   const handleApply = () => {
     onApplyFilters(localFilters);
     onClose();
-  }
-  
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{t('adminDriversPage.filters')}</DialogTitle>
@@ -118,14 +108,24 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
           <FormLabel component="legend">{t('adminDriversPage.status')}</FormLabel>
           <RadioGroup
             value={localFilters.status}
-            onChange={(e) => setLocalFilters(prev => ({
-              ...prev,
-              status: e.target.value as FilterOptions['status']
-            }))}
+            onChange={e =>
+              setLocalFilters(prev => ({
+                ...prev,
+                status: e.target.value as FilterOptions['status'],
+              }))
+            }
           >
             <FormControlLabel value="all" control={<Radio />} label={t('adminDriversPage.all')} />
-            <FormControlLabel value="active" control={<Radio />} label={t('adminDriversPage.active')} />
-            <FormControlLabel value="inactive" control={<Radio />} label={t('adminDriversPage.inactive')} />
+            <FormControlLabel
+              value="active"
+              control={<Radio />}
+              label={t('adminDriversPage.active')}
+            />
+            <FormControlLabel
+              value="inactive"
+              control={<Radio />}
+              label={t('adminDriversPage.inactive')}
+            />
           </RadioGroup>
         </FormControl>
 
@@ -133,14 +133,24 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
           <FormLabel component="legend">{t('adminDriversPage.employmentType')}</FormLabel>
           <RadioGroup
             value={localFilters.employmentType}
-            onChange={(e) => setLocalFilters(prev => ({
-              ...prev,
-              employmentType: e.target.value as FilterOptions['employmentType']
-            }))}
+            onChange={e =>
+              setLocalFilters(prev => ({
+                ...prev,
+                employmentType: e.target.value as FilterOptions['employmentType'],
+              }))
+            }
           >
             <FormControlLabel value="all" control={<Radio />} label={t('adminDriversPage.all')} />
-            <FormControlLabel value="salaried" control={<Radio />} label={t('adminDriversPage.salaried')} />
-            <FormControlLabel value="freelancer" control={<Radio />} label={t('adminDriversPage.freelancer')} />
+            <FormControlLabel
+              value="salaried"
+              control={<Radio />}
+              label={t('adminDriversPage.salaried')}
+            />
+            <FormControlLabel
+              value="freelancer"
+              control={<Radio />}
+              label={t('adminDriversPage.freelancer')}
+            />
           </RadioGroup>
         </FormControl>
       </DialogContent>
@@ -152,7 +162,7 @@ const FilterDialog: React.FC<FilterDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 const SearchField: React.FC<SearchFieldProps> = ({
   searchTerm,
@@ -161,88 +171,82 @@ const SearchField: React.FC<SearchFieldProps> = ({
   handleFilterDialogOpen,
   handleFilterDialogClose,
   handleApplyFilters,
-  filters
+  filters,
 }) => {
-
   const { t } = useTranslation();
-
-
 
   return (
     <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-    <Box sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      border: '1px solid gray',
-      p: 0.5,
-      borderRadius: 2,
-    }}>
-      <InputAdornment position='start'>
-        <SearchIcon />
-      </InputAdornment>
-      <TextField
-        fullWidth
-        variant="outlined"
-        placeholder={t('adminDriversPage.searchPlaceholder')}
-        value={searchTerm}
-        onChange={handleSearchChange}
-        size="small"
+      <Box
         sx={{
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              border: 'none'
-            },
-            '&:hover fieldset': {
-              border: 'none'
-            },
-            '&.Mui-focused fieldset': {
-              border: 'none'
-            }
-          }
-        }}
-      />
-    </Box>
-    <Tooltip title={t('adminDriversPage.filters')}>
-      <IconButton 
-        onClick={handleFilterDialogOpen}
-        sx={{ 
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
           border: '1px solid gray',
+          p: 0.5,
           borderRadius: 2,
-          p: 1,
-          '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' }
         }}
       >
-        <FilterListIcon />
-      </IconButton>
-    </Tooltip>
-    <FilterDialog
-      open={filterDialogOpen}
-      onClose={handleFilterDialogClose}
-      filters={filters}
-      onApplyFilters={handleApplyFilters}
-    />
-  </Box>
-  )
-}
-
-
-
-
+        <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder={t('adminDriversPage.searchPlaceholder')}
+          value={searchTerm}
+          onChange={handleSearchChange}
+          size="small"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                border: 'none',
+              },
+              '&:hover fieldset': {
+                border: 'none',
+              },
+              '&.Mui-focused fieldset': {
+                border: 'none',
+              },
+            },
+          }}
+        />
+      </Box>
+      <Tooltip title={t('adminDriversPage.filters')}>
+        <IconButton
+          onClick={handleFilterDialogOpen}
+          sx={{
+            border: '1px solid gray',
+            borderRadius: 2,
+            p: 1,
+            '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' },
+          }}
+        >
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+      <FilterDialog
+        open={filterDialogOpen}
+        onClose={handleFilterDialogClose}
+        filters={filters}
+        onApplyFilters={handleApplyFilters}
+      />
+    </Box>
+  );
+};
 
 const AdminDriversPage: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { t } = useTranslation();
 
   // State for filter dialog
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [ filters, setFilters ] = useState<FilterOptions>({
+  const [filters, setFilters] = useState<FilterOptions>({
     status: 'all',
-    employmentType: 'all'
-  })
-
+    employmentType: 'all',
+  });
 
   // State for selected driver and search
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
@@ -258,9 +262,9 @@ const AdminDriversPage: React.FC = () => {
   const { data: driverOrdersData, isLoading: ordersLoading } = useDriverOrders(
     selectedDriver?.bolt_driver_uuid || '',
     orderPage,
-    10,
+    10
   );
-  
+
   // Add a refetch trigger when driver changes
   useEffect(() => {
     if (selectedDriver) {
@@ -294,74 +298,76 @@ const AdminDriversPage: React.FC = () => {
   // Format timestamp to readable date
   const formatTimestamp = (timestamp: string | number | null): string => {
     if (!timestamp) return 'N/A';
-    
+
     let numericTimestamp: number;
-    
+
     if (typeof timestamp === 'string') {
       numericTimestamp = parseInt(timestamp, 10);
       if (isNaN(numericTimestamp)) return 'Invalid Date';
     } else {
       numericTimestamp = timestamp;
     }
-    
+
     return new Date(numericTimestamp * 1000).toLocaleString();
   };
-  
 
   // Format currency
   const formatCurrency = (amount: number | null): string => {
     if (amount === null) return '€0.00';
     return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'EUR',
     }).format(amount);
   };
 
   // Filter drivers based on search term
-  const filteredDrivers = driversData?.data.filter(driver => {
-    // First apply search filter
-    const matchesSearch = 
-      driver.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (driver.taxibee_id && driver.taxibee_id.toString().includes(searchTerm));
+  const filteredDrivers =
+    driversData?.data.filter(driver => {
+      // First apply search filter
+      const matchesSearch =
+        driver.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (driver.taxibee_id && driver.taxibee_id.toString().includes(searchTerm));
 
-    // Then apply status filter
-    const matchesStatus = 
-      filters.status === 'all' || 
-      (filters.status === 'active' && driver.state.toLowerCase() === 'active') ||
-      (filters.status === 'inactive' && driver.state.toLowerCase() !== 'active');
+      // Then apply status filter
+      const matchesStatus =
+        filters.status === 'all' ||
+        (filters.status === 'active' && driver.state.toLowerCase() === 'active') ||
+        (filters.status === 'inactive' && driver.state.toLowerCase() !== 'active');
 
-    // Then apply employment type filter
-    const matchesEmploymentType = 
-      filters.employmentType === 'all' || 
-      (filters.employmentType === 'freelancer' && driver.exact_debnr) ||
-      (filters.employmentType === 'salaried' && !driver.exact_debnr);
+      // Then apply employment type filter
+      const matchesEmploymentType =
+        filters.employmentType === 'all' ||
+        (filters.employmentType === 'freelancer' && driver.exact_debnr) ||
+        (filters.employmentType === 'salaried' && !driver.exact_debnr);
 
-    return matchesSearch && matchesStatus && matchesEmploymentType;
-  }) || [];
+      return matchesSearch && matchesStatus && matchesEmploymentType;
+    }) || [];
 
   const handleFilterDialogOpen = () => {
     setFilterDialogOpen(true);
-  }
+  };
 
   const handleFilterDialogClose = () => {
     setFilterDialogOpen(false);
-  }
+  };
 
   const handleApplyFilters = (newFilters: FilterOptions) => {
     setFilters(newFilters);
-  
-  }
+  };
 
-    // Total number of drivers
+  // Total number of drivers
   const totalDrivers = driversData?.data.length || 0;
   const filteredDriversCount = filteredDrivers.length;
-  const activeDrivers = filteredDrivers.filter(driver => driver.state.toLowerCase() === 'active').length;
-
+  const activeDrivers = filteredDrivers.filter(
+    driver => driver.state.toLowerCase() === 'active'
+  ).length;
 
   // Get driver status color
-  const getDriverStatusColor = (status: string): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getDriverStatusColor = (
+    status: string
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (status.toLowerCase()) {
       case 'active':
         return 'success';
@@ -378,7 +384,7 @@ const AdminDriversPage: React.FC = () => {
     event.stopPropagation();
     const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
     window.open(`https://wa.me/${formattedPhone}`, '_blank');
-  }
+  };
 
   const renderStatusLegend = () => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, px: 2, py: 1 }}>
@@ -395,30 +401,27 @@ const AdminDriversPage: React.FC = () => {
 
   const SkeletonLoader = () => (
     <Box p={2}>
-    {[...Array(15)].map((_, index) => (
-      <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Skeleton variant="circular" width={32} height={32} sx={{ mr: 1 }} />
-        <Skeleton variant="text" width={150} />
-        <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
-          <Skeleton variant="circular" width={24} height={24} />
-          <Skeleton variant="circular" width={12} height={12} />
+      {[...Array(15)].map((_, index) => (
+        <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Skeleton variant="circular" width={32} height={32} sx={{ mr: 1 }} />
+          <Skeleton variant="text" width={150} />
+          <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
+            <Skeleton variant="circular" width={24} height={24} />
+            <Skeleton variant="circular" width={12} height={12} />
+          </Box>
         </Box>
-      </Box>
-    ))}
-  </Box>
-  )
+      ))}
+    </Box>
+  );
 
   return (
     <Box>
-      <Stack
-        direction={isMobile ? 'column' : 'row'}
-        spacing={2}
-      >
+      <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
         {/* Left side - Driver List */}
-        <Box 
+        <Box
           sx={{
             width: isMobile ? '100%' : '300px', // Fixed width for desktop
-            flexShrink: 0
+            flexShrink: 0,
           }}
         >
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -427,16 +430,15 @@ const AdminDriversPage: React.FC = () => {
                 {t('adminDriversPage.drivers')}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                {searchTerm 
+                {searchTerm
                   ? `Showing ${filteredDriversCount} of ${totalDrivers} drivers`
-                  : `Total ${totalDrivers} drivers`
-                }
+                  : `Total ${totalDrivers} drivers`}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
                 {`Active: ${activeDrivers}`}
               </Typography>
-              <SearchField 
-                searchTerm={searchTerm} 
+              <SearchField
+                searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
                 filterDialogOpen={filterDialogOpen}
                 handleFilterDialogOpen={handleFilterDialogOpen}
@@ -447,14 +449,16 @@ const AdminDriversPage: React.FC = () => {
               {renderStatusLegend()}
             </CardContent>
             <Divider />
-            <Box sx={{ 
-              flexGrow: 1, 
-              overflow: 'auto', 
-              maxHeight: 'calc(100vh - 250px)',
-              '& .MuiTableContainer-root': {
-                maxWidth: '100%'
-              }
-            }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflow: 'auto',
+                maxHeight: 'calc(100vh - 250px)',
+                '& .MuiTableContainer-root': {
+                  maxWidth: '100%',
+                },
+              }}
+            >
               {driversLoading ? (
                 <SkeletonLoader />
               ) : driversError ? (
@@ -466,8 +470,8 @@ const AdminDriversPage: React.FC = () => {
                   <Table size="small" stickyHeader>
                     <TableBody>
                       {filteredDrivers.length > 0 ? (
-                        filteredDrivers.map((driver) => (
-                          <TableRow 
+                        filteredDrivers.map(driver => (
+                          <TableRow
                             key={driver.bolt_driver_uuid}
                             hover
                             onClick={() => handleDriverSelect(driver)}
@@ -485,24 +489,27 @@ const AdminDriversPage: React.FC = () => {
                             <Tooltip title="Chat on Whatsapp">
                               <IconButton
                                 size="small"
-                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => openWhatsAppChat(driver.phone, e)}
-                                sx={{ 
+                                onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                                  openWhatsAppChat(driver.phone, e)
+                                }
+                                sx={{
                                   color: 'success.main',
-                                  mt: 1
+                                  mt: 1,
                                 }}
                               >
                                 <WhatsApp fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <TableCell align="left">
-                            <RadioButtonChecked 
-                              sx={{ 
-                              color: driver.state.toLowerCase() === 'active' 
-                                ? 'success.main' 
-                                : 'grey.400',
-                              fontSize: 12
-                              }} 
-                            />
+                              <RadioButtonChecked
+                                sx={{
+                                  color:
+                                    driver.state.toLowerCase() === 'active'
+                                      ? 'success.main'
+                                      : 'grey.400',
+                                  fontSize: 12,
+                                }}
+                              />
                             </TableCell>
                           </TableRow>
                         ))
@@ -522,10 +529,10 @@ const AdminDriversPage: React.FC = () => {
         </Box>
 
         {/* Right side - Driver Details and Orders */}
-        <Box 
+        <Box
           sx={{
             flexGrow: 1,
-            minWidth: 0
+            minWidth: 0,
           }}
         >
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -550,8 +557,8 @@ const AdminDriversPage: React.FC = () => {
                     </Box>
                   </Box>
 
-                  <Tabs 
-                    value={tabValue} 
+                  <Tabs
+                    value={tabValue}
                     onChange={handleTabChange}
                     indicatorColor="primary"
                     textColor="primary"
@@ -563,14 +570,16 @@ const AdminDriversPage: React.FC = () => {
 
                 <Divider />
 
-                <Box sx={{ 
-                    flexGrow: 1, 
-                    overflow: 'auto', 
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    overflow: 'auto',
                     maxHeight: 'calc(100vh - 250px)',
                     '& .MuiTableContainer-root': {
-                      maxWidth: '100%'
-                    }
-                  }}>
+                      maxWidth: '100%',
+                    },
+                  }}
+                >
                   <TabPanel value={tabValue} index={0}>
                     <Grid2 spacing={3} p={2}>
                       <Grid2 size={{ xs: 12, sm: 6 }}>
@@ -578,48 +587,64 @@ const AdminDriversPage: React.FC = () => {
                           {t('adminDriversPage.personalInformation')}
                         </Typography>
                         <Divider sx={{ mb: 2, mt: 1 }} />
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.fullName')}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.fullName')}
+                          </Typography>
                           <Typography variant="body1">{selectedDriver.full_name}</Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.phone')}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.phone')}
+                          </Typography>
                           <Typography variant="body1">{selectedDriver.phone}</Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.email')}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.email')}
+                          </Typography>
                           <Typography variant="body1">{selectedDriver.email || 'N/A'}</Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Chauffeurs Kaartnr</Typography>
-                          <Typography variant="body1">{selectedDriver.chauffeurskaartnr || 'N/A'}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Chauffeurs Kaartnr
+                          </Typography>
+                          <Typography variant="body1">
+                            {selectedDriver.chauffeurskaartnr || 'N/A'}
+                          </Typography>
                         </Box>
                       </Grid2>
-                      
+
                       <Grid2 size={{ xs: 12, sm: 6 }}>
                         <Typography variant="subtitle2" color="text.secondary">
                           {t('adminDriversPage.systemInformation')}
                         </Typography>
                         <Divider sx={{ mb: 2, mt: 1 }} />
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.taxibeeId')}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.taxibeeId')}
+                          </Typography>
                           <Typography variant="body1">{selectedDriver.taxibee_id}</Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">Bolt {t('adminDriversPage.driver')} UUID</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Bolt {t('adminDriversPage.driver')} UUID
+                          </Typography>
                           <Typography variant="body1" sx={{ wordBreak: 'break-all' }}>
                             {selectedDriver.bolt_driver_uuid}
                           </Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.status')}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.status')}
+                          </Typography>
                           <Chip
                             label={selectedDriver.state}
                             color={getDriverStatusColor(selectedDriver.state)}
@@ -631,25 +656,37 @@ const AdminDriversPage: React.FC = () => {
                             </Typography>
                           )}
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.todayTerminalName')}</Typography>
-                          <Typography variant="body1">{selectedDriver.today_terminal_name || 'Not Assigned'}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.todayTerminalName')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {selectedDriver.today_terminal_name || 'Not Assigned'}
+                          </Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.exactDebnr')}</Typography>
-                          <Typography variant="body1">{selectedDriver.exact_debnr || 'N/A'}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.exactDebnr')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {selectedDriver.exact_debnr || 'N/A'}
+                          </Typography>
                         </Box>
-                        
+
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" color="text.secondary">{t('adminDriversPage.myposOperatorCode')}</Typography>
-                          <Typography variant="body1">{selectedDriver.mypos_operator_code || 'N/A'}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {t('adminDriversPage.myposOperatorCode')}
+                          </Typography>
+                          <Typography variant="body1">
+                            {selectedDriver.mypos_operator_code || 'N/A'}
+                          </Typography>
                         </Box>
                       </Grid2>
                     </Grid2>
                   </TabPanel>
-                  
+
                   <TabPanel value={tabValue} index={1}>
                     {ordersLoading ? (
                       <Box display="flex" justifyContent="center" p={3}>
@@ -668,7 +705,9 @@ const AdminDriversPage: React.FC = () => {
                                 <TableCell>{t('adminOrdersPage.date')}</TableCell>
                                 <TableCell>{t('adminOrdersPage.pickup')}</TableCell>
                                 <TableCell align="right">{t('adminOrdersPage.price')}</TableCell>
-                                <TableCell align="right">{t('adminOrdersPage.netEarnings')}</TableCell>
+                                <TableCell align="right">
+                                  {t('adminOrdersPage.netEarnings')}
+                                </TableCell>
                                 <TableCell>{t('adminOrdersPage.payment')}</TableCell>
                                 <TableCell>{t('adminOrdersPage.status')}</TableCell>
                               </TableRow>
@@ -677,7 +716,9 @@ const AdminDriversPage: React.FC = () => {
                               {driverOrdersData.data.length > 0 ? (
                                 driverOrdersData.data.map((order: Order) => (
                                   <TableRow key={order.order_reference} hover>
-                                    <TableCell>{formatTimestamp(order.order_created_timestamp)}</TableCell>
+                                    <TableCell>
+                                      {formatTimestamp(order.order_created_timestamp)}
+                                    </TableCell>
                                     <TableCell>
                                       {order.pickup_address
                                         ? order.pickup_address.length > 20
@@ -685,13 +726,21 @@ const AdminDriversPage: React.FC = () => {
                                           : order.pickup_address
                                         : 'N/A'}
                                     </TableCell>
-                                    <TableCell align="right">{formatCurrency(order.ride_price)}</TableCell>
-                                    <TableCell align="right">{formatCurrency(order.net_earnings)}</TableCell>
+                                    <TableCell align="right">
+                                      {formatCurrency(order.ride_price)}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                      {formatCurrency(order.net_earnings)}
+                                    </TableCell>
                                     <TableCell>{order.payment_method || 'N/A'}</TableCell>
                                     <TableCell>
                                       <Chip
                                         label={order.order_status || 'Unknown'}
-                                        color={order.order_status?.toLowerCase() === 'finished' ? 'success' : 'default'}
+                                        color={
+                                          order.order_status?.toLowerCase() === 'finished'
+                                            ? 'success'
+                                            : 'default'
+                                        }
                                         size="small"
                                       />
                                     </TableCell>
@@ -707,7 +756,7 @@ const AdminDriversPage: React.FC = () => {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        
+
                         {driverOrdersData.total_pages > 1 && (
                           <Box display="flex" justifyContent="center" p={2}>
                             <Pagination
@@ -725,11 +774,11 @@ const AdminDriversPage: React.FC = () => {
                 </Box>
               </>
             ) : (
-              <Box 
-                display="flex" 
-                flexDirection="column" 
-                alignItems="center" 
-                justifyContent="center" 
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
                 height="100%"
                 p={3}
               >
@@ -737,7 +786,12 @@ const AdminDriversPage: React.FC = () => {
                 <Typography variant="h6" color="text.secondary">
                   {t('adminDriversPage.selectADriver')}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" align="center" sx={{ maxWidth: 400, mt: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                  sx={{ maxWidth: 400, mt: 1 }}
+                >
                   {t('adminDriversPage.selectADriverText')}
                 </Typography>
               </Box>

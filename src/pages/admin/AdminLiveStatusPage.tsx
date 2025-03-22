@@ -26,19 +26,18 @@ import {
   Divider,
   Badge,
   Skeleton,
-  Theme
+  Theme,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { SelectChangeEvent } from '@mui/material/Select';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import PersonIcon from "@mui/icons-material/Person"
+import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAdminQueries } from '../../hooks';
 import { DriverStatus } from '../../types/driver.types';
 
 import { formatPhone } from '../../utils/formatPhone';
-
 
 interface SearchFieldProps {
   searchTerm: string;
@@ -48,33 +47,30 @@ interface SearchFieldProps {
 const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, handleSearchChange }) => (
   <Box sx={{ display: 'flex', mb: 2, justifyContent: 'center', alignItems: 'center' }}>
     <TextField
-    variant="outlined"
-    placeholder="Search by driver name or phone"
-    value={searchTerm}
-    onChange={handleSearchChange}
-    size="small"
-    sx={{ 
-      '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              border: 'none'
-            },
-            '&:hover fieldset': {
-              border: 'none'
-            },
-            '&.Mui-focused fieldset': {
-              border: 'none'
-            }
-          }
-    }}
-    
-
-  />
+      variant="outlined"
+      placeholder="Search by driver name or phone"
+      value={searchTerm}
+      onChange={handleSearchChange}
+      size="small"
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            border: 'none',
+          },
+          '&:hover fieldset': {
+            border: 'none',
+          },
+          '&.Mui-focused fieldset': {
+            border: 'none',
+          },
+        },
+      }}
+    />
     <InputAdornment position="start">
-          <SearchIcon />
-        </InputAdornment>
+      <SearchIcon />
+    </InputAdornment>
   </Box>
 );
-
 
 const AdminLiveStatusPage: React.FC = () => {
   // State for filters
@@ -113,20 +109,21 @@ const AdminLiveStatusPage: React.FC = () => {
   };
 
   // Filter drivers based on search term and status filter
-  const filteredDrivers = data?.filter(driver => {
-    const matchesSearch = 
-      driver.driver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.phone.toLowerCase().includes(searchTerm.toLowerCase());
-      
-    const matchesStatus = 
-      statusFilter === 'all' || 
-      driver.current_status === statusFilter;
-      
-    return matchesSearch && matchesStatus;
-  }) || [];
+  const filteredDrivers =
+    data?.filter(driver => {
+      const matchesSearch =
+        driver.driver_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        driver.phone.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesStatus = statusFilter === 'all' || driver.current_status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    }) || [];
 
   // Get status color
-  const getStatusColor = (status: string): "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" => {
+  const getStatusColor = (
+    status: string
+  ): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
     switch (status) {
       case 'waiting_orders':
         return 'success';
@@ -147,53 +144,51 @@ const AdminLiveStatusPage: React.FC = () => {
   const SkeletonLoader = () => {
     return (
       <TableContainer component={Paper} elevation={0}>
-    <Table sx={{ minWidth: 650, width: '100%' }}>
-      <TableHead>
-        <TableRow>
-          <TableCell>Driver</TableCell>
-          <TableCell>Phone</TableCell>
-          <TableCell>Current Status</TableCell>
-          <TableCell>Last Updated</TableCell>
-          <TableCell>Duration</TableCell>
-          <TableCell align="center">Actions</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {[...Array(9)].map((_, index) => (
-          <TableRow key={index}>
-            <TableCell>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Skeleton variant="circular" width={24} height={24} sx={{ mr: 1 }} />
-                <Skeleton variant="text" width={120} />
-              </Box>
-            </TableCell>
-            <TableCell>
-              <Skeleton variant="text" width={100} />
-            </TableCell>
-            <TableCell>
-              <Skeleton variant="rounded" width={80} height={24} />
-            </TableCell>
-            <TableCell>
-              <Skeleton variant="text" width={150} />
-            </TableCell>
-            <TableCell>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Skeleton variant="circular" width={16} height={16} sx={{ mr: 1 }} />
-                <Skeleton variant="text" width={80} />
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Skeleton variant="circular" width={32} height={32} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-    )
-  }
-
-
+        <Table sx={{ minWidth: 650, width: '100%' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Driver</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Current Status</TableCell>
+              <TableCell>Last Updated</TableCell>
+              <TableCell>Duration</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[...Array(9)].map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Skeleton variant="circular" width={24} height={24} sx={{ mr: 1 }} />
+                    <Skeleton variant="text" width={120} />
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Skeleton variant="text" width={100} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton variant="rounded" width={80} height={24} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton variant="text" width={150} />
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Skeleton variant="circular" width={16} height={16} sx={{ mr: 1 }} />
+                    <Skeleton variant="text" width={80} />
+                  </Box>
+                </TableCell>
+                <TableCell align="center">
+                  <Skeleton variant="circular" width={32} height={32} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
   return (
     <Box>
@@ -203,23 +198,25 @@ const AdminLiveStatusPage: React.FC = () => {
           <Grid2 container spacing={2}>
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
-                <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
+                <CardContent sx={{ position: 'relative', height: '100px', p: 4 }}>
                   <Box
                     sx={{
                       position: 'absolute',
                       bottom: 8,
-                      left: 8
+                      left: 8,
                     }}
                   >
                     <Typography variant="body1" color="text.secondary" component="div">
                       Total Active
                     </Typography>
                   </Box>
-                  <Box sx={{
-                    position: 'absolute',
-                    top: 30,
-                    right: 30,
-                  }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 30,
+                      right: 30,
+                    }}
+                  >
                     <Badge
                       badgeContent={data?.length || 0}
                       color="primary"
@@ -231,27 +228,29 @@ const AdminLiveStatusPage: React.FC = () => {
                 </CardContent>
               </Card>
             </Grid2>
-            
+
             {/* Waiting Orders Card */}
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
-                <CardContent sx={{ position:'relative', height: '100px', p: 4 }}>
+                <CardContent sx={{ position: 'relative', height: '100px', p: 4 }}>
                   <Box
                     sx={{
                       position: 'absolute',
                       bottom: 8,
-                      left: 8
+                      left: 8,
                     }}
                   >
                     <Typography variant="body1" color="text.secondary" component="div">
                       Waiting Orders
                     </Typography>
                   </Box>
-                  <Box sx={{
-                    position: 'absolute',
-                    top: 30,
-                    right: 30,
-                  }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 30,
+                      right: 30,
+                    }}
+                  >
                     <Badge
                       badgeContent={getDriverCountByStatus('waiting_orders')}
                       color="success"
@@ -267,23 +266,25 @@ const AdminLiveStatusPage: React.FC = () => {
             {/* Has Order Card */}
             <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
-                <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
+                <CardContent sx={{ position: 'relative', height: '100px', p: 4 }}>
                   <Box
                     sx={{
                       position: 'absolute',
                       bottom: 8,
-                      left: 8
+                      left: 8,
                     }}
                   >
                     <Typography variant="body1" color="text.secondary" component="div">
                       Has Order
                     </Typography>
                   </Box>
-                  <Box sx={{
-                    position: 'absolute',
-                    top: 30,
-                    right: 30,
-                  }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 30,
+                      right: 30,
+                    }}
+                  >
                     <Badge
                       badgeContent={getDriverCountByStatus('has_order')}
                       color="primary"
@@ -296,38 +297,39 @@ const AdminLiveStatusPage: React.FC = () => {
               </Card>
             </Grid2>
 
-          {/* Unknown Status Card */}
-          <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
-            <Card>
-              <CardContent sx={{ position:'relative', height: '100px', p: 4}}>
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: 8,
-                    left: 8
-                  }}
-                >
-                  <Typography variant="body1" color="text.secondary" component="div">
-                    Unknown Status
-                  </Typography>
-                </Box>
-                <Box sx={{
-                  position: 'absolute',
-                  top: 30,
-                  right: 30,
-                }}>
-                  <Badge
-                    badgeContent={getDriverCountByStatus('unknown')}
-                    color="default"
-                    sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+            {/* Unknown Status Card */}
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
+              <Card>
+                <CardContent sx={{ position: 'relative', height: '100px', p: 4 }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: 8,
+                    }}
                   >
-                    <PersonIcon fontSize="large" color="action" />
-                  </Badge>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid2>
-
+                    <Typography variant="body1" color="text.secondary" component="div">
+                      Unknown Status
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 30,
+                      right: 30,
+                    }}
+                  >
+                    <Badge
+                      badgeContent={getDriverCountByStatus('unknown')}
+                      color="default"
+                      sx={{ '& .MuiBadge-badge': { fontSize: 10, height: 20, minWidth: 20 } }}
+                    >
+                      <PersonIcon fontSize="large" color="action" />
+                    </Badge>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid2>
           </Grid2>
         </Grid2>
 
@@ -335,81 +337,77 @@ const AdminLiveStatusPage: React.FC = () => {
         <Grid2 size={{ xs: 12 }}>
           <Card>
             <CardContent>
-            <Box display="flex" alignItems="center" mb={2}>
-              {/* Left side - Search and Filter */}
-              <Box display="flex" gap={2} flex={1}>
-                <SearchField
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                />
-    
-                <FormControl size="small" sx={{ width: '200px' }}>
-                  <InputLabel id="status-filter-label">Status Filter</InputLabel>
-                  <Select
-                    labelId="status-filter-label"
-                    value={statusFilter}
-                    onChange={handleStatusFilterChange}
-                    label="Status Filter"
+              <Box display="flex" alignItems="center" mb={2}>
+                {/* Left side - Search and Filter */}
+                <Box display="flex" gap={2} flex={1}>
+                  <SearchField searchTerm={searchTerm} handleSearchChange={handleSearchChange} />
+
+                  <FormControl size="small" sx={{ width: '200px' }}>
+                    <InputLabel id="status-filter-label">Status Filter</InputLabel>
+                    <Select
+                      labelId="status-filter-label"
+                      value={statusFilter}
+                      onChange={handleStatusFilterChange}
+                      label="Status Filter"
+                    >
+                      <MenuItem value="all">All Statuses</MenuItem>
+                      <MenuItem value="waiting_orders">Waiting Orders</MenuItem>
+                      <MenuItem value="has_order">Has Order</MenuItem>
+                      <MenuItem value="unknown">Unknown</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                {/* Right side - Update, Auto-refresh, and Refresh */}
+                <Box display="flex" gap={2} alignItems="center">
+                  <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
+                    <InputLabel id="refresh-interval-label">Auto-refresh</InputLabel>
+                    <Select
+                      labelId="refresh-interval-label"
+                      value={refreshInterval}
+                      onChange={handleRefreshIntervalChange}
+                      label="Auto-refresh"
+                    >
+                      <MenuItem value={30000}>Every 30 seconds</MenuItem>
+                      <MenuItem value={60000}>Every 1 minute</MenuItem>
+                      <MenuItem value={300000}>Every 5 minutes</MenuItem>
+                      <MenuItem value={0}>Manual only</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <Button
+                    variant="contained"
+                    startIcon={<RefreshIcon sx={{ fontSize: '20px' }} />}
+                    onClick={handleUpdateDrivers}
+                    disabled={isUpdating}
+                    sx={{
+                      backgroundColor: '#fecc04',
+                      color: 'black',
+                      width: '170px',
+                      height: '40px',
+                      fontSize: '0.7rem',
+                      '&:hover': {
+                        backgroundColor: '#e5b803',
+                      },
+                    }}
                   >
-                    <MenuItem value="all">All Statuses</MenuItem>
-                    <MenuItem value="waiting_orders">Waiting Orders</MenuItem>
-                    <MenuItem value="has_order">Has Order</MenuItem>
-                    <MenuItem value="unknown">Unknown</MenuItem>
-                  </Select>
-                </FormControl>
+                    {isUpdating ? 'Updating...' : 'Update Drivers'}
+                  </Button>
+
+                  <IconButton onClick={handleManualRefresh} disabled={isLoading}>
+                    <RefreshIcon />
+                  </IconButton>
+                </Box>
               </Box>
 
-              {/* Right side - Update, Auto-refresh, and Refresh */}
-              <Box display="flex" gap={2} alignItems="center">
-                <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
-                  <InputLabel id="refresh-interval-label">Auto-refresh</InputLabel>
-                  <Select
-                    labelId="refresh-interval-label"
-                    value={refreshInterval}
-                    onChange={handleRefreshIntervalChange}
-                    label="Auto-refresh"
-                  >
-                    <MenuItem value={30000}>Every 30 seconds</MenuItem>
-                    <MenuItem value={60000}>Every 1 minute</MenuItem>
-                    <MenuItem value={300000}>Every 5 minutes</MenuItem>
-                    <MenuItem value={0}>Manual only</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <Button
-                  variant="contained"
-                  startIcon={<RefreshIcon sx={{ fontSize: '20px' }} />}
-                  onClick={handleUpdateDrivers}
-                  disabled={isUpdating}
-                  sx={{
-                    backgroundColor: '#fecc04',
-                    color: 'black',
-                    width: '170px',
-                    height: '40px',
-                    fontSize: '0.7rem',
-                    '&:hover': {
-                      backgroundColor: '#e5b803',
-                    }
-                  }}
-                >
-                  {isUpdating ? 'Updating...' : 'Update Drivers'}
-                </Button>
-
-                <IconButton onClick={handleManualRefresh} disabled={isLoading}>
-                  <RefreshIcon />
-                </IconButton>
-              </Box>
-            </Box>
-
-              
-              
-              
               <Divider sx={{ mb: 2 }} />
 
               {isLoading ? (
                 <SkeletonLoader />
               ) : isError ? (
-                <Typography color="error">Error loading driver status data. Please try again.</Typography>
+                <Typography color="error">
+                  Error loading driver status data. Please try again.
+                </Typography>
               ) : (
                 <TableContainer component={Paper} elevation={0}>
                   <Table sx={{ minWidth: 650 }}>
@@ -429,7 +427,9 @@ const AdminLiveStatusPage: React.FC = () => {
                           <TableRow key={driver.driver_uuid} hover>
                             <TableCell>
                               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <PersonIcon sx={{ mr: 1, color: getStatusColor(driver.current_status) }} />
+                                <PersonIcon
+                                  sx={{ mr: 1, color: getStatusColor(driver.current_status) }}
+                                />
                                 {driver.driver_name}
                               </Box>
                             </TableCell>
@@ -449,8 +449,8 @@ const AdminLiveStatusPage: React.FC = () => {
                               </Box>
                             </TableCell>
                             <TableCell align="center">
-                              <IconButton 
-                                size="small" 
+                              <IconButton
+                                size="small"
                                 color="primary"
                                 component="a"
                                 href={`tel:${driver.phone}`}
@@ -462,9 +462,7 @@ const AdminLiveStatusPage: React.FC = () => {
                         ))
                       ) : (
                         <TableRow>
-                          <TableCell align="center">
-                            No drivers match your filters
-                          </TableCell>
+                          <TableCell align="center">No drivers match your filters</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -482,7 +480,7 @@ const AdminLiveStatusPage: React.FC = () => {
           zIndex: (theme: Theme) => theme.zIndex.drawer + 1,
           display: 'flex',
           flexDirection: 'column',
-          gap: 2
+          gap: 2,
         }}
         open={isUpdating}
       >
@@ -491,7 +489,6 @@ const AdminLiveStatusPage: React.FC = () => {
           Updating drivers...
         </Typography>
       </Backdrop>
-
     </Box>
   );
 };

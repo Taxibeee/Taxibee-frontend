@@ -10,7 +10,7 @@ import {
   ListItemAvatar,
   Avatar,
   CircularProgress,
-  Typography
+  Typography,
 } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import PlaceIcon from '@mui/icons-material/Place';
@@ -24,7 +24,7 @@ const formatCurrency = (amount: number | undefined | null) => {
   if (amount === undefined || amount === null) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   }).format(amount);
 };
 

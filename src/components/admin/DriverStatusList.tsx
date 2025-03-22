@@ -12,7 +12,7 @@ import {
   Chip,
   CircularProgress,
   Typography,
-  Button
+  Button,
 } from '@mui/material';
 import LocalTaxiIcon from '@mui/icons-material/LocalTaxi';
 import { useNavigate } from 'react-router-dom';
@@ -26,14 +26,10 @@ const DriverStatusList: React.FC = () => {
 
   return (
     <Card elevation={2}>
-      <CardHeader 
-        title="Live Driver Status" 
+      <CardHeader
+        title="Live Driver Status"
         action={
-          <Button 
-            variant="outlined" 
-            size="small" 
-            onClick={() => navigate('/admin/drivers')}
-          >
+          <Button variant="outlined" size="small" onClick={() => navigate('/admin/drivers')}>
             View All Drivers
           </Button>
         }
@@ -48,7 +44,7 @@ const DriverStatusList: React.FC = () => {
           <Typography>No active drivers at the moment.</Typography>
         ) : (
           <List>
-            {data.map((driver) => (
+            {data.map(driver => (
               <ListItem
                 key={driver.driver_uuid}
                 secondaryAction={
@@ -58,8 +54,8 @@ const DriverStatusList: React.FC = () => {
                       driver.current_status === 'waiting_orders'
                         ? 'success'
                         : driver.current_status === 'has_order'
-                        ? 'primary'
-                        : 'default'
+                          ? 'primary'
+                          : 'default'
                     }
                     size="small"
                   />

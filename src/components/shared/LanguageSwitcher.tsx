@@ -8,7 +8,7 @@ import {
   Typography,
   ListItemIcon,
   SelectChangeEvent,
-  Chip
+  Chip,
 } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 

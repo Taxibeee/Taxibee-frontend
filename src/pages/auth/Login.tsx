@@ -369,7 +369,7 @@ const Login: React.FC = () => {
             variant="fullWidth"
             sx={{
               minHeight: 'auto',
-              width: '50%',
+              width: '200px',
               '& .MuiTabs-indicator': {
                 display: 'none'
               },

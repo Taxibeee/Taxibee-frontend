@@ -428,7 +428,14 @@ const Login: React.FC = () => {
           </Tabs>
         </Box>
 
-
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
           <TextField
             fullWidth
             label={t('auth.username')}
@@ -449,9 +456,15 @@ const Login: React.FC = () => {
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                   border: 'none'  // Removes border on focus
                 }
+              },
+              '& .MuiInputLabel-root': {
+                '&.Mui-focused': {
+                  paddingTop: 2  // Added padding only when focused
+                }
               }
             }}
           />
+          </Box>
           <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
             <PasswordField
               id="filled-adornment-password"

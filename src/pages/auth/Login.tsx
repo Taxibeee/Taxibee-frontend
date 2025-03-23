@@ -367,11 +367,11 @@ const Login: React.FC = () => {
             >
               <TextField
                 fullWidth
-                id='filled-username-input'
+                id="filled-username-input"
                 label={t('auth.username')}
                 name="username"
-                type='text'
-                variant='filled'
+                type="text"
+                variant="filled"
                 value={formData.username}
                 onChange={handleInputChange}
                 sx={{

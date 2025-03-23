@@ -23,13 +23,13 @@ const authService = {
         return {
           access_token: '',
           user: {} as UserType,
-          error: axiosError.response?.data?.detail || 'Invalid credentials'
+          error: axiosError.response?.data?.detail || 'Invalid credentials',
         };
       }
       return {
         access_token: '',
         user: {} as UserType,
-        error: 'Invalid credentials'
+        error: 'Invalid credentials',
       };
     }
   },

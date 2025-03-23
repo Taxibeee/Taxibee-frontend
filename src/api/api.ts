@@ -43,24 +43,18 @@ api.interceptors.response.use(
     // if error is 401 unauthorized, log out the user
     if (response?.status === 401) {
       // Clear auth data
-
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
-      if (response.data && typeof response.data === 'object') {
-        const data = response.data as { detail?: string };
-        if ('detail' in data) {
-          console.error('Unauthorized error detail:', data.detail);
-        }
+      // Only redirect to login if we're not already on the login page
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
       }
-
-      // Redirect to login
-      window.location.href = '/login';
     }
 
     // Format error for consistent error handling
     const formattedError: ApiError = {
-      message: (response?.data as { detail?: string })?.detail || 'An error occurred',
+      message: (response?.data as { detail?: string })?.detail || 'Invalid credentials',
       status: response?.status,
     };
 

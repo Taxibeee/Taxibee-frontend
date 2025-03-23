@@ -7,6 +7,7 @@ const initialState: AuthState = {
   user: JSON.parse(localStorage.getItem('user') || 'null'),
   isAuthenticated: localStorage.getItem('token') ? true : false,
   loading: false,
+  buttonLoading: false,
   error: null,
 };
 
@@ -17,7 +18,7 @@ const authSlice = createSlice({
   reducers: {
     // Start loading state for any auth action
     authStart: state => {
-      state.loading = true;
+      state.buttonLoading = true;
       state.error = null;
     },
 
@@ -33,25 +34,25 @@ const authSlice = createSlice({
       state.token = token;
       state.user = user;
       state.isAuthenticated = true;
-      state.loading = false;
+      state.buttonLoading = false;
       state.error = null;
     },
 
     // Handle login failure
     loginFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
+      state.buttonLoading = false;
       state.error = action.payload;
     },
 
     // Handle password update Success
     updatePasswordSuccess: state => {
-      state.loading = false;
+      state.buttonLoading = false;
       state.error = null;
     },
 
     // Handle password update failure
     updatePasswordFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
+      state.buttonLoading = false;
       state.error = action.payload;
     },
 
@@ -65,7 +66,7 @@ const authSlice = createSlice({
       state.token = null;
       state.user = null;
       state.isAuthenticated = false;
-      state.loading = false;
+      state.buttonLoading = false;
       state.error = null;
     },
 
@@ -77,7 +78,6 @@ const authSlice = createSlice({
 });
 
 // Export the actions
-
 export const {
   authStart,
   loginSuccess,
@@ -96,5 +96,6 @@ export const selectAuth = (state: RootState) => state.auth;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
 export const selectLoading = (state: RootState) => state.auth.loading;
+export const selectButtonLoading = (state: RootState) => state.auth.buttonLoading;
 export const selectError = (state: RootState) => state.auth.error;
 export const selectUserRole = (state: RootState) => state.auth.user?.role;

@@ -16,6 +16,7 @@ import {
   useTheme,
   Tabs,
   Tab,
+  CircularProgress,
 } from '@mui/material';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -176,15 +177,17 @@ const Login: React.FC = () => {
     setLocalError('');
 
     try {
-      await login(username, password, role);
+      const result = await login(username, password, role);
+      if (result.error) {
+        setLocalError(result.error);
+        setIsSubmitting(false);
+      }
     } catch (err: unknown) {
-      // Type guard to ensure err is an Error object
       if (err instanceof Error) {
         setLocalError(err.message || t('loginPage.noCredError'));
       } else {
         setLocalError(t('loginPage.noCredError'));
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -348,12 +351,66 @@ const Login: React.FC = () => {
           </Typography>
 
           {(error || localError) && (
-            <CustomAlert severity="error" sx={{ mb: 2, mt: 2 }}>
+            <CustomAlert severity="error" sx={{ mb: 2, mt: 2, width: '100%' }}>
               {error || localError}
             </CustomAlert>
           )}
 
           <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <TextField
+                fullWidth
+                id='filled-username-input'
+                label={t('auth.username')}
+                name="username"
+                type='text'
+                variant='filled'
+                value={formData.username}
+                onChange={handleInputChange}
+                sx={{
+                  '& .MuiFilledInput-root': {
+                    border: 'none',
+                    backgroundColor: 'white',
+                    '&:hover': {
+                      backgroundColor: 'white',
+                      border: 'none',
+                    },
+                    '&.Mui-focused': {
+                      border: 'none',
+                      backgroundColor: 'white',
+                    },
+                    '&::before': {
+                      border: 'none',
+                    },
+                    '&::after': {
+                      border: 'none',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottom: 'none', // Removes the bottom border on hover
+                    },
+                  },
+                }}
+              />
+            </Box>
+            <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
+              <PasswordField
+                id="filled-adornment-password"
+                name="password"
+                value={formData.password}
+                handleChange={handleInputChange}
+                showPassword={showPassword}
+                handleClickShowPassword={handleClickShowPassword}
+                handleMouseDownPassword={handleMouseDownPassword}
+              />
+            </FormControl>
+
             <Box
               sx={{
                 width: '100%',
@@ -436,55 +493,6 @@ const Login: React.FC = () => {
               </Tabs>
             </Box>
 
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              <TextField
-                fullWidth
-                label={t('auth.username')}
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                autoFocus
-                sx={{
-                  mb: 2,
-                  backgroundColor: 'white',
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    border: 'none', // This removes the border
-                  },
-                  '& .MuiOutlinedInput-root': {
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 'none', // Removes border on hover
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 'none', // Removes border on focus
-                    },
-                  },
-                  '& .MuiInputLabel-root': {
-                    '&.Mui-focused': {
-                      paddingTop: 2, // Added padding only when focused
-                    },
-                  },
-                }}
-              />
-            </Box>
-            <FormControl fullWidth sx={{ mb: 2 }} variant="filled">
-              <PasswordField
-                id="filled-adornment-password"
-                name="password"
-                value={formData.password}
-                handleChange={handleInputChange}
-                showPassword={showPassword}
-                handleClickShowPassword={handleClickShowPassword}
-                handleMouseDownPassword={handleMouseDownPassword}
-              />
-            </FormControl>
-
             <Button
               type="submit"
               fullWidth
@@ -492,7 +500,14 @@ const Login: React.FC = () => {
               sx={{ mt: 3, mb: 2, backgroundColor: '#fecc04', color: 'black', p: 1.1 }}
               disabled={loading || isSubmitting}
             >
-              {loading ? 'Logging In...' : t('auth.login')}
+              {loading || isSubmitting ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <CircularProgress size={20} sx={{ color: 'black' }} />
+                  <span>Logging In...</span>
+                </Box>
+              ) : (
+                t('auth.login')
+              )}
             </Button>
           </form>
         </Box>

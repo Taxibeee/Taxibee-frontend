@@ -25,6 +25,7 @@ export interface AuthState {
   user: UserType | null;
   isAuthenticated: boolean;
   loading: boolean;
+  buttonLoading: boolean;
   error: string | null;
 }
 
@@ -46,6 +47,7 @@ export interface UpdatePasswordResponse {
 export interface LoginResponse {
   access_token: string;
   user: UserType;
+  error?: string;
 }
 
 export interface ApiError {

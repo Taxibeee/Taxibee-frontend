@@ -33,6 +33,11 @@ export const loginUser = createAsyncThunk(
       // Call the auth service login method
       const response = await authService.login({ username, password, role });
 
+      // If the response contains an error, throw it
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
       // If successful, update state with token and user data
       dispatch(
         loginSuccess({
@@ -43,7 +48,7 @@ export const loginUser = createAsyncThunk(
 
       return response;
     } catch (error: unknown) {
-      let errorMessage = 'An error occurred during login.';
+      let errorMessage = 'Invalid credentials';
 
       if (error instanceof Error) {
         errorMessage = error.message;

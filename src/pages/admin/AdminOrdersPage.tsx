@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -30,6 +30,15 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useAdminQueries } from '../../hooks';
 import { Order } from '../../types/order.types';
 
+// Create debounce function outside component
+const debounce = (func: (value: string) => void, wait: number) => {
+  let timeout: NodeJS.Timeout;
+  return (value: string) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(value), wait);
+  };
+};
+
 const AdminOrdersPage: React.FC = () => {
   // State for pagination and filters
   const [page, setPage] = useState(1);
@@ -37,9 +46,9 @@ const AdminOrdersPage: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
-  // Fetch orders with pagination
+  // Fetch orders with pagination and search
   const { useAllOrders } = useAdminQueries();
-  const { data, isLoading, isError } = useAllOrders(page, 25);
+  const { data, isLoading, isError } = useAllOrders(page, 25, searchTerm);
 
   interface SearchFieldProps {
     searchTerm: string;
@@ -133,9 +142,21 @@ const AdminOrdersPage: React.FC = () => {
     setPage(value);
   };
 
-  // Handle search input change
+  const debouncedSearch = useCallback(
+    (value: string) => {
+      setSearchTerm(value);
+      setPage(1);
+    },
+    []
+  );
+
+  const debouncedSearchWithDelay = useMemo(
+    () => debounce(debouncedSearch, 300),
+    [debouncedSearch]
+  );
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    debouncedSearchWithDelay(event.target.value);
   };
 
   // Open order details dialog
@@ -150,14 +171,8 @@ const AdminOrdersPage: React.FC = () => {
     setSelectedOrder(null);
   };
 
-  // Filter orders based on search term
-  const filteredOrders =
-    data?.data.filter(
-      order =>
-        order.order_reference?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.driver_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.pickup_address?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+  // Remove the local filtering since it's now handled by the backend
+  const filteredOrders = data?.data || [];
 
   // Get payment method color
   const getPaymentMethodColor = (

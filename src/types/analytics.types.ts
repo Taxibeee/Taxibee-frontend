@@ -2,6 +2,10 @@ export interface WeekAnalytics {
   total_revenue: number;
   total_orders: number;
   total_distance: number;
+  date_range: {
+    start: string;
+    end: string;
+  };
 }
 
 export interface RevenueByPaymentMethod {
@@ -15,8 +19,17 @@ export interface RevenueByDriver {
 }
 
 export interface WeekDayAnalytics {
+  date: string;
   day: string;
   total_revenue: number;
   total_orders: number;
   total_distance: number;
+}
+
+export interface WeekDayAnalyticsResponse {
+  daily_analytics: WeekDayAnalytics[];
+  date_range: {
+    start: string;
+    end: string;
+  };
 }

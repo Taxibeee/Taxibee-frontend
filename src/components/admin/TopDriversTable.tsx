@@ -27,10 +27,14 @@ const formatCurrency = (amount: number | undefined | null) => {
   }).format(amount);
 };
 
-const TopDriversTable: React.FC = () => {
+interface TopDriversTableProps {
+  weekOffset: number;
+}
+
+const TopDriversTable: React.FC<TopDriversTableProps> = ({ weekOffset }) => {
   const navigate = useNavigate();
   const { useRevenueByDriver } = useAdminQueries();
-  const { data, isLoading, isError } = useRevenueByDriver();
+  const { data, isLoading, isError } = useRevenueByDriver(weekOffset);
 
   return (
     <Card elevation={1}>

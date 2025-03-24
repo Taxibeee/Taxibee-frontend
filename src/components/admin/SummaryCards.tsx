@@ -75,21 +75,24 @@ const cardBackgrounds = {
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
-  if (amount === undefined || amount === null) return '$0.00';
-  return new Intl.NumberFormat('en-US', {
+  if (amount === undefined || amount === null) return '€0.00';
+  return new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
   }).format(amount);
 };
 
-const SummaryCards: React.FC = () => {
-  const { t } = useTranslation();
+interface SummaryCardsProps {
+  weekOffset: number;
+}
 
+const SummaryCards: React.FC<SummaryCardsProps> = ({ weekOffset }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { useWeekAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekAnalytics();
+  const { data, isLoading, isError } = useWeekAnalytics(weekOffset);
 
   const LoadingSkeleton = () => {
     return (
@@ -286,7 +289,7 @@ const SummaryCards: React.FC = () => {
                   <Typography variant="h5" component="div">
                     {data && data.total_orders > 0
                       ? formatCurrency(data.total_revenue / data.total_orders)
-                      : '$0.00'}
+                      : '€0.00'}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" gutterBottom>
                     {t('adminDashboard.summaryCards.averageRevenuePerOrder')}

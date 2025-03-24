@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
 
 // Import Layout
 import { DashboardLayout } from '../../components';
@@ -35,6 +35,11 @@ interface SidebarItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  const handleWeekChange = (event: SelectChangeEvent<number>) => {
+    setWeekOffset(Number(event.target.value));
+  };
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
     return items.map((item: SidebarItem) => {
@@ -55,20 +60,37 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               {t('adminSidebar.dashboard')}
             </Typography>
 
-            <SummaryCards />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+              <Typography variant="h4" component="h1">
+                {t('adminDashboard.title')}
+              </Typography>
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel>{t('adminDashboard.selectWeek')}</InputLabel>
+                <Select
+                  value={weekOffset}
+                  label={t('adminDashboard.selectWeek')}
+                  onChange={handleWeekChange}
+                >
+                  <MenuItem value={0}>{t('adminDashboard.currentWeek')}</MenuItem>
+                  <MenuItem value={-1}>{t('adminDashboard.previousWeek')}</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            <SummaryCards weekOffset={weekOffset} />
 
             <Box
               sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}
             >
               <Box sx={{ flex: 4 }}>
-                <WeeklyAnalyticsCharts />
+                <WeeklyAnalyticsCharts weekOffset={weekOffset} />
               </Box>
               <Box sx={{ flex: 2 }}>
-                <RevenueByMethodChart />
+                <RevenueByMethodChart weekOffset={weekOffset} />
               </Box>
 
               <Box sx={{ flex: 4 }}>
-                <TopDriversTable />
+                <TopDriversTable weekOffset={weekOffset} />
               </Box>
             </Box>
           </Box>

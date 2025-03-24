@@ -17,24 +17,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useAdminQueries } from '../../hooks';
 import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
+import { WeekDayAnalytics } from '../../types/analytics.types';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 
-const WeeklyAnalyticsCharts: React.FC = () => {
+interface WeeklyAnalyticsChartsProps {
+  weekOffset: number;
+}
+
+const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffset }) => {
   const theme = useTheme();
   const { useWeekDayAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekDayAnalytics();
+  const { data, isLoading, isError } = useWeekDayAnalytics(weekOffset);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState<ChartType | null>(null);
 
   const prepareChartData = () => {
-    if (!data) return null;
+    if (!data?.daily_analytics) return null;
 
     return {
-      days: data.map(item => item.day),
-      revenue: data.map(item => item.total_revenue || 0),
-      orders: data.map(item => item.total_orders || 0),
-      avgOrders: data.map(item =>
+      days: data.daily_analytics.map((item: WeekDayAnalytics) => item.day),
+      revenue: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_revenue || 0),
+      orders: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_orders || 0),
+      avgOrders: data.daily_analytics.map((item: WeekDayAnalytics) =>
         item.total_orders > 0 ? item.total_revenue / item.total_orders : 0
       ),
     };
@@ -119,6 +124,15 @@ const WeeklyAnalyticsCharts: React.FC = () => {
         }}
       >
         <CardContent>
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="h6">Weekly Analytics</Typography>
+            {data?.date_range && (
+              <Typography variant="caption" color="text.secondary">
+                {new Date(data.date_range.start).toLocaleDateString()} - {new Date(data.date_range.end).toLocaleDateString()}
+              </Typography>
+            )}
+          </Box>
+
           {isLoading ? (
             <Box
               display="flex"
@@ -135,13 +149,13 @@ const WeeklyAnalyticsCharts: React.FC = () => {
                 height="100%"
                 animation="wave"
                 sx={{
-                  transform: 'none', // This prevents the skeleton from being squished
+                  transform: 'none',
                 }}
               />
             </Box>
           ) : isError ? (
             <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
-          ) : !data || data.length === 0 ? (
+          ) : !data?.daily_analytics || data.daily_analytics.length === 0 ? (
             <Typography>No data available for this week yet.</Typography>
           ) : (
             <Box>

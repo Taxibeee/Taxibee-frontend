@@ -6,8 +6,8 @@ import { CustomAlert } from '../../utils/customAlert';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
-  if (amount === undefined || amount === null) return '$0.00';
-  return new Intl.NumberFormat('en-US', {
+  if (amount === undefined || amount === null) return '€0.00';
+  return new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
   }).format(amount);
@@ -24,9 +24,13 @@ const chartColors = [
   '#00BCD4', // Cyan
 ];
 
-const RevenueByMethodChart: React.FC = () => {
+interface RevenueByMethodChartProps {
+  weekOffset: number;
+}
+
+const RevenueByMethodChart: React.FC<RevenueByMethodChartProps> = ({ weekOffset }) => {
   const { useRevenueByPaymentMethod } = useAdminQueries();
-  const { data, isLoading, isError } = useRevenueByPaymentMethod();
+  const { data, isLoading, isError } = useRevenueByPaymentMethod(weekOffset);
 
   // Transform data for PieChart
   const prepareChartData = () => {

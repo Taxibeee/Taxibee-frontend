@@ -12,10 +12,11 @@ export const useAdminQueries = () => {
   const queryClient = useQueryClient();
 
   // Orders queries
-  const useAllOrders = (page: number = 1, pageSize: number = 25) => {
+  const useAllOrders = (page: number = 1, pageSize: number = 25, search?: string) => {
     return useQuery({
-      queryKey: ['admin', 'allOrders', page, pageSize],
-      queryFn: () => adminApi.getAllOrders(page, pageSize) as Promise<OrdersResponse>,
+      queryKey: ['admin', 'allOrders', page, pageSize, search],
+      queryFn: () => adminApi.getAllOrders(page, pageSize, search) as Promise<OrdersResponse>,
+      staleTime: 5000,
     });
   };
 
@@ -28,32 +29,32 @@ export const useAdminQueries = () => {
   };
 
   // Analytics queries
-  const useWeekAnalytics = () => {
+  const useWeekAnalytics = (weekOffset: number = 0) => {
     return useQuery({
-      queryKey: ['admin', 'weekAnalytics'],
-      queryFn: adminApi.getWeekAnalytics,
+      queryKey: ['admin', 'weekAnalytics', weekOffset],
+      queryFn: () => adminApi.getWeekAnalytics(weekOffset),
     });
   };
 
-  const useWeekDayAnalytics = () => {
+  const useWeekDayAnalytics = (weekOffset: number = 0) => {
     return useQuery({
-      queryKey: ['admin', 'weekDayAnalytics'],
-      queryFn: adminApi.getWeekdayAnalytics,
+      queryKey: ['admin', 'weekDayAnalytics', weekOffset],
+      queryFn: () => adminApi.getWeekdayAnalytics(weekOffset),
     });
   };
 
   // Revenue queries
-  const useRevenueByPaymentMethod = () => {
+  const useRevenueByPaymentMethod = (weekOffset: number = 0) => {
     return useQuery({
-      queryKey: ['admin', 'revenueByMethod'],
-      queryFn: adminApi.getRevenueByPaymentMethod,
+      queryKey: ['admin', 'revenueByPaymentMethod', weekOffset],
+      queryFn: () => adminApi.getRevenueByPaymentMethod(weekOffset),
     });
   };
 
-  const useRevenueByDriver = () => {
+  const useRevenueByDriver = (weekOffset: number = 0) => {
     return useQuery({
-      queryKey: ['admin', 'revenueByDriver'],
-      queryFn: adminApi.getRevenueByDriver,
+      queryKey: ['revenueByDriver', weekOffset],
+      queryFn: () => adminApi.getRevenueByDriver(weekOffset),
     });
   };
 

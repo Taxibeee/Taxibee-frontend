@@ -5,16 +5,23 @@ import { DriverStatus, DriversResponse } from '../types/driver.types';
 import { Transaction, UnaccountedTransactionsResponse } from '../types/transaction.types';
 import {
   WeekAnalytics,
-  WeekDayAnalytics,
-  RevenueByPaymentMethod,
-  RevenueByDriver,
+  WeekDayAnalyticsResponse,
 } from '../types/analytics.types';
 
 // Admin API functions
 const adminApi = {
   // Orders
-  getAllOrders: async (page: number = 1, page_size: number = 25): Promise<OrdersResponse> => {
-    const response = await api.get(`/admin/getAllOrders?page=${page}&page_size=${page_size}`);
+  getAllOrders: async (page: number = 1, page_size: number = 25, search?: string): Promise<OrdersResponse> => {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      page_size: page_size.toString(),
+    })
+
+    if (search) {
+      params.append('search', search);
+    }
+
+    const response = await api.get(`/admin/getAllOrders?page=${params.toString()}`);
     return response.data;
   },
 
@@ -30,24 +37,24 @@ const adminApi = {
   },
 
   // Analytics
-  getWeekAnalytics: async (): Promise<WeekAnalytics> => {
-    const response = await api.get('/admin/analyticsByWeek');
+  getWeekAnalytics: async (weekOffset: number = 0): Promise<WeekAnalytics> => {
+    const response = await api.get(`/admin/analyticsByWeek?week_offset=${weekOffset}`);
     return response.data.data;
   },
 
-  getWeekdayAnalytics: async (): Promise<WeekDayAnalytics[]> => {
-    const response = await api.get('/admin/analyticsByWeekDays');
+  getWeekdayAnalytics: async (weekOffset: number = 0): Promise<WeekDayAnalyticsResponse> => {
+    const response = await api.get(`/admin/analyticsByWeekDays?week_offset=${weekOffset}`);
     return response.data.data;
   },
 
   // Revenue
-  getRevenueByPaymentMethod: async (): Promise<RevenueByPaymentMethod> => {
-    const response = await api.get('/admin/revenueByPaymentMethod');
+  getRevenueByPaymentMethod: async (weekOffset: number = 0): Promise<Record<string, number>> => {
+    const response = await api.get(`/admin/revenueByPaymentMethod?week_offset=${weekOffset}`);
     return response.data.data;
   },
 
-  getRevenueByDriver: async (): Promise<RevenueByDriver[]> => {
-    const response = await api.get('/admin/revenueByDriver');
+  getRevenueByDriver: async (weekOffset: number = 0): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
+    const response = await api.get(`/admin/revenueByDriver?week_offset=${weekOffset}`);
     return response.data.data;
   },
 

@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
+} from '@mui/material';
 
 // Import Layout
 import { DashboardLayout } from '../../components';
@@ -60,7 +68,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               {t('adminSidebar.dashboard')}
             </Typography>
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}
+            >
               <Typography variant="h4" component="h1">
                 {t('adminDashboard.title')}
               </Typography>

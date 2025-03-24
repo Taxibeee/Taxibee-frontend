@@ -142,18 +142,12 @@ const AdminOrdersPage: React.FC = () => {
     setPage(value);
   };
 
-  const debouncedSearch = useCallback(
-    (value: string) => {
-      setSearchTerm(value);
-      setPage(1);
-    },
-    []
-  );
+  const debouncedSearch = useCallback((value: string) => {
+    setSearchTerm(value);
+    setPage(1);
+  }, []);
 
-  const debouncedSearchWithDelay = useMemo(
-    () => debounce(debouncedSearch, 300),
-    [debouncedSearch]
-  );
+  const debouncedSearchWithDelay = useMemo(() => debounce(debouncedSearch, 300), [debouncedSearch]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     debouncedSearchWithDelay(event.target.value);

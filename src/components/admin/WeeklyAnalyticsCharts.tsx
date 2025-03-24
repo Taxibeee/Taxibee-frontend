@@ -128,7 +128,8 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
             <Typography variant="h6">Weekly Analytics</Typography>
             {data?.date_range && (
               <Typography variant="caption" color="text.secondary">
-                {new Date(data.date_range.start).toLocaleDateString()} - {new Date(data.date_range.end).toLocaleDateString()}
+                {new Date(data.date_range.start).toLocaleDateString()} -{' '}
+                {new Date(data.date_range.end).toLocaleDateString()}
               </Typography>
             )}
           </Box>

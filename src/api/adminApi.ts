@@ -3,19 +3,20 @@ import { OrdersResponse } from '../types/order.types';
 import { ContactResponse } from '../types/contact.types';
 import { DriverStatus, DriversResponse } from '../types/driver.types';
 import { Transaction, UnaccountedTransactionsResponse } from '../types/transaction.types';
-import {
-  WeekAnalytics,
-  WeekDayAnalyticsResponse,
-} from '../types/analytics.types';
+import { WeekAnalytics, WeekDayAnalyticsResponse } from '../types/analytics.types';
 
 // Admin API functions
 const adminApi = {
   // Orders
-  getAllOrders: async (page: number = 1, page_size: number = 25, search?: string): Promise<OrdersResponse> => {
+  getAllOrders: async (
+    page: number = 1,
+    page_size: number = 25,
+    search?: string
+  ): Promise<OrdersResponse> => {
     const params = new URLSearchParams({
       page: page.toString(),
       page_size: page_size.toString(),
-    })
+    });
 
     if (search) {
       params.append('search', search);
@@ -53,7 +54,9 @@ const adminApi = {
     return response.data.data;
   },
 
-  getRevenueByDriver: async (weekOffset: number = 0): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
+  getRevenueByDriver: async (
+    weekOffset: number = 0
+  ): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
     const response = await api.get(`/admin/revenueByDriver?week_offset=${weekOffset}`);
     return response.data.data;
   },

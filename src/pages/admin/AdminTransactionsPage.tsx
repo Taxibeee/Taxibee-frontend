@@ -523,15 +523,23 @@ const AdminTransactionsPage: React.FC = () => {
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              {Object.entries(data.terminals).map(([name, termData]) => (
-                                <TableRow key={name} hover>
-                                  <TableCell>{name || 'Unknown'}</TableCell>
-                                  <TableCell align="right">{termData.count}</TableCell>
-                                  <TableCell align="right">
-                                    {formatCurrency(termData.total_amount)}
+                              {data.terminals && Object.entries(data.terminals).length > 0 ? (
+                                Object.entries(data.terminals).map(([name, termData]) => (
+                                  <TableRow key={name} hover>
+                                    <TableCell>{name || 'Unknown'}</TableCell>
+                                    <TableCell align="right">{termData.count}</TableCell>
+                                    <TableCell align="right">
+                                      {formatCurrency(termData.total_amount)}
+                                    </TableCell>
+                                  </TableRow>
+                                ))
+                              ) : (
+                                <TableRow>
+                                  <TableCell align="center" colSpan={3}>
+                                    No terminal data available
                                   </TableCell>
                                 </TableRow>
-                              ))}
+                              )}
                               <TableRow sx={{ bgcolor: 'action.hover' }}>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Total</TableCell>
                                 <TableCell align="right" sx={{ fontWeight: 'bold' }}>

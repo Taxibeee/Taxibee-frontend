@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import { DashboardLayout } from '../../components';
 import { sidebarItemsAdmin } from '../admin/AdminSidebar';
-import unauthorizedImg from '../../assets/unauthorized.png';
+import { sidebarItemsDriver } from '../driver/DriverSidebar';
+import { useAuth } from '../../hooks';
+import { NotAccessible } from '@mui/icons-material';
 
 interface SidebarItem {
   text: string;
@@ -13,6 +15,7 @@ interface SidebarItem {
 
 const Unauthorized: React.FC = () => {
   const { t } = useTranslation();
+  const { isAuthenticated, userRole, currentUser } = useAuth();
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
     return items.map((item: SidebarItem) => ({
@@ -21,43 +24,54 @@ const Unauthorized: React.FC = () => {
     }));
   };
 
-  return (
-    <DashboardLayout menuItems={provideTranslatedText({ items: sidebarItemsAdmin })}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        minHeight="100vh"
-        bgcolor="##fff"
-        px={2}
-        textAlign="center"
-      >
-        {/* Big heading */}
-        <Typography variant="h3" sx={{ color: '#f57f17', fontWeight: 700, mb: 3 }}>
-          {t('Access Denied')}
-        </Typography>
+  const UnauthorizedContent = () => (
+    <Box
+      sx={{
+        backgroundColor: '#ff',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        minHeight: '100vh',
+        width: '100%',
+        height: '100%',
+        padding: '20px',
+        textAlign: 'center',
+        py: 30,
+        px: 40
+      }}
+    >
+      <Typography variant="h3" sx={{ mb: 3 }}>
+        <NotAccessible sx={{ fontSize: '4rem', mr: 1 }} />
+        {!isAuthenticated ? t('Please Log In') : t('Not Authorized')}
+      </Typography>
 
-        {/* Image */}
-        <Box
-          component="img"
-          src={unauthorizedImg}
-          alt="Unauthorized Access"
-          sx={{
-            width: '100%',
-            maxWidth: 350,
-            height: 'auto',
-            mb: 3,
-            mt: 0,
-          }}
-        />
+      <Typography variant="body1" sx={{ color: '#000000', fontSize: '1.1rem', maxWidth: '600px' }}>
+        {!isAuthenticated ? (
+          t('Please log in to access this page.')
+        ) : (
+          <>
+            {t('You do not have permission to access this page.')}
+            <br />
+            {currentUser && (
+              <Typography variant="body2" sx={{ mt: 2, color: '#666' }}>
+                {t('Current Role')}: {userRole}
+                <br />
+                {t('User')}: {currentUser.username}
+              </Typography>
+            )}
+          </>
+        )}
+      </Typography>
+    </Box>
+  );
 
-        {/* Description */}
-        <Typography variant="body1" sx={{ color: '#000000', fontSize: '1.1rem' }}>
-          {t('You do not have permission to access this page. This area is restricted to users with different permissions than your current role.')}
-        </Typography>
-      </Box>
+  return isAuthenticated ? (
+    <DashboardLayout menuItems={provideTranslatedText({ items: userRole === 'admin' ? sidebarItemsAdmin : sidebarItemsDriver })}>
+      <UnauthorizedContent />
     </DashboardLayout>
+  ) : (
+    <UnauthorizedContent />
   );
 };
 

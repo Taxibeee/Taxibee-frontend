@@ -1,43 +1,63 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../store/hooks';
+import { useTranslation } from 'react-i18next';
+import { Box, Typography } from '@mui/material';
+import { DashboardLayout } from '../../components';
+import { sidebarItemsAdmin } from '../admin/AdminSidebar';
+import unauthorizedImg from '../../assets/unauthorized.png';
 
-/**
- * Unauthorized Component
- *
- * Displayed when a user tries to access a page they don't have permissions for.
- * Provides navigation options based on the user's role.
- */
+interface SidebarItem {
+  text: string;
+  icon: React.ReactNode;
+  path: string;
+}
 
 const Unauthorized: React.FC = () => {
-  const { userRole, logout } = useAuth();
-  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  // Handle logging out the user
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  // Get the correct dashboard link based on user role
-  const getDashboardLink = () => {
-    if (userRole === 'admin') {
-      return '/admin/dashboard';
-    } else if (userRole === 'driver') {
-      return '/driver/dashboard';
-    }
-    return '/';
+  const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
+    return items.map((item: SidebarItem) => ({
+      ...item,
+      text: t(item.text),
+    }));
   };
 
   return (
-    <>
-      <p>You do not have permission to access this page</p>
-      <p>This area is restricted to users with different permissions than your current Role</p>
+    <DashboardLayout menuItems={provideTranslatedText({ items: sidebarItemsAdmin })}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="100vh"
+        bgcolor="##fff"
+        px={2}
+        textAlign="center"
+      >
+        {/* Big heading */}
+        <Typography variant="h3" sx={{ color: '#f57f17', fontWeight: 700, mb: 3 }}>
+          {t('Access Denied')}
+        </Typography>
 
-      {userRole && <Link to={getDashboardLink()}>Go to your dashboard</Link>}
-      <Link to="/">Return to Home</Link>
-      <button onClick={handleLogout}>Logout</button>
-    </>
+        {/* Image */}
+        <Box
+          component="img"
+          src={unauthorizedImg}
+          alt="Unauthorized Access"
+          sx={{
+            width: '100%',
+            maxWidth: 350,
+            height: 'auto',
+            mb: 3,
+            mt: 0,
+          }}
+        />
+
+        {/* Description */}
+        <Typography variant="body1" sx={{ color: '#000000', fontSize: '1.1rem' }}>
+          {t('You do not have permission to access this page. This area is restricted to users with different permissions than your current role.')}
+        </Typography>
+      </Box>
+    </DashboardLayout>
   );
 };
 

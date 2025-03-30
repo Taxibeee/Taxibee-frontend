@@ -23,7 +23,7 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <ListItemIcon sx={{ minWidth: 36 }}>
+      <ListItemIcon sx={{ minWidth: 32 }}>
         <LanguageIcon fontSize="small" />
       </ListItemIcon>
       <Typography variant="body2" sx={{ mr: 1 }}>

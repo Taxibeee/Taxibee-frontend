@@ -38,7 +38,7 @@ const Unauthorized: React.FC = () => {
         padding: '20px',
         textAlign: 'center',
         py: 30,
-        px: 40
+        px: 40,
       }}
     >
       <Typography variant="h3" sx={{ mb: 3 }}>
@@ -67,7 +67,11 @@ const Unauthorized: React.FC = () => {
   );
 
   return isAuthenticated ? (
-    <DashboardLayout menuItems={provideTranslatedText({ items: userRole === 'admin' ? sidebarItemsAdmin : sidebarItemsDriver })}>
+    <DashboardLayout
+      menuItems={provideTranslatedText({
+        items: userRole === 'admin' ? sidebarItemsAdmin : sidebarItemsDriver,
+      })}
+    >
       <UnauthorizedContent />
     </DashboardLayout>
   ) : (

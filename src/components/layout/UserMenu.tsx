@@ -11,7 +11,6 @@ import {
   Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/hooks';
 import LanguageSwitcher from '../shared/LanguageSwitcher';
@@ -88,7 +87,7 @@ const UserMenu: React.FC = () => {
             elevation: 0,
             sx: {
               overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.15))',
               mt: 1.5,
               '& .MuiAvatar-root': {
                 width: 32,
@@ -116,7 +115,7 @@ const UserMenu: React.FC = () => {
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>
-          <Typography variant="inherit">My Profile</Typography>
+          <Typography variant="body2">My Profile</Typography>
         </MenuItem>
 
         <Divider />
@@ -127,10 +126,9 @@ const UserMenu: React.FC = () => {
         </MenuItem>
 
         <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="inherit">{t('auth.logout')}</Typography>
+          <Typography variant="body2" color="error">
+            {t('auth.logout')}
+          </Typography>
         </MenuItem>
       </Menu>
     </>

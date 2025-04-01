@@ -23,12 +23,6 @@ import {
   Fade,
   Slide,
   Stack,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  TextField,
-  DialogContentText,
-  DialogContent,
   Snackbar,
   Paper,
 } from '@mui/material';
@@ -41,6 +35,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import ContactUs from '../../components/shared/ContactUs';
 
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../../components/shared/LanguageSwitcher';
@@ -102,7 +97,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleContactFormChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setContactForm({
       ...contactForm,
@@ -531,82 +526,17 @@ const HomePage: React.FC = () => {
           </Grid2>
         </Container>
       </Box>
-      <Dialog open={openContactDialog} onClose={handleContactDialogClose} maxWidth="sm" fullWidth>
-        <DialogTitle
-          sx={{
-            backgroundColor: '#1a1a1a',
-            color: 'white',
-            fontWeight: 'bold',
-          }}
-        >
-          {t('contactForm.contactUs')}
-        </DialogTitle>
-        <DialogContent sx={{ mt: 2 }}>
-          <DialogContentText sx={{ mb: 2 }}>{t('contactForm.instruction')}</DialogContentText>
-          <TextField
-            autoFocus
-            name="name"
-            label={t('contactForm.name')}
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={contactForm.name}
-            onChange={handleContactFormChange}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            name="email"
-            label={t('contactForm.email')}
-            type="email"
-            fullWidth
-            variant="outlined"
-            value={contactForm.email}
-            onChange={handleContactFormChange}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            name="message"
-            label={t('contactForm.message')}
-            type="text"
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            value={contactForm.message}
-            onChange={handleContactFormChange}
-          />
-        </DialogContent>
-        <DialogActions sx={{ p: 3 }}>
-          <Button
-            onClick={handleContactDialogClose}
-            variant="outlined"
-            sx={{
-              borderColor: '#fecc04',
-              color: 'black',
-              '&:hover': {
-                borderColor: '#e5b800',
-                backgroundColor: 'rgba(254, 204, 4, 0.1)',
-              },
-            }}
-          >
-            {t('actions.cancel')}
-          </Button>
-          <Button
-            onClick={handleContactSubmit}
-            variant="contained"
-            sx={{
-              backgroundColor: '#fecc04',
-              color: 'black',
-              '&:hover': {
-                backgroundColor: '#e5b800',
-              },
-            }}
-          >
-            {isSubmitting ? 'Sending.. ' : t('contacts.sendMessage')}
-          </Button>
-        </DialogActions>
-      </Dialog>
 
+      {/* Contact Us Dialog */}
+      <ContactUs
+        open={openContactDialog}
+        onClose={handleContactDialogClose}
+        formData={contactForm}
+        onChange={handleContactFormChange}
+        onSubmit={handleContactSubmit}
+        isSubmitting={isSubmitting}
+      />
+      
       {/* Snackbar Alert */}
       <Snackbar
         open={snackbar.open}

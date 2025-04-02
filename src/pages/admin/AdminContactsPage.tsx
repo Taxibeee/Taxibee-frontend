@@ -6,7 +6,6 @@ import {
   ListItemText,
   IconButton,
   Typography,
-   
 } from '@mui/material';
 import { Avatar, CircularProgress } from '@mui/joy';
 import React from 'react';
@@ -18,9 +17,6 @@ import { WhatsApp, Email, Phone } from '@mui/icons-material';
 import { CustomAlert } from '../../utils/customAlert';
 
 const AdminContactsPage: React.FC = () => {
-  
-
-
   // Use the appropriate query hook based on role
   const { useAdminContacts } = useAdminQueries();
 
@@ -72,20 +68,16 @@ const AdminContactsPage: React.FC = () => {
     );
   }
 
-
   return (
     <Box>
       <Box
-  sx={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'left',
-    mb: 2,
-  }}
->
-
-
-</Box>
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'left',
+          mb: 2,
+        }}
+      ></Box>
       <List>
         {data?.data?.map((contact: Contact) => {
           if (contact.tag === 'driver')

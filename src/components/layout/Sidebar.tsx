@@ -4,7 +4,6 @@ import { CustomWindow } from '../../api/api';
 import emailjs from '@emailjs/browser';
 import { SnackbarAlert } from '../../types/snackbarAlert.types';
 
-
 import {
   Box,
   Drawer,
@@ -53,76 +52,81 @@ const Sidebar: React.FC<SidebarProps> = ({
   });
 
   const [snackbar, setSnackbar] = useState<SnackbarAlert>({
-      open: false,
-      message: '',
-      severity: 'success',
-    });
-    const handleContactSubmit = async () => {
-      // Basic validation
-      if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
-        setSnackbar({
-          open: true,
-          message: 'Please fill in all fields',
-          severity: 'error',
-        });
-        return;
-      }
-  
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(contactForm.email)) {
-        setSnackbar({
-          open: true,
-          message: 'Please enter a valid email address',
-          severity: 'error',
-        });
-        return;
-      }
-  
-      setIsSubmitting(true);
-  
-      try {
-        const templateParams = {
-          from_name: contactForm.name,
-          from_email: contactForm.email,
-          message: contactForm.message,
-          to_email: 'taxibee2024@gmail.com',
-        };
-  
-        const VITE_EMAILJS_PUBLIC_KEY = (window as CustomWindow).__ENV__?.VITE_EMAILJS_PUBLIC_KEY;
-        const VITE_EMAILJS_SERVICE_ID = (window as CustomWindow).__ENV__?.VITE_EMAILJS_SERVICE_ID;
-        const VITE_EMAILJS_TEMPLATE_ID = (window as CustomWindow).__ENV__?.VITE_EMAILJS_TEMPLATE_ID;
-  
-        await emailjs.send(
-          VITE_EMAILJS_SERVICE_ID!,
-          VITE_EMAILJS_TEMPLATE_ID!,
-          templateParams,
-          VITE_EMAILJS_PUBLIC_KEY!
-        );
-  
-        setSnackbar({
-          open: true,
-          message: 'Message sent successfully!',
-          severity: 'success',
-        });
-        handleContactDialogClose();
-      } catch (error) {
-        console.error('Error sending email:', error);
-        setSnackbar({
-          open: true,
-          message: 'Error sending message. Please try again later.',
-          severity: 'error',
-        });
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+  const handleContactSubmit = async () => {
+    // Basic validation
+    if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+      setSnackbar({
+        open: true,
+        message: 'Please fill in all fields',
+        severity: 'error',
+      });
+      return;
+    }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactForm.email)) {
+      setSnackbar({
+        open: true,
+        message: 'Please enter a valid email address',
+        severity: 'error',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const templateParams = {
+        from_name: contactForm.name,
+        from_email: contactForm.email,
+        message: contactForm.message,
+        to_email: 'taxibee2024@gmail.com',
+      };
+
+      const VITE_EMAILJS_PUBLIC_KEY =
+        (window as CustomWindow).__ENV__?.VITE_EMAILJS_PUBLIC_KEY ||
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const VITE_EMAILJS_SERVICE_ID =
+        (window as CustomWindow).__ENV__?.VITE_EMAILJS_SERVICE_ID ||
+        import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const VITE_EMAILJS_TEMPLATE_ID =
+        (window as CustomWindow).__ENV__?.VITE_EMAILJS_TEMPLATE_ID ||
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+
+      await emailjs.send(
+        VITE_EMAILJS_SERVICE_ID!,
+        VITE_EMAILJS_TEMPLATE_ID!,
+        templateParams,
+        VITE_EMAILJS_PUBLIC_KEY!
+      );
+
+      setSnackbar({
+        open: true,
+        message: 'Message sent successfully!',
+        severity: 'success',
+      });
+      handleContactDialogClose();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSnackbar({
+        open: true,
+        message: 'Error sending message. Please try again later.',
+        severity: 'error',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleContactDialogOpen = () => {
     setOpenContactDialog(true);
   };
-  
+
   const handleContactDialogClose = () => {
     setOpenContactDialog(false);
     setContactForm({
@@ -131,13 +135,15 @@ const Sidebar: React.FC<SidebarProps> = ({
       message: '',
     });
   };
-  const handleContactFormChange = (event: React.ChangeEvent<HTMLInputElement |HTMLTextAreaElement>) => {
-      setContactForm({
-        ...contactForm,
-        [event.target.name]: event.target.value,
-      });
-    };
-  
+  const handleContactFormChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setContactForm({
+      ...contactForm,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   // Sidebar content - shared between mobile and desktop versions
   const sidebarContent = (
     <Box
@@ -170,8 +176,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   borderRadius: 1,
                   backgroundColor: currentPath === item.path ? '#FFF27A' : 'transparent',
                   '&:hover': {
-                    backgroundColor:
-                      currentPath === item.path ? '#FFF27A' : 'rgba(0, 0, 0, 0.04)',
+                    backgroundColor: currentPath === item.path ? '#FFF27A' : 'rgba(0, 0, 0, 0.04)',
                   },
                 }}
               >
@@ -183,9 +188,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       sx: {
                         fontSize: '0.875rem',
                         color:
-                          currentPath === item.path
-                            ? 'rgba(0, 0, 0, 0.87)'
-                            : 'rgba(0, 0, 0, 0.6)',
+                          currentPath === item.path ? 'rgba(0, 0, 0, 0.87)' : 'rgba(0, 0, 0, 0.6)',
                       },
                     },
                   }}
@@ -197,30 +200,33 @@ const Sidebar: React.FC<SidebarProps> = ({
       </Box>
 
       {/* Button at the bottom */}
-     <Box sx={{ display: 'flex',justifyContent:'center', alignItems:'center'}}>
-      <Typography variant="h6" 
-    sx={{
-      fontSize: '14px', // Smaller font size
-      color: 'grey.500', // Subtle grey color
-      fontWeight: 500, // Optional: Adjust weight for a softer look
-    }}>In Need of Assistance</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: '14px',
+            color: 'grey.500',
+            fontWeight: 500,
+          }}
+        >
+          Contact Us
+        </Typography>
 
-  
-  <IconButton
-    onClick={handleContactDialogOpen}
-    sx={{
-      width: 40,
-      height: 40,
-      borderRadius: '8px',
-      backgroundColor: 'transparent',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-      },
-    }}
-  >
-    <ContactSupportIcon sx={{ fontSize: 24 }} />
-  </IconButton>
-  </Box>
+        <IconButton
+          onClick={handleContactDialogOpen}
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: '8px',
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+            },
+          }}
+        >
+          <ContactSupportIcon sx={{ fontSize: 24 }} />
+        </IconButton>
+      </Box>
       <ContactUs
         open={openContactDialog}
         onClose={handleContactDialogClose}
@@ -230,20 +236,27 @@ const Sidebar: React.FC<SidebarProps> = ({
         isSubmitting={isSubmitting}
       />
       <Snackbar
-              open={snackbar.open}
-              autoHideDuration={6000}
-              onClose={() => setSnackbar({ ...snackbar, open: false })}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-              <CustomAlert
-                onClose={() => setSnackbar({ ...snackbar, open: false })}
-                severity={snackbar.severity}
-                variant="filled"
-                sx={{ width: '100%' }}
-              >
-                {snackbar.message}
-              </CustomAlert>
-            </Snackbar>
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{
+          zIndex: 15000,
+          position: 'fixed',
+          '& .MuiSnackbar-root': {
+            top: '80px !important',
+          },
+        }}
+      >
+        <CustomAlert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </CustomAlert>
+      </Snackbar>
     </Box>
   );
 

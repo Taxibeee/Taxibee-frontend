@@ -536,7 +536,7 @@ const HomePage: React.FC = () => {
         onSubmit={handleContactSubmit}
         isSubmitting={isSubmitting}
       />
-      
+
       {/* Snackbar Alert */}
       <Snackbar
         open={snackbar.open}

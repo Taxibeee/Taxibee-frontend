@@ -34,9 +34,7 @@ const ContactUs: React.FC<ContactUsProps> = ({
         {t('contactForm.contactUs')}
       </DialogTitle>
       <DialogContent sx={{ mt: 2 }}>
-        <DialogContentText sx={{ mb: 2 }}>
-          {t('contactForm.instruction')}
-        </DialogContentText>
+        <DialogContentText sx={{ mb: 2 }}>{t('contactForm.instruction')}</DialogContentText>
         <TextField
           autoFocus
           name="name"

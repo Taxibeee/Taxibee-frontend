@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   Dialog,
   Slide,
+  Snackbar,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,6 +19,8 @@ import Sidebar from './Sidebar';
 import UserMenu from './UserMenu';
 import { TransitionProps } from '@mui/material/transitions';
 import { useLocation } from 'react-router-dom';
+import { CustomAlert } from '../../utils/customAlert';
+import { SnackbarAlert } from '../../types/snackbarAlert.types';
 
 // Define the sidebar item interface
 export interface SidebarItem {
@@ -94,6 +97,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }
   const [open, setOpen] = useState(!isMobile);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  // Snackbar state
+  const [snackbar, setSnackbar] = useState<SnackbarAlert>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
   // Handle drawer toggle
   const handleDrawerToggle = () => {
     if (isMobile) {
@@ -109,6 +119,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }
     if (isMobile) {
       setDialogOpen(false);
     }
+  };
+
+  // Handle snackbar close
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -168,6 +183,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }
             onNavigate={handleNavigate}
             isMobile={true}
             currentPath={location.pathname}
+            setSnackbar={setSnackbar}
           />
         </Dialog>
       ) : (
@@ -179,6 +195,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }
           onNavigate={handleNavigate}
           isMobile={false}
           currentPath={location.pathname}
+          setSnackbar={setSnackbar}
         />
       )}
 
@@ -187,6 +204,27 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, menuItems }
         <Toolbar /> {/* This creates space beneath the AppBar */}
         {children}
       </Main>
+
+      {/* Global Snackbar - positioned above everything */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        sx={{
+          position: 'fixed',
+          zIndex: theme.zIndex.drawer + 3, // Higher than AppBar and Drawer
+        }}
+      >
+        <CustomAlert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </CustomAlert>
+      </Snackbar>
     </Box>
   );
 };

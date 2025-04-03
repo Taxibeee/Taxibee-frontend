@@ -43,7 +43,7 @@ interface SidebarItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
-  const [weekOffset, setWeekOffset] = useState(0);
+  const [weekOffset, setWeekOffset] = useState<number>(0);
 
   const handleWeekChange = (event: SelectChangeEvent<number>) => {
     setWeekOffset(Number(event.target.value));
@@ -64,15 +64,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'dashboard':
         return (
           <Box>
-            <Typography variant="h3" gutterBottom>
-              {t('adminSidebar.dashboard')}
-            </Typography>
-
             <Box
-              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                mb: 4,
+              }}
             >
-              <Typography variant="h4" component="h1">
-                {t('adminDashboard.title')}
+              <Typography variant="h3" gutterBottom>
+                {t('adminSidebar.dashboard')}
               </Typography>
               <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel>{t('adminDashboard.selectWeek')}</InputLabel>
@@ -86,7 +87,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
                 </Select>
               </FormControl>
             </Box>
-
             <SummaryCards weekOffset={weekOffset} />
 
             <Box
@@ -98,7 +98,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <Box sx={{ flex: 2 }}>
                 <RevenueByMethodChart weekOffset={weekOffset} />
               </Box>
-
               <Box sx={{ flex: 4 }}>
                 <TopDriversTable weekOffset={weekOffset} />
               </Box>

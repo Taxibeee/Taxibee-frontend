@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { CustomAlert } from '../../utils/customAlert';
 import { CustomWindow } from '../../api/api';
 import emailjs from '@emailjs/browser';
 import { SnackbarAlert } from '../../types/snackbarAlert.types';
@@ -15,7 +14,6 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  Snackbar,
 } from '@mui/material';
 import { SidebarItem } from './DashboardLayout';
 import logo from '../../assets/F5-04.png';
@@ -33,6 +31,7 @@ interface SidebarProps {
   onNavigate: (path: string) => void;
   isMobile: boolean;
   currentPath: string;
+  setSnackbar: React.Dispatch<React.SetStateAction<SnackbarAlert>>;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -42,6 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   isMobile,
   currentPath,
+  setSnackbar,
 }) => {
   const [openContactDialog, setOpenContactDialog] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -51,11 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     message: '',
   });
 
-  const [snackbar, setSnackbar] = useState<SnackbarAlert>({
-    open: false,
-    message: '',
-    severity: 'success',
-  });
   const handleContactSubmit = async () => {
     // Basic validation
     if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
@@ -235,28 +230,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         onChange={handleContactFormChange}
         isSubmitting={isSubmitting}
       />
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{
-          zIndex: 15000,
-          position: 'fixed',
-          '& .MuiSnackbar-root': {
-            top: '80px !important',
-          },
-        }}
-      >
-        <CustomAlert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </CustomAlert>
-      </Snackbar>
     </Box>
   );
 

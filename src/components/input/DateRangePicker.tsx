@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, SelectChangeEvent, Popover, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -9,12 +9,24 @@ interface DateRangePickerProps {
 }
 
 const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
-  const [selectedOption, setSelectedOption] = useState('');
-  const [displayText, setDisplayText] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  // Initialize with "last7" option
+  const [selectedOption, setSelectedOption] = useState('last7');
+  const [displayText, setDisplayText] = useState('Last 7 Days');
+  
+  // Initialize with last 7 days date range
+  const endDate7Days = new Date();
+  const startDate7Days = new Date();
+  startDate7Days.setDate(startDate7Days.getDate() - 7);
+  
+  const [startDate, setStartDate] = useState<Date | null>(startDate7Days);
+  const [endDate, setEndDate] = useState<Date | null>(endDate7Days);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
+
+  // Call onSelect with initial values when component mounts
+  useEffect(() => {
+    onSelect(startDate, endDate, 'last7');
+  }, []);
 
   const formatDateRange = (start: Date, end: Date) => {
     return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
@@ -50,10 +62,6 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
     }
   };
 
-  // Separate handler just for opening the custom date picker
-  const handleCustomClick = () => {
-    setPopoverOpen(true);
-  };
 
   const handleApply = () => {
     if (startDate && endDate) {

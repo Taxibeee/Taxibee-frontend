@@ -79,17 +79,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               </Typography>
               <DateRangePicker />
 
-              <FormControl size="small" sx={{ minWidth: 150 }}>
-                <InputLabel>{t('adminDashboard.selectWeek')}</InputLabel>
-                <Select
-                  value={weekOffset}
-                  label={t('adminDashboard.selectWeek')}
-                  onChange={handleWeekChange}
-                >
-                  <MenuItem value={0}>{t('adminDashboard.currentWeek')}</MenuItem>
-                  <MenuItem value={-1}>{t('adminDashboard.previousWeek')}</MenuItem>
-                </Select>
-              </FormControl>
             </Box>
             <SummaryCards weekOffset={weekOffset} />
 

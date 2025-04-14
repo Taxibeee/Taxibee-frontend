@@ -1,26 +1,62 @@
-import { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, SelectChangeEvent } from '@mui/material';
+import { useState, useRef } from 'react';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, SelectChangeEvent, Popover, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
-const DateRangePicker = () => {
+interface DateRangePickerProps {
+  onSelect?: (startDate: Date | null, endDate: Date | null, option: string) => void;
+}
+
+const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const selectRef = useRef<HTMLDivElement>(null);
 
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
-    setSelectedOption(event.target.value as string);
-    if (event.target.value !== 'custom') {
+    const value = event.target.value as string;
+    setSelectedOption(value);
+    
+    if (value === 'custom') {
+      setPopoverOpen(true);
       setStartDate(null);
       setEndDate(null);
+    } else if (value === 'last7') {
+      // Calculate dates for last 7 days
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 7);
+      console.log('Selected last 7 days:', start, end);
+      onSelect(start, end, value);
+    } else if (value === 'last30') {
+      // Calculate dates for last 30 days
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 30);
+      console.log('Selected last 30 days:', start, end);
+      onSelect(start, end, value);
+    }
+  };
+
+  const handleApply = () => {
+    console.log('Custom date range selected:', startDate, endDate);
+    onSelect(startDate, endDate, 'custom');
+    setPopoverOpen(false);
+  };
+
+  const handleClosePopover = () => {
+    setPopoverOpen(false);
+    // If user cancels without applying, reset to empty
+    if (selectedOption === 'custom' && (!startDate || !endDate)) {
+      setSelectedOption('');
     }
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 300 }}>
-
-        <FormControl fullWidth>
+        <FormControl fullWidth ref={selectRef}>
           <InputLabel id="date-filter-label">Date Filter</InputLabel>
           <Select
             labelId="date-filter-label"
@@ -34,28 +70,47 @@ const DateRangePicker = () => {
           </Select>
         </FormControl>
 
-        {selectedOption === 'custom' && (
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <DatePicker
-              label="From"
-              value={startDate}
-              onChange={(newValue) => setStartDate(newValue)}
-              slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
-            />
-            <DatePicker
-              label="To"
-              value={endDate}
-              onChange={(newValue) => setEndDate(newValue)}
-              slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
-            />
+        <Popover
+          open={popoverOpen}
+          anchorEl={selectRef.current}
+          onClose={handleClosePopover}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <Box sx={{ p: 2, width: 300 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>Select Date Range</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <DatePicker
+                label="From"
+                value={startDate}
+                onChange={(newValue) => setStartDate(newValue)}
+                slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
+              />
+              <DatePicker
+                label="To"
+                value={endDate}
+                onChange={(newValue) => setEndDate(newValue)}
+                slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+              <Button onClick={handleClosePopover}>Cancel</Button>
+              <Button 
+                variant="contained" 
+                onClick={handleApply} 
+                disabled={!startDate || !endDate}
+              >
+                Apply
+              </Button>
+            </Box>
           </Box>
-        )}
-
-        {/* Apply button for later logic */}
-        <Button variant="contained" disabled={selectedOption === 'custom' && (!startDate || !endDate)}>
-          Apply Filter
-        </Button>
-
+        </Popover>
       </Box>
     </LocalizationProvider>
   );

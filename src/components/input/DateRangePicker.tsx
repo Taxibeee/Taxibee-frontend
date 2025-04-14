@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, SelectChangeEvent, Popover, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
 
 interface DateRangePickerProps {
   onSelect?: (startDate: Date | null, endDate: Date | null, option: string) => void;
@@ -9,25 +10,32 @@ interface DateRangePickerProps {
 
 const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
   const [selectedOption, setSelectedOption] = useState('');
+  const [displayText, setDisplayText] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
+
+  const formatDateRange = (start: Date, end: Date) => {
+    return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+  };
 
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
     setSelectedOption(value);
     
     if (value === 'custom') {
+      // Always open popover for custom selection
       setPopoverOpen(true);
-      setStartDate(null);
-      setEndDate(null);
     } else if (value === 'last7') {
       // Calculate dates for last 7 days
       const end = new Date();
       const start = new Date();
       start.setDate(start.getDate() - 7);
       console.log('Selected last 7 days:', start, end);
+      setStartDate(start);
+      setEndDate(end);
+      setDisplayText('Last 7 Days');
       onSelect(start, end, value);
     } else if (value === 'last30') {
       // Calculate dates for last 30 days
@@ -35,20 +43,32 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
       const start = new Date();
       start.setDate(start.getDate() - 30);
       console.log('Selected last 30 days:', start, end);
+      setStartDate(start);
+      setEndDate(end);
+      setDisplayText('Last 30 Days');
       onSelect(start, end, value);
     }
   };
 
+  // Separate handler just for opening the custom date picker
+  const handleCustomClick = () => {
+    setPopoverOpen(true);
+  };
+
   const handleApply = () => {
-    console.log('Custom date range selected:', startDate, endDate);
-    onSelect(startDate, endDate, 'custom');
-    setPopoverOpen(false);
+    if (startDate && endDate) {
+      const formattedRange = formatDateRange(startDate, endDate);
+      setDisplayText(formattedRange);
+      console.log('Custom date range selected:', startDate, endDate);
+      onSelect(startDate, endDate, 'custom');
+      setPopoverOpen(false);
+    }
   };
 
   const handleClosePopover = () => {
     setPopoverOpen(false);
-    // If user cancels without applying, reset to empty
-    if (selectedOption === 'custom' && (!startDate || !endDate)) {
+    // If user cancels without applying and there's no existing selection, reset to empty
+    if (selectedOption === 'custom' && !displayText) {
       setSelectedOption('');
     }
   };
@@ -63,6 +83,21 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
             value={selectedOption}
             label="Date Filter"
             onChange={handleOptionChange}
+            renderValue={() => displayText || "Select Date Range"}
+            MenuProps={{
+              PaperProps: {
+                onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+                  // Check if clicking on custom option
+                  if (e.target instanceof HTMLElement) {
+                    const menuItem = e.target.closest('[data-value="custom"]');
+                    if (menuItem && selectedOption === 'custom') {
+                      e.stopPropagation();
+                      setTimeout(() => setPopoverOpen(true), 100);
+                    }
+                  }
+                }
+              }
+            }}
           >
             <MenuItem value="last7">Last 7 Days</MenuItem>
             <MenuItem value="last30">Last 30 Days</MenuItem>

@@ -9,6 +9,8 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
+import DateRangePicker from '../../components/input/DateRangePicker';
+
 // Import Layout
 import { DashboardLayout } from '../../components';
 
@@ -75,6 +77,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <Typography variant="h3" gutterBottom>
                 {t('adminSidebar.dashboard')}
               </Typography>
+              <DateRangePicker />
+
               <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel>{t('adminDashboard.selectWeek')}</InputLabel>
                 <Select

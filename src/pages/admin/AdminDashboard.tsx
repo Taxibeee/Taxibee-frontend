@@ -94,7 +94,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <DateRangePicker onSelect={handleDateRangeChange}/>
 
             </Box>
-            <SummaryCards weekOffset={weekOffset} />
+            <SummaryCards startDate={startDate} endDate={endDate} />
 
             <Box
               sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}

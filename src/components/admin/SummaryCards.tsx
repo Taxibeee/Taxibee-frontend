@@ -83,16 +83,17 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface SummaryCardsProps {
-  weekOffset: number;
+  startDate: string,
+  endDate: string
 }
 
-const SummaryCards: React.FC<SummaryCardsProps> = ({ weekOffset }) => {
+const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { useWeekAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekAnalytics(weekOffset);
+  const { data, isLoading, isError } = useWeekAnalytics(startDate, endDate);
 
   const LoadingSkeleton = () => {
     return (

@@ -5,7 +5,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
 
 interface DateRangePickerProps {
-  onSelect?: (startDate: Date | null, endDate: Date | null) => void;
+  onSelect?: (startDate: Date, endDate: Date) => void;
 }
 
 const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
@@ -16,10 +16,10 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
   // Initialize with last 7 days date range
   const endDate7Days = new Date();
   const startDate7Days = new Date();
-  startDate7Days.setDate(startDate7Days.getDate() - 7);
+  startDate7Days.setDate(endDate7Days.getDate() - 7);
   
-  const [startDate, setStartDate] = useState<Date | null>(startDate7Days);
-  const [endDate, setEndDate] = useState<Date | null>(endDate7Days);
+  const [startDate, setStartDate] = useState<Date>(startDate7Days);
+  const [endDate, setEndDate] = useState<Date>(endDate7Days);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -64,13 +64,10 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
 
 
   const handleApply = () => {
-    if (startDate && endDate) {
-      const formattedRange = formatDateRange(startDate, endDate);
-      setDisplayText(formattedRange);
-      console.log('Custom date range selected:', startDate, endDate);
-      onSelect(startDate, endDate);
-      setPopoverOpen(false);
-    }
+    const formattedRange = formatDateRange(startDate, endDate);
+    setDisplayText(formattedRange);
+    onSelect(startDate, endDate);
+    setPopoverOpen(false);
   };
 
   const handleClosePopover = () => {
@@ -132,13 +129,17 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
               <DatePicker
                 label="From"
                 value={startDate}
-                onChange={(newValue) => setStartDate(newValue)}
+                onChange={(newValue) => {
+                  if (newValue) setStartDate(newValue);
+                }}
                 slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
               />
               <DatePicker
                 label="To"
                 value={endDate}
-                onChange={(newValue) => setEndDate(newValue)}
+                onChange={(newValue) => {
+                  if (newValue) setEndDate(newValue);
+                }}
                 slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
               />
             </Box>
@@ -146,8 +147,7 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
               <Button onClick={handleClosePopover}>Cancel</Button>
               <Button 
                 variant="contained" 
-                onClick={handleApply} 
-                disabled={!startDate || !endDate}
+                onClick={handleApply}
               >
                 Apply
               </Button>

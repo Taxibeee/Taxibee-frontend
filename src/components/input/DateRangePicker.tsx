@@ -1,5 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Box, SelectChangeEvent, Popover, Typography } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Box,
+  SelectChangeEvent,
+  Popover,
+  Typography,
+} from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
@@ -12,12 +23,12 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
   // Initialize with "last7" option
   const [selectedOption, setSelectedOption] = useState('last7');
   const [displayText, setDisplayText] = useState('Last 7 Days');
-  
+
   // Initialize with last 7 days date range
   const endDate7Days = new Date();
   const startDate7Days = new Date();
   startDate7Days.setDate(endDate7Days.getDate() - 7);
-  
+
   const [startDate, setStartDate] = useState<Date>(startDate7Days);
   const [endDate, setEndDate] = useState<Date>(endDate7Days);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -35,7 +46,7 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
     setSelectedOption(value);
-    
+
     if (value === 'custom') {
       // Always open popover for custom selection
       setPopoverOpen(true);
@@ -62,7 +73,6 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
     }
   };
 
-
   const handleApply = () => {
     const formattedRange = formatDateRange(startDate, endDate);
     setDisplayText(formattedRange);
@@ -88,7 +98,7 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
             value={selectedOption}
             label="Date Filter"
             onChange={handleOptionChange}
-            renderValue={() => displayText || "Select Date Range"}
+            renderValue={() => displayText || 'Select Date Range'}
             MenuProps={{
               PaperProps: {
                 onClick: (e: React.MouseEvent<HTMLDivElement>) => {
@@ -100,8 +110,8 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
                       setTimeout(() => setPopoverOpen(true), 100);
                     }
                   }
-                }
-              }
+                },
+              },
             }}
           >
             <MenuItem value="last7">Last 7 Days</MenuItem>
@@ -124,31 +134,30 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
           }}
         >
           <Box sx={{ p: 2, width: 300 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>Select Date Range</Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Select Date Range
+            </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <DatePicker
                 label="From"
                 value={startDate}
-                onChange={(newValue) => {
+                onChange={newValue => {
                   if (newValue) setStartDate(newValue);
                 }}
-                slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
+                slots={{ textField: params => <TextField {...params} fullWidth /> }}
               />
               <DatePicker
                 label="To"
                 value={endDate}
-                onChange={(newValue) => {
+                onChange={newValue => {
                   if (newValue) setEndDate(newValue);
                 }}
-                slots={{ textField: (params) => <TextField {...params} fullWidth /> }}
+                slots={{ textField: params => <TextField {...params} fullWidth /> }}
               />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
               <Button onClick={handleClosePopover}>Cancel</Button>
-              <Button 
-                variant="contained" 
-                onClick={handleApply}
-              >
+              <Button variant="contained" onClick={handleApply}>
                 Apply
               </Button>
             </Box>

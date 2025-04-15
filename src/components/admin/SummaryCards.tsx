@@ -83,8 +83,8 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface SummaryCardsProps {
-  startDate: string,
-  endDate: string
+  startDate: string;
+  endDate: string;
 }
 
 const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {

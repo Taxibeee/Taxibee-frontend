@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import DateRangePicker from '../../components/input/DateRangePicker';
 
@@ -55,10 +52,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const handleDateRangeChange = (start: Date, end: Date) => {
     const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
     const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
-    
+
     setStartDate(startDateString);
     setEndDate(endDateString);
-
   };
 
   // const handleWeekChange = (event: SelectChangeEvent<number>) => {
@@ -91,8 +87,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <Typography variant="h3" gutterBottom>
                 {t('adminSidebar.dashboard')}
               </Typography>
-              <DateRangePicker onSelect={handleDateRangeChange}/>
-
+              <DateRangePicker onSelect={handleDateRangeChange} />
             </Box>
             <SummaryCards startDate={startDate} endDate={endDate} />
 

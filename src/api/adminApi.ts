@@ -39,12 +39,19 @@ const adminApi = {
 
   // Analytics
   getWeekAnalytics: async (startDate: string, endDate: string): Promise<WeekAnalytics> => {
-    const response = await api.get(`/admin/analyticsByWeek?start_date=${startDate}&end_date=${endDate}`);
+    const response = await api.get(
+      `/admin/analyticsByWeek?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 
-  getWeekdayAnalytics: async (startDate: string, endDate: string): Promise<WeekDayAnalyticsResponse> => {
-    const response = await api.get(`/admin/analyticsByWeekDays?start_date=${startDate}&end_date=${endDate}`);
+  getWeekdayAnalytics: async (
+    startDate: string,
+    endDate: string
+  ): Promise<WeekDayAnalyticsResponse> => {
+    const response = await api.get(
+      `/admin/analyticsByWeekDays?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 

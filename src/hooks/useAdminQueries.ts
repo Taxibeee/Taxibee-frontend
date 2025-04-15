@@ -29,17 +29,17 @@ export const useAdminQueries = () => {
   };
 
   // Analytics queries
-  const useWeekAnalytics = (weekOffset: number = 0) => {
+  const useWeekAnalytics = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'weekAnalytics', weekOffset],
-      queryFn: () => adminApi.getWeekAnalytics(weekOffset),
+      queryKey: ['admin', 'weekAnalytics', startDate, endDate],
+      queryFn: () => adminApi.getWeekAnalytics(startDate, endDate),
     });
   };
 
-  const useWeekDayAnalytics = (weekOffset: number = 0) => {
+  const useWeekDayAnalytics = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'weekDayAnalytics', weekOffset],
-      queryFn: () => adminApi.getWeekdayAnalytics(weekOffset),
+      queryKey: ['admin', 'weekDayAnalytics', startDate, endDate],
+      queryFn: () => adminApi.getWeekdayAnalytics(startDate, endDate),
     });
   };
 

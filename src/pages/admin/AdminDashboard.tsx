@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  SelectChangeEvent,
 } from '@mui/material';
 
 import DateRangePicker from '../../components/input/DateRangePicker';
@@ -47,9 +42,28 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
   const [weekOffset, setWeekOffset] = useState<number>(0);
 
-  const handleWeekChange = (event: SelectChangeEvent<number>) => {
-    setWeekOffset(Number(event.target.value));
+  const endDate7Days = new Date();
+  const startDate7Days = new Date();
+  startDate7Days.setDate(endDate7Days.getDate() - 7);
+
+  const startDate7DaysString = startDate7Days.toISOString().split('T')[0];
+  const endDate7DaysString = endDate7Days.toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState<string>(startDate7DaysString);
+  const [endDate, setEndDate] = useState<string>(endDate7DaysString);
+
+  const handleDateRangeChange = (start: Date, end: Date) => {
+    const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
+    const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
+    
+    setStartDate(startDateString);
+    setEndDate(endDateString);
+    console.log('Selected date range:', startDateString, endDateString);
   };
+
+  // const handleWeekChange = (event: SelectChangeEvent<number>) => {
+  //   setWeekOffset(Number(event.target.value));
+  // };
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
     return items.map((item: SidebarItem) => {
@@ -77,7 +91,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <Typography variant="h3" gutterBottom>
                 {t('adminSidebar.dashboard')}
               </Typography>
-              <DateRangePicker />
+              <DateRangePicker onSelect={handleDateRangeChange}/>
 
             </Box>
             <SummaryCards weekOffset={weekOffset} />
@@ -86,7 +100,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}
             >
               <Box sx={{ flex: 4 }}>
-                <WeeklyAnalyticsCharts weekOffset={weekOffset} />
+                <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 2 }}>
                 <RevenueByMethodChart weekOffset={weekOffset} />

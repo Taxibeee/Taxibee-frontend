@@ -22,13 +22,14 @@ import { WeekDayAnalytics } from '../../types/analytics.types';
 type ChartType = 'revenue' | 'orders' | 'average';
 
 interface WeeklyAnalyticsChartsProps {
-  weekOffset: number;
+  startDate: string,
+  endDate: string
 }
 
-const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffset }) => {
+const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({startDate, endDate}) => {
   const theme = useTheme();
   const { useWeekDayAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekDayAnalytics(weekOffset);
+  const { data, isLoading, isError } = useWeekDayAnalytics(startDate, endDate);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState<ChartType | null>(null);
 

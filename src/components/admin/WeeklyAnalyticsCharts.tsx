@@ -22,11 +22,11 @@ import { WeekDayAnalytics } from '../../types/analytics.types';
 type ChartType = 'revenue' | 'orders' | 'average';
 
 interface WeeklyAnalyticsChartsProps {
-  startDate: string,
-  endDate: string
+  startDate: string;
+  endDate: string;
 }
 
-const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({startDate, endDate}) => {
+const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate, endDate }) => {
   const theme = useTheme();
   const { useWeekDayAnalytics } = useAdminQueries();
   const { data, isLoading, isError } = useWeekDayAnalytics(startDate, endDate);

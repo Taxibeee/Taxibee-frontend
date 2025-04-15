@@ -58,7 +58,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
     
     setStartDate(startDateString);
     setEndDate(endDateString);
-    console.log('Selected date range:', startDateString, endDateString);
+
   };
 
   // const handleWeekChange = (event: SelectChangeEvent<number>) => {

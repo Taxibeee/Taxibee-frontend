@@ -44,7 +44,7 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
       const end = new Date();
       const start = new Date();
       start.setDate(start.getDate() - 7);
-      console.log('Selected last 7 days:', start, end);
+
       setStartDate(start);
       setEndDate(end);
       setDisplayText('Last 7 Days');
@@ -54,7 +54,7 @@ const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
       const end = new Date();
       const start = new Date();
       start.setDate(start.getDate() - 30);
-      console.log('Selected last 30 days:', start, end);
+
       setStartDate(start);
       setEndDate(end);
       setDisplayText('Last 30 Days');

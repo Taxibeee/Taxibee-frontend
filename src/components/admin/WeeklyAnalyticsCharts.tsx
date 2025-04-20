@@ -18,6 +18,7 @@ import { useAdminQueries } from '../../hooks';
 import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
+import LineChartWrapper from '../charts/LineChartWrapper';
 
 
 // Dummies and WIP Items
@@ -68,7 +69,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
     switch (selectedChart) {
       case 'revenue':
         return (
-          <LineChart
+          <LineChartWrapper
             dataset={chartData.dates.map((date, index) => ({
               date,
               revenue: chartData.revenue[index],
@@ -80,10 +81,10 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                 dataKey: 'revenue',
                 label: 'Daily Revenue',
                 area: true,
-                showMark: true,
+                showMark: false,
+                curve: 'linear',
               },
             ]}
-            height={400}
             colors={[theme.palette.primary.main]}
           />
         );
@@ -103,7 +104,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
         );
       case 'average':
         return (
-          <LineChart
+          <LineChartWrapper
             dataset={chartData.dates.map((date, index) => ({
               date,
               average: chartData.avgOrders[index],
@@ -115,10 +116,10 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                 dataKey: 'average',
                 label: 'Avg. Order Value',
                 area: true,
-                showMark: true,
+                showMark: false,
+                curve: 'linear',
               },
             ]}
-            height={400}
             colors={[theme.palette.success.main]}
           />
         );

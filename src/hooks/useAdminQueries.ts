@@ -44,17 +44,17 @@ export const useAdminQueries = () => {
   };
 
   // Revenue queries
-  const useRevenueByPaymentMethod = (weekOffset: number = 0) => {
+  const useRevenueByPaymentMethod = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'revenueByPaymentMethod', weekOffset],
-      queryFn: () => adminApi.getRevenueByPaymentMethod(weekOffset),
+      queryKey: ['admin', 'revenueByPaymentMethod', startDate, endDate],
+      queryFn: () => adminApi.getRevenueByPaymentMethod(startDate, endDate),
     });
   };
 
-  const useRevenueByDriver = (weekOffset: number = 0) => {
+  const useRevenueByDriver = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['revenueByDriver', weekOffset],
-      queryFn: () => adminApi.getRevenueByDriver(weekOffset),
+      queryKey: ['revenueByDriver', startDate, endDate],
+      queryFn: () => adminApi.getRevenueByDriver(startDate, endDate),
     });
   };
 

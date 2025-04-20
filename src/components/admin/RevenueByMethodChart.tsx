@@ -25,12 +25,13 @@ const chartColors = [
 ];
 
 interface RevenueByMethodChartProps {
-  weekOffset: number;
+  startDate: string;
+  endDate: string;
 }
 
-const RevenueByMethodChart: React.FC<RevenueByMethodChartProps> = ({ weekOffset }) => {
+const RevenueByMethodChart: React.FC<RevenueByMethodChartProps> = ({ startDate, endDate }) => {
   const { useRevenueByPaymentMethod } = useAdminQueries();
-  const { data, isLoading, isError } = useRevenueByPaymentMethod(weekOffset);
+  const { data, isLoading, isError } = useRevenueByPaymentMethod(startDate, endDate);
 
   // Transform data for PieChart
   const prepareChartData = () => {

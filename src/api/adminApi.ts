@@ -55,15 +55,19 @@ const adminApi = {
   },
 
   // Revenue
-  getRevenueByPaymentMethod: async (weekOffset: number = 0): Promise<Record<string, number>> => {
-    const response = await api.get(`/admin/revenueByPaymentMethod?week_offset=${weekOffset}`);
+  getRevenueByPaymentMethod: async (
+    startDate: string,
+    endDate: string
+  ): Promise<Record<string, number>> => {
+    const response = await api.get(`/admin/revenueByPaymentMethod?start_date=${startDate}&end_date=${endDate}`);
     return response.data.data;
   },
 
   getRevenueByDriver: async (
-    weekOffset: number = 0
+    startDate: string,
+    endDate: string
   ): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
-    const response = await api.get(`/admin/revenueByDriver?week_offset=${weekOffset}`);
+    const response = await api.get(`/admin/revenueByDriver?start_date=${startDate}&end_date=${endDate}`);
     return response.data.data;
   },
 

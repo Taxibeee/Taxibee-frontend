@@ -98,10 +98,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
                 <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 2 }}>
-                <RevenueByMethodChart weekOffset={weekOffset} />
+                <RevenueByMethodChart startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 4 }}>
-                <TopDriversTable weekOffset={weekOffset} />
+                <TopDriversTable startDate={startDate} endDate={endDate} />
               </Box>
             </Box>
           </Box>

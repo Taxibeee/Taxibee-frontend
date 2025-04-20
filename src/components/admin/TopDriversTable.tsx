@@ -28,13 +28,14 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface TopDriversTableProps {
-  weekOffset: number;
+  startDate: string;
+  endDate: string;
 }
 
-const TopDriversTable: React.FC<TopDriversTableProps> = ({ weekOffset }) => {
+const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate }) => {
   const navigate = useNavigate();
   const { useRevenueByDriver } = useAdminQueries();
-  const { data, isLoading, isError } = useRevenueByDriver(weekOffset);
+  const { data, isLoading, isError } = useRevenueByDriver(startDate, endDate);
 
   return (
     <Card elevation={1}>

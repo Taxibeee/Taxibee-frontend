@@ -16,10 +16,10 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
 
 interface DateRangePickerProps {
-  onSelect?: (startDate: Date, endDate: Date) => void;
+  onSelect: (startDate: Date, endDate: Date) => void;
 }
 
-const DateRangePicker = ({ onSelect = () => {} }: DateRangePickerProps) => {
+const DateRangePicker:React.FC<DateRangePickerProps> = ({ onSelect }) => {
   // Initialize with "last7" option
   const [selectedOption, setSelectedOption] = useState('last7');
   const [displayText, setDisplayText] = useState('Last 7 Days');

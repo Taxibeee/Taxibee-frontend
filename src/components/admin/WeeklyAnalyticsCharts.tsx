@@ -19,6 +19,14 @@ import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 
+
+// Dummies and WIP Items
+// import { sampleResponseForLineChart } from '../../utils/DataTransformers.ts/ForLineChart';
+// const data = sampleResponseForLineChart.data;
+// const isLoading = false;
+// const isError = false;
+
+
 type ChartType = 'revenue' | 'orders' | 'average';
 
 interface WeeklyAnalyticsChartsProps {
@@ -37,6 +45,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
     if (!data?.daily_analytics) return null;
 
     return {
+      dates: data.daily_analytics.map((item: WeekDayAnalytics) => item.date),
       days: data.daily_analytics.map((item: WeekDayAnalytics) => item.day),
       revenue: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_revenue || 0),
       orders: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_orders || 0),
@@ -60,11 +69,11 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
       case 'revenue':
         return (
           <LineChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               revenue: chartData.revenue[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Revenue (€)' }]}
             series={[
               {
@@ -81,11 +90,11 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
       case 'orders':
         return (
           <BarChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               orders: chartData.orders[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Number of Orders' }]}
             series={[{ dataKey: 'orders', label: 'Orders' }]}
             height={400}
@@ -95,11 +104,11 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
       case 'average':
         return (
           <LineChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               average: chartData.avgOrders[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Average Order Value (€)' }]}
             series={[
               {

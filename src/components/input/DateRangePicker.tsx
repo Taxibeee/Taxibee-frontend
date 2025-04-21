@@ -144,6 +144,7 @@ const DateRangePicker:React.FC<DateRangePickerProps> = ({ onSelect }) => {
                 onChange={newValue => {
                   if (newValue) setStartDate(newValue);
                 }}
+                format="yyyy-MM-dd"
                 slots={{ textField: params => <TextField {...params} fullWidth /> }}
               />
               <DatePicker
@@ -152,6 +153,7 @@ const DateRangePicker:React.FC<DateRangePickerProps> = ({ onSelect }) => {
                 onChange={newValue => {
                   if (newValue) setEndDate(newValue);
                 }}
+                format="yyyy-MM-dd"
                 slots={{ textField: params => <TextField {...params} fullWidth /> }}
               />
             </Box>

@@ -155,7 +155,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
         >
           <FlexWrapper gap="md" direction="vertical" sx={{ p: 2, width: 300 }}>
             <FlexWrapper gap="xs" direction="vertical">
-              <HeadingsWrapper text="Select Date Range" type='h6'/>
+              <HeadingsWrapper text="Select Date Range" type="h6" />
               <InfoItemWrapper text="The date format is YYYY-MM-DD" size="sm" />
             </FlexWrapper>
             <FlexWrapper gap="sm" direction="vertical">

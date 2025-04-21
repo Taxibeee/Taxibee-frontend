@@ -16,7 +16,12 @@ const sizeMapping = {
   xl: '1.5rem',
 };
 
-const TextWrapper: React.FC<TextWrapperProps> = ({ text, isBold = false, isItalic = false, size = 'md' }) => {
+const TextWrapper: React.FC<TextWrapperProps> = ({
+  text,
+  isBold = false,
+  isItalic = false,
+  size = 'md',
+}) => {
   return (
     <Typography
       sx={{

@@ -18,7 +18,13 @@ const gapSizes = {
   lg: 4,
 };
 
-const FlexWrapper: React.FC<FlexWrapperProps> = ({ children, gap = 'md', direction = 'horizontal', isDebugging = false, sx }) => {
+const FlexWrapper: React.FC<FlexWrapperProps> = ({
+  children,
+  gap = 'md',
+  direction = 'horizontal',
+  isDebugging = false,
+  sx,
+}) => {
   return (
     <Box
       sx={{

@@ -1,15 +1,12 @@
 import React from 'react';
-import { LineChart } from '@mui/x-charts';
+import { LineChart, LineChartProps } from '@mui/x-charts';
 
 interface LineChartWrapperProps {
-  dataset: any;
-
-  xAxis: any;
-  yAxis: any;
-
-  series: any;
-
-  colors: any;
+  dataset: LineChartProps['dataset'];
+  xAxis: LineChartProps['xAxis'];
+  yAxis: LineChartProps['yAxis'];
+  series: LineChartProps['series'];
+  colors: LineChartProps['colors'];
 }
 
 const LineChartWrapper: React.FC<LineChartWrapperProps> = ({

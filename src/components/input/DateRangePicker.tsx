@@ -6,10 +6,8 @@ import {
   MenuItem,
   TextField,
   Button,
-  Box,
   SelectChangeEvent,
   Popover,
-  Typography,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -23,17 +21,21 @@ interface DateRangePickerProps {
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
-  // Initialize with "last7" option
-  const [selectedOption, setSelectedOption] = useState('last7');
-  const [displayText, setDisplayText] = useState('Last 7 Days');
+  // Initialize with "currentWeek" option
+  const [selectedOption, setSelectedOption] = useState('currentWeek');
+  const [displayText, setDisplayText] = useState('Current Week');
 
-  // Initialize with last 7 days date range
-  const endDate7Days = new Date();
-  const startDate7Days = new Date();
-  startDate7Days.setDate(endDate7Days.getDate() - 7);
+  // Initialize with current week date range
+  const today = new Date();
+  const startDateCurrentWeek = new Date(today);
+  const endDateCurrentWeek = new Date(today);
+  const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust for Monday
+  startDateCurrentWeek.setDate(today.getDate() + diffToMonday);
+  endDateCurrentWeek.setDate(startDateCurrentWeek.getDate() + 6);
 
-  const [startDate, setStartDate] = useState<Date>(startDate7Days);
-  const [endDate, setEndDate] = useState<Date>(endDate7Days);
+  const [startDate, setStartDate] = useState<Date>(startDateCurrentWeek);
+  const [endDate, setEndDate] = useState<Date>(endDateCurrentWeek);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -72,6 +74,20 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
       setStartDate(start);
       setEndDate(end);
       setDisplayText('Last 30 Days');
+      onSelect(start, end);
+    } else if (value === 'currentWeek') {
+      // Calculate dates for the current week (Monday to Sunday)
+      const today = new Date();
+      const start = new Date(today);
+      const end = new Date(today);
+      const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+      const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust for Monday
+      start.setDate(today.getDate() + diffToMonday);
+      end.setDate(start.getDate() + 6);
+
+      setStartDate(start);
+      setEndDate(end);
+      setDisplayText('Current Week');
       onSelect(start, end);
     }
   };
@@ -117,6 +133,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
               },
             }}
           >
+            <MenuItem value="currentWeek">Current Week</MenuItem>
             <MenuItem value="last7">Last 7 Days</MenuItem>
             <MenuItem value="last30">Last 30 Days</MenuItem>
             <MenuItem value="custom">Custom Date Range</MenuItem>

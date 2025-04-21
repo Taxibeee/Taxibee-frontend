@@ -37,7 +37,6 @@ interface SidebarItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
-  const [weekOffset, setWeekOffset] = useState<number>(0);
 
   const endDate7Days = new Date();
   const startDate7Days = new Date();
@@ -56,10 +55,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
     setStartDate(startDateString);
     setEndDate(endDateString);
   };
-
-  // const handleWeekChange = (event: SelectChangeEvent<number>) => {
-  //   setWeekOffset(Number(event.target.value));
-  // };
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
     return items.map((item: SidebarItem) => {

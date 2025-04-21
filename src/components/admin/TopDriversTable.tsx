@@ -73,10 +73,7 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
               },
             }}
           >
-            <Table
-              size="small"
-              stickyHeader
-            >
+            <Table size="small" stickyHeader>
               <TableHead>
                 <TableRow>
                   <TableCell>Driver</TableCell>

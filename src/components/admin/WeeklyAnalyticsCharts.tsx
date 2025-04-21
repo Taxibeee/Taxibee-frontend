@@ -160,7 +160,9 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
           ) : isError ? (
             <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
           ) : !data?.daily_analytics || data.daily_analytics.length === 0 ? (
-            <Typography>No data available for this week yet. Select a different date range.</Typography>
+            <Typography>
+              No data available for this week yet. Select a different date range.
+            </Typography>
           ) : (
             <Box>
               <Grid2 spacing={2}>

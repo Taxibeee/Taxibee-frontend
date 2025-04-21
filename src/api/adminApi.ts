@@ -13,16 +13,15 @@ const adminApi = {
     page_size: number = 25,
     search?: string
   ): Promise<OrdersResponse> => {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      page_size: page_size.toString(),
-    });
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('page_size', page_size.toString());
 
     if (search) {
       params.append('search', search);
     }
 
-    const response = await api.get(`/admin/getAllOrders?page=${params.toString()}`);
+    const response = await api.get(`/admin/getAllOrders?${params.toString()}`);
     return response.data;
   },
 

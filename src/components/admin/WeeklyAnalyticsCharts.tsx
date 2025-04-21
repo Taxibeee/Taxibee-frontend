@@ -20,12 +20,6 @@ import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 import LineChartWrapper from './charts/LineChartWrapper';
 
-// Dummies and WIP Items
-// import { sampleResponseForLineChart } from '../../utils/DataTransformers.ts/ForLineChart';
-// const data = sampleResponseForLineChart.data;
-// const isLoading = false;
-// const isError = false;
-
 type ChartType = 'revenue' | 'orders' | 'average';
 
 interface WeeklyAnalyticsChartsProps {
@@ -166,7 +160,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
           ) : isError ? (
             <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
           ) : !data?.daily_analytics || data.daily_analytics.length === 0 ? (
-            <Typography>No data available for this week yet.</Typography>
+            <Typography>No data available for this week yet. Select a different date range.</Typography>
           ) : (
             <Box>
               <Grid2 spacing={2}>
@@ -183,7 +177,6 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                       data={chartData!.revenue}
                       height={100}
                       curve="natural"
-                      area
                       colors={[theme.palette.primary.main]}
                     />
                   </Box>

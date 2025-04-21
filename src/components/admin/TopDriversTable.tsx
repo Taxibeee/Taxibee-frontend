@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -13,8 +13,8 @@ import {
   LinearProgress,
   Box,
   Button,
+  useTheme,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { useAdminQueries } from '../../hooks';
 import { CustomAlert } from '../../utils/customAlert';
 
@@ -33,9 +33,16 @@ interface TopDriversTableProps {
 }
 
 const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate }) => {
-  const navigate = useNavigate();
+  const theme = useTheme();
+  const [showAllDrivers, setShowAllDrivers] = useState(false);
   const { useRevenueByDriver } = useAdminQueries();
   const { data, isLoading, isError } = useRevenueByDriver(startDate, endDate);
+
+  const displayedDrivers = showAllDrivers ? data : data?.slice(0, 10);
+
+  const handleToggleView = () => {
+    setShowAllDrivers(!showAllDrivers);
+  };
 
   return (
     <Card elevation={1}>
@@ -47,8 +54,29 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
         ) : !data || data.length === 0 ? (
           <Typography>No driver revenue data available.</Typography>
         ) : (
-          <TableContainer>
-            <Table size="small">
+          <TableContainer
+            sx={{
+              maxHeight: 800,
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '&::-webkit-scrollbar-track': {
+                backgroundColor: 'transparent',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: theme.palette.divider,
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            }}
+          >
+            <Table
+              size="small"
+              stickyHeader
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>Driver</TableCell>
@@ -57,7 +85,7 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.slice(0, 5).map(driver => {
+                {displayedDrivers?.map(driver => {
                   const totalRevenue = data.reduce(
                     (sum, current) => sum + current.total_revenue,
                     0
@@ -103,17 +131,17 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
                     mt: 5,
                   }}
                 >
-                  Top performance drivers
+                  {showAllDrivers ? 'All drivers' : 'Top performance drivers'}
                 </Typography>
                 <Button
                   variant="text"
                   size="small"
-                  onClick={() => navigate('/admin/drivers')}
+                  onClick={handleToggleView}
                   sx={{
                     mt: 4,
                   }}
                 >
-                  View All Drivers
+                  {showAllDrivers ? 'Show Less' : 'View All Drivers'}
                 </Button>
               </Box>
             )}

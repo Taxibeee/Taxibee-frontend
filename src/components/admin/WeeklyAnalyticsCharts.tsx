@@ -15,20 +15,22 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAdminQueries } from '../../hooks';
-import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
+import { BarChart, SparkLineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
+import LineChartWrapper from './charts/LineChartWrapper';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 
 interface WeeklyAnalyticsChartsProps {
-  weekOffset: number;
+  startDate: string;
+  endDate: string;
 }
 
-const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffset }) => {
+const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate, endDate }) => {
   const theme = useTheme();
   const { useWeekDayAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekDayAnalytics(weekOffset);
+  const { data, isLoading, isError } = useWeekDayAnalytics(startDate, endDate);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState<ChartType | null>(null);
 
@@ -36,6 +38,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
     if (!data?.daily_analytics) return null;
 
     return {
+      dates: data.daily_analytics.map((item: WeekDayAnalytics) => item.date),
       days: data.daily_analytics.map((item: WeekDayAnalytics) => item.day),
       revenue: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_revenue || 0),
       orders: data.daily_analytics.map((item: WeekDayAnalytics) => item.total_orders || 0),
@@ -58,33 +61,33 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
     switch (selectedChart) {
       case 'revenue':
         return (
-          <LineChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+          <LineChartWrapper
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               revenue: chartData.revenue[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Revenue (€)' }]}
             series={[
               {
                 dataKey: 'revenue',
                 label: 'Daily Revenue',
                 area: true,
-                showMark: true,
+                showMark: false,
+                curve: 'linear',
               },
             ]}
-            height={400}
             colors={[theme.palette.primary.main]}
           />
         );
       case 'orders':
         return (
           <BarChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               orders: chartData.orders[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Number of Orders' }]}
             series={[{ dataKey: 'orders', label: 'Orders' }]}
             height={400}
@@ -93,22 +96,22 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
         );
       case 'average':
         return (
-          <LineChart
-            dataset={chartData.days.map((day, index) => ({
-              day,
+          <LineChartWrapper
+            dataset={chartData.dates.map((date, index) => ({
+              date,
               average: chartData.avgOrders[index],
             }))}
-            xAxis={[{ scaleType: 'band', dataKey: 'day', label: 'Day of Week' }]}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
             yAxis={[{ label: 'Average Order Value (€)' }]}
             series={[
               {
                 dataKey: 'average',
                 label: 'Avg. Order Value',
                 area: true,
-                showMark: true,
+                showMark: false,
+                curve: 'linear',
               },
             ]}
-            height={400}
             colors={[theme.palette.success.main]}
           />
         );
@@ -157,7 +160,9 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
           ) : isError ? (
             <CustomAlert severity="error">Failed to load weekday analytics data.</CustomAlert>
           ) : !data?.daily_analytics || data.daily_analytics.length === 0 ? (
-            <Typography>No data available for this week yet.</Typography>
+            <Typography>
+              No data available for this week yet. Select a different date range.
+            </Typography>
           ) : (
             <Box>
               <Grid2 spacing={2}>
@@ -174,7 +179,6 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ weekOffse
                       data={chartData!.revenue}
                       height={100}
                       curve="natural"
-                      area
                       colors={[theme.palette.primary.main]}
                     />
                   </Box>

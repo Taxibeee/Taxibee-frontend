@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
+
+import DateRangePicker from '../../components/input/DateRangePicker';
 
 // Import Layout
 import { DashboardLayout } from '../../components';
@@ -43,10 +37,23 @@ interface SidebarItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
-  const [weekOffset, setWeekOffset] = useState<number>(0);
 
-  const handleWeekChange = (event: SelectChangeEvent<number>) => {
-    setWeekOffset(Number(event.target.value));
+  const endDate7Days = new Date();
+  const startDate7Days = new Date();
+  startDate7Days.setDate(endDate7Days.getDate() - 7);
+
+  const startDate7DaysString = startDate7Days.toISOString().split('T')[0];
+  const endDate7DaysString = endDate7Days.toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState<string>(startDate7DaysString);
+  const [endDate, setEndDate] = useState<string>(endDate7DaysString);
+
+  const handleDateRangeChange = (start: Date, end: Date) => {
+    const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
+    const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
+
+    setStartDate(startDateString);
+    setEndDate(endDateString);
   };
 
   const provideTranslatedText = ({ items }: { items: SidebarItem[] }): SidebarItem[] => {
@@ -75,31 +82,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
               <Typography variant="h3" gutterBottom>
                 {t('adminSidebar.dashboard')}
               </Typography>
-              <FormControl size="small" sx={{ minWidth: 150 }}>
-                <InputLabel>{t('adminDashboard.selectWeek')}</InputLabel>
-                <Select
-                  value={weekOffset}
-                  label={t('adminDashboard.selectWeek')}
-                  onChange={handleWeekChange}
-                >
-                  <MenuItem value={0}>{t('adminDashboard.currentWeek')}</MenuItem>
-                  <MenuItem value={-1}>{t('adminDashboard.previousWeek')}</MenuItem>
-                </Select>
-              </FormControl>
+              <DateRangePicker onSelect={handleDateRangeChange} />
             </Box>
-            <SummaryCards weekOffset={weekOffset} />
+            <SummaryCards startDate={startDate} endDate={endDate} />
 
             <Box
               sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}
             >
               <Box sx={{ flex: 4 }}>
-                <WeeklyAnalyticsCharts weekOffset={weekOffset} />
+                <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 2 }}>
-                <RevenueByMethodChart weekOffset={weekOffset} />
+                <RevenueByMethodChart startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 4 }}>
-                <TopDriversTable weekOffset={weekOffset} />
+                <TopDriversTable startDate={startDate} endDate={endDate} />
               </Box>
             </Box>
           </Box>

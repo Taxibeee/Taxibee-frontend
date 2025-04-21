@@ -29,32 +29,32 @@ export const useAdminQueries = () => {
   };
 
   // Analytics queries
-  const useWeekAnalytics = (weekOffset: number = 0) => {
+  const useWeekAnalytics = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'weekAnalytics', weekOffset],
-      queryFn: () => adminApi.getWeekAnalytics(weekOffset),
+      queryKey: ['admin', 'weekAnalytics', startDate, endDate],
+      queryFn: () => adminApi.getWeekAnalytics(startDate, endDate),
     });
   };
 
-  const useWeekDayAnalytics = (weekOffset: number = 0) => {
+  const useWeekDayAnalytics = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'weekDayAnalytics', weekOffset],
-      queryFn: () => adminApi.getWeekdayAnalytics(weekOffset),
+      queryKey: ['admin', 'weekDayAnalytics', startDate, endDate],
+      queryFn: () => adminApi.getWeekdayAnalytics(startDate, endDate),
     });
   };
 
   // Revenue queries
-  const useRevenueByPaymentMethod = (weekOffset: number = 0) => {
+  const useRevenueByPaymentMethod = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['admin', 'revenueByPaymentMethod', weekOffset],
-      queryFn: () => adminApi.getRevenueByPaymentMethod(weekOffset),
+      queryKey: ['admin', 'revenueByPaymentMethod', startDate, endDate],
+      queryFn: () => adminApi.getRevenueByPaymentMethod(startDate, endDate),
     });
   };
 
-  const useRevenueByDriver = (weekOffset: number = 0) => {
+  const useRevenueByDriver = (startDate: string, endDate: string) => {
     return useQuery({
-      queryKey: ['revenueByDriver', weekOffset],
-      queryFn: () => adminApi.getRevenueByDriver(weekOffset),
+      queryKey: ['revenueByDriver', startDate, endDate],
+      queryFn: () => adminApi.getRevenueByDriver(startDate, endDate),
     });
   };
 

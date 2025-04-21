@@ -37,26 +37,41 @@ const adminApi = {
   },
 
   // Analytics
-  getWeekAnalytics: async (weekOffset: number = 0): Promise<WeekAnalytics> => {
-    const response = await api.get(`/admin/analyticsByWeek?week_offset=${weekOffset}`);
+  getWeekAnalytics: async (startDate: string, endDate: string): Promise<WeekAnalytics> => {
+    const response = await api.get(
+      `/admin/analyticsByWeek?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 
-  getWeekdayAnalytics: async (weekOffset: number = 0): Promise<WeekDayAnalyticsResponse> => {
-    const response = await api.get(`/admin/analyticsByWeekDays?week_offset=${weekOffset}`);
+  getWeekdayAnalytics: async (
+    startDate: string,
+    endDate: string
+  ): Promise<WeekDayAnalyticsResponse> => {
+    const response = await api.get(
+      `/admin/analyticsByWeekDays?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 
   // Revenue
-  getRevenueByPaymentMethod: async (weekOffset: number = 0): Promise<Record<string, number>> => {
-    const response = await api.get(`/admin/revenueByPaymentMethod?week_offset=${weekOffset}`);
+  getRevenueByPaymentMethod: async (
+    startDate: string,
+    endDate: string
+  ): Promise<Record<string, number>> => {
+    const response = await api.get(
+      `/admin/revenueByPaymentMethod?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 
   getRevenueByDriver: async (
-    weekOffset: number = 0
+    startDate: string,
+    endDate: string
   ): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
-    const response = await api.get(`/admin/revenueByDriver?week_offset=${weekOffset}`);
+    const response = await api.get(
+      `/admin/revenueByDriver?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 

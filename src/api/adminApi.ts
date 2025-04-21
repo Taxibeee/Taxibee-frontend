@@ -59,7 +59,9 @@ const adminApi = {
     startDate: string,
     endDate: string
   ): Promise<Record<string, number>> => {
-    const response = await api.get(`/admin/revenueByPaymentMethod?start_date=${startDate}&end_date=${endDate}`);
+    const response = await api.get(
+      `/admin/revenueByPaymentMethod?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 
@@ -67,7 +69,9 @@ const adminApi = {
     startDate: string,
     endDate: string
   ): Promise<Array<{ driver_uuid: string; driver_name: string; total_revenue: number }>> => {
-    const response = await api.get(`/admin/revenueByDriver?start_date=${startDate}&end_date=${endDate}`);
+    const response = await api.get(
+      `/admin/revenueByDriver?start_date=${startDate}&end_date=${endDate}`
+    );
     return response.data.data;
   },
 

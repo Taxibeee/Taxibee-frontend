@@ -19,7 +19,7 @@ interface DateRangePickerProps {
   onSelect: (startDate: Date, endDate: Date) => void;
 }
 
-const DateRangePicker:React.FC<DateRangePickerProps> = ({ onSelect }) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
   // Initialize with "last7" option
   const [selectedOption, setSelectedOption] = useState('last7');
   const [displayText, setDisplayText] = useState('Last 7 Days');

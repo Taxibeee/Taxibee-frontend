@@ -15,18 +15,16 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAdminQueries } from '../../hooks';
-import { BarChart, SparkLineChart, LineChart } from '@mui/x-charts';
+import { BarChart, SparkLineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
-import LineChartWrapper from '../charts/LineChartWrapper';
-
+import LineChartWrapper from './charts/LineChartWrapper';
 
 // Dummies and WIP Items
 // import { sampleResponseForLineChart } from '../../utils/DataTransformers.ts/ForLineChart';
 // const data = sampleResponseForLineChart.data;
 // const isLoading = false;
 // const isError = false;
-
 
 type ChartType = 'revenue' | 'orders' | 'average';
 

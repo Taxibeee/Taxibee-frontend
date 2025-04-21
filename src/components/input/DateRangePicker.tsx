@@ -14,6 +14,9 @@ import {
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
+import InfoItemWrapper from '../common/InfoItemWrapper';
+import FlexWrapper from '../common/FlexWrapper';
+import HeadingsWrapper from '../common/HeadingsWrapper';
 
 interface DateRangePickerProps {
   onSelect: (startDate: Date, endDate: Date) => void;
@@ -90,7 +93,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 300 }}>
+      <FlexWrapper gap="md" direction="vertical" sx={{ width: 300 }}>
         <FormControl fullWidth ref={selectRef}>
           <InputLabel id="date-filter-label">Date Filter</InputLabel>
           <Select
@@ -133,11 +136,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
             horizontal: 'left',
           }}
         >
-          <Box sx={{ p: 2, width: 300 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              Select Date Range
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <FlexWrapper gap="md" direction="vertical" sx={{ p: 2, width: 300 }}>
+            <FlexWrapper gap="xs" direction="vertical">
+              <HeadingsWrapper text="Select Date Range" type='h6'/>
+              <InfoItemWrapper text="The date format is YYYY-MM-DD" size="sm" />
+            </FlexWrapper>
+            <FlexWrapper gap="sm" direction="vertical">
               <DatePicker
                 label="From"
                 value={startDate}
@@ -156,16 +160,16 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
                 format="yyyy-MM-dd"
                 slots={{ textField: params => <TextField {...params} fullWidth /> }}
               />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+            </FlexWrapper>
+            <FlexWrapper gap="sm" direction="horizontal" sx={{ justifyContent: 'flex-end' }}>
               <Button onClick={handleClosePopover}>Cancel</Button>
               <Button variant="contained" onClick={handleApply}>
                 Apply
               </Button>
-            </Box>
-          </Box>
+            </FlexWrapper>
+          </FlexWrapper>
         </Popover>
-      </Box>
+      </FlexWrapper>
     </LocalizationProvider>
   );
 };

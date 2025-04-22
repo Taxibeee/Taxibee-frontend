@@ -1,18 +1,10 @@
 import React from 'react';
 import {
-  Grid2,
-  Card,
-  CardContent,
-  Typography,
-  Skeleton,
-  Box,
-  Stack,
   useMediaQuery,
   useTheme,
   alpha,
 } from '@mui/material';
 
-import { LoadingSkeleton } from './LoadingSkeleton';
 
 import { useAdminQueries } from '../../hooks';
 import { useTranslation } from 'react-i18next';
@@ -95,11 +87,22 @@ const MainSummaryCard: React.FC<{ title: string; value: string }> = ({ title, va
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={true} size='xxl' />
+        <TextWrapper text={value} isBold={true} size='xxxl' />
       </FlexWrapper>
     </CardWrapper>
   );
 };
+
+const SecondarySummaryCard: React.FC<{ title: string; value: string }> = ({ title, value }) => {  
+  return (
+    <CardWrapper isLoading={false}>
+      <FlexWrapper direction='vertical' gap='none'>
+        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
+        <TextWrapper text={value} isBold={true} size='lg' />
+      </FlexWrapper>
+    </CardWrapper>
+  );
+}
 
 interface SummaryCardsProps {
   startDate: string;
@@ -127,16 +130,21 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         value={`${data?.total_orders}` || "0"}
       />
 
-      <MainSummaryCard
+      <FlexWrapper direction='vertical'>
+
+      <SecondarySummaryCard
         title={t('adminDashboard.summaryCards.totalDistance')}
         value={`${(data ? data.total_distance / 1000 : 0).toFixed(1)} km`}
       />
-      <MainSummaryCard
+      <SecondarySummaryCard
         title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
         value={data && data.total_orders > 0
           ? formatCurrency(data.total_revenue / data.total_orders)
           : '€0.00'}
       />
+      </FlexWrapper>
+
+      
 
 
     </FlexWrapper>

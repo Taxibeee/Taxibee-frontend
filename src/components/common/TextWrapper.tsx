@@ -5,7 +5,7 @@ interface TextWrapperProps {
   text: string;
   isBold?: boolean;
   isItalic?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
 }
 
 const sizeMapping = {
@@ -14,6 +14,8 @@ const sizeMapping = {
   md: '1rem',
   lg: '1.25rem',
   xl: '1.5rem',
+  xxl: '2rem',
+  xxxl: '3rem',
 };
 
 const TextWrapper: React.FC<TextWrapperProps> = ({

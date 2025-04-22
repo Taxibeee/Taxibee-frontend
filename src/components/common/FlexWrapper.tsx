@@ -4,7 +4,7 @@ import { SxProps } from '@mui/system';
 
 interface FlexWrapperProps {
   children: React.ReactNode;
-  gap?: 'xs' | 'sm' | 'md' | 'lg';
+  gap?: 'none'| 'xs' | 'sm' | 'md' | 'lg';
   direction?: 'vertical' | 'horizontal';
   isDebugging?: boolean; // Optional prop to enable debugging border
   sx?: SxProps; // Optional prop for additional styling
@@ -12,6 +12,7 @@ interface FlexWrapperProps {
 
 // Map T-shirt sizes to spacing values
 const gapSizes = {
+  none: 0,
   xs: 1,
   sm: 2,
   md: 3,

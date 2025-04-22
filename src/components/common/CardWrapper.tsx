@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CircularProgress, Box } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
+import { LoadingSkeleton } from '../admin/LoadingSkeleton';
 
 interface CardWrapperProps {
   isLoading: boolean;
@@ -8,12 +9,10 @@ interface CardWrapperProps {
 
 const CardWrapper: React.FC<CardWrapperProps> = ({ isLoading, children }) => {
   return (
-    <Card elevation={2}>
+    <Card >
       <CardContent>
         {isLoading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-            <CircularProgress />
-          </Box>
+          <LoadingSkeleton/>
         ) : (
           children
         )}

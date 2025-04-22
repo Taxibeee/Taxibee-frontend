@@ -11,6 +11,9 @@ import {
   useTheme,
   alpha,
 } from '@mui/material';
+
+import { LoadingSkeleton } from './LoadingSkeleton';
+
 import { useAdminQueries } from '../../hooks';
 import { useTranslation } from 'react-i18next';
 
@@ -95,17 +98,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
   const { useWeekAnalytics } = useAdminQueries();
   const { data, isLoading, isError } = useWeekAnalytics(startDate, endDate);
 
-  const LoadingSkeleton = () => {
-    return (
-      <Skeleton
-        animation="pulse"
-        variant="rectangular"
-        height={170}
-        width={300}
-        sx={{ borderRadius: 1 }}
-      />
-    );
-  };
+  
 
   return (
     <Box

@@ -94,7 +94,7 @@ const MainSummaryCard: React.FC<{ title: string; value: string }> = ({ title, va
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
-        <HeadingsWrapper text={title} type='h6' isBold={false} />
+        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
         <TextWrapper text={value} isBold={true} size='xxl' />
       </FlexWrapper>
     </CardWrapper>

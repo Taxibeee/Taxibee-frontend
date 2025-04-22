@@ -32,8 +32,9 @@ const FlexWrapper: React.FC<FlexWrapperProps> = ({
         display: 'flex',
         flexDirection: direction === 'vertical' ? 'column' : 'row',
         gap: gapSizes[gap],
-        border: isDebugging ? '1px solid red' : 'none', // Add red border if debugging
+        border: isDebugging ? '1px solid red' : 'none',
         ...sx, // Spread additional styles
+        '& > *': direction === 'horizontal' ? { flex: 1 } : undefined, // Ensure equal widths for horizontal direction
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 
 interface HeadingsWrapperProps {
   text: string;
-  type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'subtitle1' | 'subtitle2';
   isBold?: boolean;
 }
 

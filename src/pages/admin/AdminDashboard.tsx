@@ -24,6 +24,7 @@ import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart';
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
 import { useTranslation } from 'react-i18next';
+import FlexWrapper from '../../components/common/FlexWrapper';
 
 interface AdminDashboardProps {
   selectedPage: string;
@@ -70,7 +71,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
     switch (selectedPage) {
       case 'dashboard':
         return (
-          <Box>
+          <FlexWrapper direction='vertical'>
             <Box
               sx={{
                 display: 'flex',
@@ -99,7 +100,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
                 <TopDriversTable startDate={startDate} endDate={endDate} />
               </Box>
             </Box>
-          </Box>
+          </FlexWrapper>
         );
       case 'orders':
         return (

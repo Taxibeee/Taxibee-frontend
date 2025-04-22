@@ -42,7 +42,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
   // Call onSelect with initial values when component mounts
   useEffect(() => {
     onSelect(startDate, endDate);
-  }, []);
+  }, [startDate, endDate, onSelect]);
 
   const formatDateRange = (start: Date, end: Date) => {
     return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;

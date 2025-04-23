@@ -25,6 +25,7 @@ import TopDriversTable from '../../components/admin/TopDriversTable';
 
 import { useTranslation } from 'react-i18next';
 import FlexWrapper from '../../components/common/FlexWrapper';
+import HeadingsWrapper from '../../components/common/HeadingsWrapper';
 
 interface AdminDashboardProps {
   selectedPage: string;
@@ -72,34 +73,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'dashboard':
         return (
           <FlexWrapper direction='vertical'>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                mb: 4,
-              }}
-            >
-              <Typography variant="h3" gutterBottom>
-                {t('adminSidebar.dashboard')}
-              </Typography>
+            <FlexWrapper>
+              <HeadingsWrapper text={t('adminSidebar.dashboard')} type='h3'/>
               <DateRangePicker onSelect={handleDateRangeChange} />
-            </Box>
+            </FlexWrapper>
             <SummaryCards startDate={startDate} endDate={endDate} />
-
-            <Box
-              sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}
-            >
-              <Box sx={{ flex: 4 }}>
+            <FlexWrapper direction='horizontal'>
                 <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
-              </Box>
-              <Box sx={{ flex: 2 }}>
                 <RevenueByMethodChart startDate={startDate} endDate={endDate} />
-              </Box>
-              <Box sx={{ flex: 4 }}>
                 <TopDriversTable startDate={startDate} endDate={endDate} />
-              </Box>
-            </Box>
+            </FlexWrapper>
           </FlexWrapper>
         );
       case 'orders':

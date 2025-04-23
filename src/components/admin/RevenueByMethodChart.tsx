@@ -1,5 +1,4 @@
 import React from 'react';
-import { Typography } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useAdminQueries } from '../../hooks';
 import FlexWrapper from '../common/FlexWrapper';

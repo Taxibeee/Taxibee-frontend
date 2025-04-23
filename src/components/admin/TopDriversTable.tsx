@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Card,
-  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +15,7 @@ import {
 } from '@mui/material';
 import { useAdminQueries } from '../../hooks';
 import { CustomAlert } from '../../utils/customAlert';
+import CardWrapper from '../common/CardWrapper';
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -45,8 +44,8 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
   };
 
   return (
-    <Card elevation={1}>
-      <CardContent>
+    <CardWrapper isLoading={isLoading}>
+
         {isLoading ? (
           <CircularProgress />
         ) : isError ? (
@@ -144,8 +143,7 @@ const TopDriversTable: React.FC<TopDriversTableProps> = ({ startDate, endDate })
             )}
           </TableContainer>
         )}
-      </CardContent>
-    </Card>
+    </CardWrapper>
   );
 };
 

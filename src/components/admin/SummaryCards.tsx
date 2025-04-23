@@ -144,9 +144,6 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
       />
       </FlexWrapper>
 
-      
-
-
     </FlexWrapper>
   )
 

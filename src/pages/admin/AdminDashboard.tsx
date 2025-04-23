@@ -25,7 +25,7 @@ import TopDriversTable from '../../components/admin/TopDriversTable';
 
 import { useTranslation } from 'react-i18next';
 import FlexWrapper from '../../components/common/FlexWrapper';
-import HeadingsWrapper from '../../components/common/HeadingsWrapper';
+import HeadingsWrapper, { AdminPageHeadingsWrapper } from '../../components/common/HeadingsWrapper';
 
 interface AdminDashboardProps {
   selectedPage: string;
@@ -74,7 +74,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
         return (
           <FlexWrapper direction='vertical'>
             <FlexWrapper>
-              <HeadingsWrapper text={t('adminSidebar.dashboard')} type='h3'/>
+              <AdminPageHeadingsWrapper text={t('adminSidebar.dashboard')} />
               <DateRangePicker onSelect={handleDateRangeChange} />
             </FlexWrapper>
             <SummaryCards startDate={startDate} endDate={endDate} />

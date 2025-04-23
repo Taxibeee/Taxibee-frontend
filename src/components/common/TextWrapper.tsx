@@ -6,6 +6,7 @@ interface TextWrapperProps {
   isBold?: boolean;
   isItalic?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
+  isDark?: boolean;
 }
 
 const sizeMapping = {
@@ -23,6 +24,7 @@ const TextWrapper: React.FC<TextWrapperProps> = ({
   isBold = false,
   isItalic = false,
   size = 'md',
+  isDark = true,
 }) => {
   return (
     <Typography
@@ -30,6 +32,7 @@ const TextWrapper: React.FC<TextWrapperProps> = ({
         fontWeight: isBold ? 'bold' : 'normal',
         fontStyle: isItalic ? 'italic' : 'normal',
         fontSize: sizeMapping[size],
+        color: isDark ? '#2a2d3e' : '#565b72',
         padding: 0,
         margin: 0,
       }}

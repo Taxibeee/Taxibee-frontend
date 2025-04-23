@@ -2,7 +2,6 @@ import React from 'react';
 import {
   useMediaQuery,
   useTheme,
-  alpha,
 } from '@mui/material';
 
 
@@ -13,64 +12,6 @@ import CardWrapper from '../common/CardWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';
 import TextWrapper from '../common/TextWrapper';
 
-const cardBackgrounds = {
-  revenue: {
-    background: `linear-gradient(135deg, ${alpha('#2E7DAF', 0.05)} 0%, ${alpha('#2E7DAF', 0.1)} 100%)`,
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage:
-        'radial-gradient(circle at 100% 0%, transparent 25px, rgba(46, 125, 175, 0.03) 25px)',
-      borderRadius: 1,
-    },
-  },
-  orders: {
-    background: `linear-gradient(135deg, ${alpha('#FF6B6B', 0.05)} 0%, ${alpha('#FF6B6B', 0.1)} 100%)`,
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage:
-        'radial-gradient(circle at 0% 100%, transparent 25px, rgba(255, 107, 107, 0.03) 25px)',
-      borderRadius: 1,
-    },
-  },
-  distance: {
-    background: `linear-gradient(135deg, ${alpha('#4CAF50', 0.05)} 0%, ${alpha('#4CAF50', 0.1)} 100%)`,
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage:
-        'radial-gradient(circle at 100% 100%, transparent 25px, rgba(76, 175, 80, 0.03) 25px)',
-      borderRadius: 1,
-    },
-  },
-  average: {
-    background: `linear-gradient(135deg, ${alpha('#FFC107', 0.05)} 0%, ${alpha('#FFC107', 0.1)} 100%)`,
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage:
-        'radial-gradient(circle at 0% 0%, transparent 25px, rgba(255, 193, 7, 0.03) 25px)',
-      borderRadius: 1,
-    },
-  },
-};
 
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
@@ -86,8 +27,8 @@ const MainSummaryCard: React.FC<{ title: string; value: string }> = ({ title, va
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
-        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={true} size='xxxl' />
+        <HeadingsWrapper text={title} type='subtitle1'/>
+        <TextWrapper text={value} isBold={false} size='xxxl' />
       </FlexWrapper>
     </CardWrapper>
   );
@@ -98,7 +39,7 @@ const SecondarySummaryCard: React.FC<{ title: string; value: string }> = ({ titl
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={true} size='lg' />
+        <TextWrapper text={value} isBold={false} size='lg' />
       </FlexWrapper>
     </CardWrapper>
   );

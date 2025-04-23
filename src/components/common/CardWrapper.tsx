@@ -9,7 +9,7 @@ interface CardWrapperProps {
 
 const CardWrapper: React.FC<CardWrapperProps> = ({ isLoading, children }) => {
   return (
-    <Card elevation={0} style={{ border: '1px solid #ccc' }}>
+    <Card elevation={0} style={{ border: '1px solid #eef2f7' }}>
       <CardContent>
         {isLoading ? (
           <LoadingSkeleton />

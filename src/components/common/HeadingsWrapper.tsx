@@ -37,7 +37,7 @@ const AdminPageHeadingsWrapper: React.FC<AdminPageHeadingsWrapperProps> = ({ tex
     <HeadingsWrapper
       text={text}
       type='h3'
-      isBold={true}
+      isBold={false}
       isLight={false}
     />
   );

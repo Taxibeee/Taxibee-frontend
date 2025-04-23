@@ -19,7 +19,7 @@ import AdminContactsPage from './AdminContactsPage';
 
 // Import dashboard components for the main dashboard
 import SummaryCards from '../../components/admin/SummaryCards';
-import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts';
+// import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts';
 import RevenueByMethodChart from '../../components/admin/RevenueByMethodChart';
 import TopDriversTable from '../../components/admin/TopDriversTable';
 
@@ -79,7 +79,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
             </FlexWrapper>
             <SummaryCards startDate={startDate} endDate={endDate} />
             <FlexWrapper direction='horizontal'>
-                <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
+                {/* <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} /> */}
                 <RevenueByMethodChart startDate={startDate} endDate={endDate} />
                 <TopDriversTable startDate={startDate} endDate={endDate} />
             </FlexWrapper>

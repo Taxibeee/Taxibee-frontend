@@ -15,13 +15,15 @@ const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
 
   return (
     <Card elevation={2} sx={{ mb: 3 }}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Welcome back, {profile?.full_name || 'Driver'}!
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Here's your driving summary.
-        </Typography>
+      <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Welcome back, {profile?.full_name || 'Driver'}!
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Here's your driving summary.
+          </Typography>
+        </div>
         <DateRangePicker onSelect={onDateRangeChange} />
       </CardContent>
     </Card>

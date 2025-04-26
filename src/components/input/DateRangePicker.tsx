@@ -93,8 +93,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
   };
 
   const handleApply = () => {
-    const formattedRange = formatDateRange(startDate, endDate);
-    setDisplayText(formattedRange);
     onSelect(startDate, endDate);
     setPopoverOpen(false);
   };

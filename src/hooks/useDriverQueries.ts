@@ -25,15 +25,11 @@ export const useDriverQueries = () => {
 
   // Orders query with parameters 
   const useDriverOrders = (
-    params: { startDate: string; endDate: string, limit?: number; offset?: number } = { startDate: '', endDate: '', limit: 5, offset: 0 }
+    params: { startDate: string; endDate: string; limit?: number; offset?: number }
   ) => {
     return useQuery<Order[], Error>({
       queryKey: ['driver', 'orders', params],
-      queryFn: () => {
-        const { startDate, endDate, ...rest } = params;
-        const period = `${startDate}-${endDate}`;
-        return driverApi.getDriverOrders({ period, ...rest });
-      },
+      queryFn: () => driverApi.getDriverOrders(params),
     });
   };
 

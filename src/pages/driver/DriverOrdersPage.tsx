@@ -29,18 +29,20 @@ import { Order } from '../../types/order.types';
 import { CustomAlert } from '../../utils/customAlert';
 
 interface DriverOrdersPageProps {
-  period: string;
-  onPeriodChange?: (period: string) => void;
+  startDate: string;
+  endDate: string;
+  onDateRangeChange: (startDate: Date, endDate: Date) => void;
 }
 
 const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
-  period: externalPeriod,
-  onPeriodChange: externalPeriodChange,
+  startDate: externalStartDate,
+  endDate: externalEndDate,
+  onDateRangeChange: externalOnDateRangeChange,
 }) => {
   // State for selected period and order details dialog
   const [internalPeriod, setInternalPeriod] = useState<string>('week');
 
-  const selectedPeriod = externalPeriod || internalPeriod;
+
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 

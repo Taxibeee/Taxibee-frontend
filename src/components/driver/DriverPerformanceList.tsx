@@ -37,12 +37,13 @@ const formatTime = (seconds: number | undefined | null) => {
 };
 
 interface DriverPerformanceListProps {
-  period: string;
+  startDate: string;
+  endDate: string;
 }
 
-const DriverPerformanceList: React.FC<DriverPerformanceListProps> = ({ period }) => {
+const DriverPerformanceList: React.FC<DriverPerformanceListProps> = ({ startDate, endDate }) => {
   const { useDriverEarnings } = useDriverQueries();
-  const { data, isLoading, isError } = useDriverEarnings(period);
+  const { data, isLoading, isError } = useDriverEarnings(startDate, endDate);
 
   return (
     <Card elevation={2}>

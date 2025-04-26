@@ -29,13 +29,14 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface RecentOrdersListProps {
-  period: string;
+  startDate: string;
+  endDate: string;
   onViewAllClick: () => void;
 }
 
-const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ period, onViewAllClick }) => {
+const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ startDate, endDate, onViewAllClick }) => {
   const { useDriverOrders } = useDriverQueries();
-  const { data, isLoading, isError } = useDriverOrders({ period, limit: 5 });
+  const { data, isLoading, isError } = useDriverOrders({ startDate, endDate, limit: 5 });
 
   return (
     <Card elevation={2}>

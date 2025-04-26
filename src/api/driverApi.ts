@@ -12,8 +12,8 @@ const driverApi = {
   },
 
   // Earnings
-  getDriverEarnings: async (period: string = 'week'): Promise<DriverEarnings> => {
-    const response = await api.get(`/driver/earnings?period=${period}`);
+  getDriverEarnings: async (startDate: string, endDate: string): Promise<DriverEarnings> => {
+    const response = await api.get(`/driver/earnings?start_date=${startDate}&end_date=${endDate}`);
     return response.data;
   },
 

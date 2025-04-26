@@ -22,12 +22,23 @@ interface DriverDashboardProps {
 
 const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
   // State for selected period
-  const [selectedPeriod, setSelectedPeriod] = useState<string>('week');
-
-  // Handle period change
-  const handlePeriodChange = (period: string) => {
-    setSelectedPeriod(period);
-  };
+    const endDate7Days = new Date();
+    const startDate7Days = new Date();
+    startDate7Days.setDate(endDate7Days.getDate() - 7);
+  
+    const startDate7DaysString = startDate7Days.toISOString().split('T')[0];
+    const endDate7DaysString = endDate7Days.toISOString().split('T')[0];
+  
+    const [startDate, setStartDate] = useState<string>(startDate7DaysString);
+    const [endDate, setEndDate] = useState<string>(endDate7DaysString);
+  
+    const handleDateRangeChange = (start: Date, end: Date) => {
+      const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
+      const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
+  
+      setStartDate(startDateString);
+      setEndDate(endDateString);
+    };
 
   // Determine which content to render based on the selected page
   const renderContent = () => {
@@ -37,21 +48,21 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
           <Box>
             {/* Welcome Card */}
             <DriverWelcomeCard
-              selectedPeriod={selectedPeriod}
-              onPeriodChange={handlePeriodChange}
+              onDateRangeChange={handleDateRangeChange}
             />
 
             {/* Summary Cards */}
-            <DriverStatsCards period={selectedPeriod} />
+            <DriverStatsCards startDate={startDate} endDate={endDate} />
 
             {/* Average Stats and Recent Orders */}
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
               <Box sx={{ flex: 1 }}>
-                <DriverPerformanceList period={selectedPeriod} />
+                <DriverPerformanceList startDate={startDate} endDate={endDate} />
               </Box>
               <Box sx={{ flex: 1 }}>
                 <RecentOrdersList
-                  period={selectedPeriod}
+                  startDate={startDate} 
+                  endDate={endDate}
                   onViewAllClick={() => (window.location.href = '/driver/orders')}
                 />
               </Box>
@@ -59,7 +70,7 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
           </Box>
         );
       case 'orders':
-        return <DriverOrdersPage period={selectedPeriod} onPeriodChange={handlePeriodChange} />;
+        // return <DriverOrdersPage startDate={startDate} endDate={endDate} onPeriodChange={handlePeriodChange} />;
       case 'contacts':
         return (
           <Box>

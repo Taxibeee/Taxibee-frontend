@@ -1,15 +1,14 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Button } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { useDriverQueries } from '../../hooks';
+import DateRangePicker from '../input/DateRangePicker';
 
 interface DriverWelcomeCardProps {
-  selectedPeriod: string;
-  onPeriodChange: (period: string) => void;
+  onDateRangeChange: (startDate: Date, endDate: Date) => void;
 }
 
 const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
-  selectedPeriod,
-  onPeriodChange,
+  onDateRangeChange,
 }) => {
   const { useDriverProfile } = useDriverQueries();
   const { data: profile } = useDriverProfile();
@@ -21,25 +20,9 @@ const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
           Welcome back, {profile?.full_name || 'Driver'}!
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          Here's your driving summary for the {selectedPeriod}.
+          Here's your driving summary.
         </Typography>
-        <Box sx={{ mt: 2, mb: 1 }}>
-          <Button
-            size="small"
-            variant={selectedPeriod === 'week' ? 'contained' : 'outlined'}
-            onClick={() => onPeriodChange('week')}
-            sx={{ mr: 1 }}
-          >
-            This Week
-          </Button>
-          <Button
-            size="small"
-            variant={selectedPeriod === 'month' ? 'contained' : 'outlined'}
-            onClick={() => onPeriodChange('month')}
-          >
-            This Month
-          </Button>
-        </Box>
+        <DateRangePicker onSelect={onDateRangeChange} />
       </CardContent>
     </Card>
   );

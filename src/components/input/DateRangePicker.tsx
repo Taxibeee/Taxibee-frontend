@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
 import InfoItemWrapper from '../common/InfoItemWrapper';
 import FlexWrapper from '../common/FlexWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';
@@ -42,6 +43,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
   useEffect(() => {
     onSelect(startDate, endDate);
   }, []);
+
+  const formatDateRange = (start: Date, end: Date) => {
+    return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+  };
 
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
@@ -88,6 +93,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
   };
 
   const handleApply = () => {
+    const formattedRange = formatDateRange(startDate, endDate);
+    setDisplayText(formattedRange);
     onSelect(startDate, endDate);
     setPopoverOpen(false);
   };

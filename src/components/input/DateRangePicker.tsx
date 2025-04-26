@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { format } from 'date-fns';
 import InfoItemWrapper from '../common/InfoItemWrapper';
 import FlexWrapper from '../common/FlexWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';

@@ -70,7 +70,7 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
           </Box>
         );
       case 'orders':
-        // return <DriverOrdersPage startDate={startDate} endDate={endDate} onPeriodChange={handlePeriodChange} />;
+        return <DriverOrdersPage startDate={startDate} endDate={endDate} onDateRangeChange={handleDateRangeChange} />;
       case 'contacts':
         return (
           <Box>

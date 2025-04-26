@@ -23,10 +23,13 @@ export const useDriverQueries = () => {
     });
   };
 
-  // Orders query with parameters 
-  const useDriverOrders = (
-    params: { startDate: string; endDate: string; limit?: number; offset?: number }
-  ) => {
+  // Orders query with parameters
+  const useDriverOrders = (params: {
+    startDate: string;
+    endDate: string;
+    limit?: number;
+    offset?: number;
+  }) => {
     return useQuery<Order[], Error>({
       queryKey: ['driver', 'orders', params],
       queryFn: () => driverApi.getDriverOrders(params),

@@ -7,9 +7,7 @@ interface DriverWelcomeCardProps {
   onDateRangeChange: (startDate: Date, endDate: Date) => void;
 }
 
-const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({
-  onDateRangeChange,
-}) => {
+const DriverWelcomeCard: React.FC<DriverWelcomeCardProps> = ({ onDateRangeChange }) => {
   const { useDriverProfile } = useDriverQueries();
   const { data: profile } = useDriverProfile();
 

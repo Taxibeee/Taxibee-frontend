@@ -43,7 +43,6 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onSelect }) => {
     onSelect(startDate, endDate);
   }, []);
 
-
   const handleOptionChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
     setSelectedOption(value);

@@ -34,7 +34,11 @@ interface RecentOrdersListProps {
   onViewAllClick: () => void;
 }
 
-const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ startDate, endDate, onViewAllClick }) => {
+const RecentOrdersList: React.FC<RecentOrdersListProps> = ({
+  startDate,
+  endDate,
+  onViewAllClick,
+}) => {
   const { useDriverOrders } = useDriverQueries();
   const { data, isLoading, isError } = useDriverOrders({ startDate, endDate, limit: 5 });
 

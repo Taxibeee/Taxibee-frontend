@@ -22,23 +22,23 @@ interface DriverDashboardProps {
 
 const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
   // State for selected period
-    const endDate7Days = new Date();
-    const startDate7Days = new Date();
-    startDate7Days.setDate(endDate7Days.getDate() - 7);
-  
-    const startDate7DaysString = startDate7Days.toISOString().split('T')[0];
-    const endDate7DaysString = endDate7Days.toISOString().split('T')[0];
-  
-    const [startDate, setStartDate] = useState<string>(startDate7DaysString);
-    const [endDate, setEndDate] = useState<string>(endDate7DaysString);
-  
-    const handleDateRangeChange = (start: Date, end: Date) => {
-      const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
-      const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
-  
-      setStartDate(startDateString);
-      setEndDate(endDateString);
-    };
+  const endDate7Days = new Date();
+  const startDate7Days = new Date();
+  startDate7Days.setDate(endDate7Days.getDate() - 7);
+
+  const startDate7DaysString = startDate7Days.toISOString().split('T')[0];
+  const endDate7DaysString = endDate7Days.toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState<string>(startDate7DaysString);
+  const [endDate, setEndDate] = useState<string>(endDate7DaysString);
+
+  const handleDateRangeChange = (start: Date, end: Date) => {
+    const startDateString = start ? start.toISOString().split('T')[0] : startDate7DaysString;
+    const endDateString = end ? end.toISOString().split('T')[0] : endDate7DaysString;
+
+    setStartDate(startDateString);
+    setEndDate(endDateString);
+  };
 
   // Determine which content to render based on the selected page
   const renderContent = () => {
@@ -47,9 +47,7 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
         return (
           <Box>
             {/* Welcome Card */}
-            <DriverWelcomeCard
-              onDateRangeChange={handleDateRangeChange}
-            />
+            <DriverWelcomeCard onDateRangeChange={handleDateRangeChange} />
 
             {/* Summary Cards */}
             <DriverStatsCards startDate={startDate} endDate={endDate} />
@@ -61,7 +59,7 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
               </Box>
               <Box sx={{ flex: 1 }}>
                 <RecentOrdersList
-                  startDate={startDate} 
+                  startDate={startDate}
                   endDate={endDate}
                   onViewAllClick={() => (window.location.href = '/driver/orders')}
                 />
@@ -70,7 +68,13 @@ const DriverDashboard: React.FC<DriverDashboardProps> = ({ selectedPage }) => {
           </Box>
         );
       case 'orders':
-        return <DriverOrdersPage startDate={startDate} endDate={endDate} onDateRangeChange={handleDateRangeChange} />;
+        return (
+          <DriverOrdersPage
+            startDate={startDate}
+            endDate={endDate}
+            onDateRangeChange={handleDateRangeChange}
+          />
+        );
       case 'contacts':
         return (
           <Box>

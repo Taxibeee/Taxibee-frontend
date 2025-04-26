@@ -18,9 +18,12 @@ const driverApi = {
   },
 
   // Orders
-  getDriverOrders: async (
-    params: { startDate: string; endDate: string; limit?: number; offset?: number }
-  ): Promise<Order[]> => {
+  getDriverOrders: async (params: {
+    startDate: string;
+    endDate: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<Order[]> => {
     const queryParams = new URLSearchParams();
     queryParams.append('start_date', params.startDate);
     queryParams.append('end_date', params.endDate);

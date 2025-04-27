@@ -18,7 +18,8 @@ import { useAdminQueries } from '../../hooks';
 import { BarChart, SparkLineChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
-import LineChartWrapper from './charts/LineChartWrapper';
+import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
+import SparkLineChartWrapper from '../wrappers/charts/sparkLineChartWrapper';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 
@@ -168,56 +169,32 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
               <Grid2 spacing={2}>
                 {/* Revenue Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <Box
+                  <SparkLineChartWrapper
+                    title="Revenue Trend"
+                    chartData={chartData!.revenue}
+                    color={theme.palette.primary.main}
                     onClick={() => handleChartClick('revenue')}
-                    sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
-                  >
-                    <Typography variant="subtitle2" gutterBottom>
-                      Revenue Trend
-                    </Typography>
-                    <SparkLineChart
-                      data={chartData!.revenue}
-                      height={100}
-                      curve="natural"
-                      colors={[theme.palette.primary.main]}
-                    />
-                  </Box>
+                  />
                 </Grid2>
 
                 {/* Orders Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <Box
+                  <SparkLineChartWrapper
+                    title="Daily Orders"
+                    chartData={chartData!.orders}
+                    color={theme.palette.secondary.main}
                     onClick={() => handleChartClick('orders')}
-                    sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
-                  >
-                    <Typography variant="subtitle2" gutterBottom>
-                      Daily Orders
-                    </Typography>
-                    <SparkLineChart
-                      data={chartData!.orders}
-                      height={100}
-                      curve="natural"
-                      colors={[theme.palette.secondary.main]}
-                    />
-                  </Box>
+                  />
                 </Grid2>
 
                 {/* Average Order Value */}
                 <Grid2 size={{ xs: 12 }}>
-                  <Box
+                  <SparkLineChartWrapper
+                    title="Average Order Value"
+                    chartData={chartData!.avgOrders}
+                    color={theme.palette.success.main}
                     onClick={() => handleChartClick('average')}
-                    sx={{ cursor: 'pointer', '&:hover': { opacity: 0.8 } }}
-                  >
-                    <Typography variant="subtitle2" gutterBottom>
-                      Average Order Value
-                    </Typography>
-                    <SparkLineChart
-                      data={chartData!.avgOrders}
-                      height={100}
-                      curve="natural"
-                      colors={[theme.palette.success.main]}
-                    />
-                  </Box>
+                  />
                 </Grid2>
               </Grid2>
               <Divider />

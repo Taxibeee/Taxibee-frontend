@@ -4,7 +4,7 @@ import React from 'react';
 import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
 import { Area, AreaChart } from "recharts"
-import Skeleton from '@mui/material/Skeleton';
+import SkeletonWrapper from '../../common/SkeletonWrapper';
 
 import {
   ChartConfig,
@@ -40,9 +40,8 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
         return (
             <FlexWrapper direction='vertical' gap='md'>
                 {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
-                <Skeleton 
+                <SkeletonWrapper 
                     variant="rectangular" 
-                    animation="wave"
                     width="100%" 
                     height={200}
                     sx={{

@@ -32,6 +32,7 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface MainSummaryCardProps {
+  isError?: boolean;
   isLoading: boolean;
   title: string;
   value: string;
@@ -39,12 +40,12 @@ interface MainSummaryCardProps {
   onChartClick?: () => void;
 }
 
-const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isLoading, title, value, chartData, onChartClick = () => { } }) => {
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isError, isLoading, title, value, chartData, onChartClick = () => { } }) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={false} size='xxxl' isLoading={isLoading} />
+        <TextWrapper text={value} isBold={false} size='xxxl' isLoading={isLoading} isError={isError}/>
         <AreaChartWrapper chartData={chartData} onClick={onChartClick} isLoading={isLoading} />
       </FlexWrapper>
     </CardWrapper>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import Skeleton from '@mui/material/Skeleton';
+import SkeletonWrapper from './SkeletonWrapper';
 
 interface TextWrapperProps {
+  isError?: boolean;
   isLoading?: boolean;
   text: string;
   isBold?: boolean;
@@ -31,13 +32,10 @@ const TextWrapper: React.FC<TextWrapperProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <Skeleton 
+      <SkeletonWrapper 
         variant="text" 
-        animation="wave"
-        width="80%" 
-        sx={{
-          fontSize: sizeMapping[size],
-        }}
+        width="80%"
+        fontSize={sizeMapping[size]} 
       />
     );
   }

@@ -32,18 +32,19 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface MainSummaryCardProps {
+  isLoading: boolean;
   title: string;
   value: string;
   chartData: number[];
   onChartClick?: () => void;
 }
 
-const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ title, value, chartData, onChartClick=()=>{}}) => {
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isLoading, title, value, chartData, onChartClick=()=>{}}) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={false} size='xxxl' />
+        <TextWrapper text={value} isBold={false} size='xxxl' isLoading={isLoading} />
         <AreaChartWrapper chartData={chartData} onClick={onChartClick} />
       </FlexWrapper>
     </CardWrapper>
@@ -187,6 +188,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
       <FlexWrapper direction='horizontal'>
 
         <MainSummaryCard
+          isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           title={t('adminDashboard.summaryCards.totalRevenue')}
           chartData={(chartData && chartData.revenue)? chartData.revenue : []}
           value={formatCurrency(weekAnalyticsData?.total_revenue)}
@@ -194,6 +196,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         />
 
         <MainSummaryCard
+          isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           title={t('adminDashboard.summaryCards.totalOrders')}
           chartData={(chartData && chartData.orders)? chartData.orders : []}
           value={`${weekAnalyticsData?.total_orders}` || "0"}

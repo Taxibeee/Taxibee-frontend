@@ -19,8 +19,7 @@ import { BarChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
-import { AreaChart } from 'recharts';
-import AreaChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
+import AreaChartWrapper from '../wrappers/charts/AreaChartWrapper';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 

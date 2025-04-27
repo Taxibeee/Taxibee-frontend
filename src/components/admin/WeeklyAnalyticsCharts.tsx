@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAdminQueries } from '../../hooks';
-import { BarChart, SparkLineChart } from '@mui/x-charts';
+import { BarChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
@@ -172,7 +172,6 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                   <SparkLineChartWrapper
                     title="Revenue Trend"
                     chartData={chartData!.revenue}
-
                     onClick={() => handleChartClick('revenue')}
                   />
                 </Grid2>
@@ -182,7 +181,6 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                   <SparkLineChartWrapper
                     title="Daily Orders"
                     chartData={chartData!.orders}
-
                     onClick={() => handleChartClick('orders')}
                   />
                 </Grid2>

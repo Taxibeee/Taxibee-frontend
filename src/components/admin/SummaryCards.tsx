@@ -11,6 +11,9 @@ import FlexWrapper from '../common/FlexWrapper';
 import CardWrapper from '../common/CardWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';
 import TextWrapper from '../common/TextWrapper';
+import { SparkLineChart } from '@mui/x-charts';
+import SparkLineChartWrapper from '../wrappers/charts/sparkLineChartWrapper';
+import { WeekDayAnalytics } from '../../types/analytics.types';
 
 
 // Utility function for formatting currency
@@ -23,18 +26,26 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 
-const MainSummaryCard: React.FC<{ title: string; value: string }> = ({ title, value }) => {
+interface MainSummaryCardProps {
+  title: string;
+  value: string;
+  chartData: number[];
+  onChartClick?: () => void;
+}
+
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ title, value, chartData, onChartClick=()=>{}}) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
-        <HeadingsWrapper text={title} type='subtitle1' isBold={false}/>
+        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
         <TextWrapper text={value} isBold={false} size='xxxl' />
+        <SparkLineChartWrapper chartData={chartData} onClick={onChartClick}/>
       </FlexWrapper>
     </CardWrapper>
   );
 };
 
-const SecondarySummaryCard: React.FC<{ title: string; value: string }> = ({ title, value }) => {  
+const SecondarySummaryCard: React.FC<{ title: string; value: string }> = ({ title, value }) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
@@ -55,34 +66,56 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+
+  const { useWeekDayAnalytics } = useAdminQueries();
+  const { data: weekDayData, isLoading: isWeekDayDataLoading, isError: isWeekDayError } = useWeekDayAnalytics(startDate, endDate);
+
   const { useWeekAnalytics } = useAdminQueries();
-  const { data, isLoading, isError } = useWeekAnalytics(startDate, endDate);
+  const { data: weekAnalyticsData, isLoading: isWeekAnalyticsLoading, isError: isWeekAnalyticsError } = useWeekAnalytics(startDate, endDate);
+
+    const prepareChartData = () => {
+      if (!weekDayData?.daily_analytics) return null;
+  
+      return {
+        dates: weekDayData.daily_analytics.map((item: WeekDayAnalytics) => item.date),
+        days: weekDayData.daily_analytics.map((item: WeekDayAnalytics) => item.day),
+        revenue: weekDayData.daily_analytics.map((item: WeekDayAnalytics) => item.total_revenue || 0),
+        orders: weekDayData.daily_analytics.map((item: WeekDayAnalytics) => item.total_orders || 0),
+        avgOrders: weekDayData.daily_analytics.map((item: WeekDayAnalytics) =>
+          item.total_orders > 0 ? item.total_revenue / item.total_orders : 0
+        ),
+      };
+    };
+  
+    const chartData = prepareChartData();
 
   return (
     <FlexWrapper direction='horizontal'>
 
       <MainSummaryCard
         title={t('adminDashboard.summaryCards.totalRevenue')}
-        value={formatCurrency(data?.total_revenue)}
+        chartData={chartData!.revenue}
+        value={formatCurrency(weekAnalyticsData?.total_revenue)}
       />
 
       <MainSummaryCard
         title={t('adminDashboard.summaryCards.totalOrders')}
-        value={`${data?.total_orders}` || "0"}
+        chartData={chartData!.orders}
+        value={`${weekAnalyticsData?.total_orders}` || "0"}
       />
 
       <FlexWrapper direction='vertical'>
 
-      <SecondarySummaryCard
-        title={t('adminDashboard.summaryCards.totalDistance')}
-        value={`${(data ? data.total_distance / 1000 : 0).toFixed(1)} km`}
-      />
-      <SecondarySummaryCard
-        title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
-        value={data && data.total_orders > 0
-          ? formatCurrency(data.total_revenue / data.total_orders)
-          : '€0.00'}
-      />
+        <SecondarySummaryCard
+          title={t('adminDashboard.summaryCards.totalDistance')}
+          value={`${(weekAnalyticsData ? weekAnalyticsData.total_distance / 1000 : 0).toFixed(1)} km`}
+        />
+        <SecondarySummaryCard
+          title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
+          value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
+            ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
+            : '€0.00'}
+        />
       </FlexWrapper>
 
     </FlexWrapper>

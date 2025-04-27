@@ -4,7 +4,7 @@ import { SxProps } from '@mui/system';
 
 interface FlexWrapperProps {
   children: React.ReactNode;
-  gap?: 'none'| 'xs' | 'sm' | 'md' | 'lg';
+  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg';
   direction?: 'vertical' | 'horizontal';
   onClick?: () => void; // Optional click handler
   isDebugging?: boolean; // Optional prop to enable debugging border
@@ -23,12 +23,14 @@ const gapSizes = {
 const FlexWrapper: React.FC<FlexWrapperProps> = ({
   children,
   gap = 'md',
+  onClick = () => { },
   direction = 'horizontal',
   isDebugging = false,
   sx,
 }) => {
   return (
     <Box
+      onClick={onClick}
       sx={{
         display: 'flex',
         flexDirection: direction === 'vertical' ? 'column' : 'row',

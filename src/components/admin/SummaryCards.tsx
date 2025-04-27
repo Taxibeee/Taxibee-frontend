@@ -50,12 +50,29 @@ const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ title, value, chartDa
   );
 };
 
-const SecondarySummaryCard: React.FC<{ title: string; value: string }> = ({ title, value }) => {
+// Update the ChartType to include 'averageOrder'
+type ChartType = 'revenue' | 'orders' | 'averageOrder';
+
+// Update the SecondarySummaryCard to support charts
+interface SecondarySummaryCardProps {
+  title: string;
+  value: string;
+  chartData?: number[];
+  onChartClick?: () => void;
+}
+
+const SecondarySummaryCard: React.FC<SecondarySummaryCardProps> = ({ 
+  title, 
+  value, 
+  chartData, 
+  onChartClick 
+}) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
         <TextWrapper text={value} isBold={false} size='lg' />
+        {chartData && <AreaChartWrapper chartData={chartData} onClick={onChartClick || (() => {})} />}
       </FlexWrapper>
     </CardWrapper>
   );
@@ -65,8 +82,6 @@ interface SummaryCardsProps {
   startDate: string;
   endDate: string;
 }
-
-type ChartType = 'revenue' | 'orders';
 
 const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
   const { t } = useTranslation();
@@ -141,6 +156,27 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
             colors={[theme.palette.secondary.main]}
           />
         );
+      case 'averageOrder':
+        return (
+          <LineChartWrapper
+            dataset={chartData.dates.map((date, index) => ({
+              date,
+              average: chartData.avgOrders[index],
+            }))}
+            xAxis={[{ scaleType: 'band', dataKey: 'date', label: 'Date' }]}
+            yAxis={[{ label: 'Average Order Value (€)' }]}
+            series={[
+              {
+                dataKey: 'average',
+                label: 'Avg. Order Value',
+                area: true,
+                showMark: false,
+                curve: 'linear',
+              },
+            ]}
+            colors={[theme.palette.success.main]}
+          />
+        );
       default:
         return null;
     }
@@ -174,6 +210,8 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
             value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
               ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
               : '€0.00'}
+            chartData={(chartData && chartData.avgOrders)? chartData.avgOrders : []}
+            onChartClick={() => handleChartClick('averageOrder')}
           />
         </FlexWrapper>
 
@@ -184,6 +222,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         <DialogTitle>
           {selectedChartType === 'revenue' && t('adminDashboard.summaryCards.totalRevenue')}
           {selectedChartType === 'orders' && t('adminDashboard.summaryCards.totalOrders')}
+          {selectedChartType === 'averageOrder' && t('adminDashboard.summaryCards.averageRevenuePerOrder')}
           <IconButton
             onClick={() => setDialogOpen(false)}
             sx={{ position: 'absolute', right: 8, top: 8 }}

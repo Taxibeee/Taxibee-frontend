@@ -5,6 +5,7 @@ import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
 import { Area, AreaChart } from "recharts"
 import SkeletonWrapper from '../../common/SkeletonWrapper';
+import ErrorDisplayWrapper from '../../common/ErrorDisplayWrapper';
 
 import {
   ChartConfig,
@@ -13,12 +14,19 @@ import {
 
 interface AreaChartWrapperProps {
     isLoading: boolean;
+    isError?: boolean;
     title?: string;
     chartData: number[];
     onClick: () => void;
 }
 
-const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, onClick, isLoading = false }) => {
+const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ 
+    title, 
+    chartData, 
+    onClick, 
+    isLoading = false, 
+    isError = false
+}) => {
 
     const numArrayToChartData = (data: number[]) => {
         return data.map((value, index) => ({
@@ -48,6 +56,15 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
                         borderRadius: '8px'
                     }}
                 />
+            </FlexWrapper>
+        );
+    }
+    
+    if (isError) {
+        return (
+            <FlexWrapper direction='vertical' gap='md'>
+                {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
+                <ErrorDisplayWrapper message="Failed to load chart data" />
             </FlexWrapper>
         );
     }

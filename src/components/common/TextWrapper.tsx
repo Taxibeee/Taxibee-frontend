@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import SkeletonWrapper from './SkeletonWrapper';
+import ErrorDisplayWrapper from './ErrorDisplayWrapper';
 
 interface TextWrapperProps {
   isError?: boolean;
@@ -23,6 +24,7 @@ const sizeMapping = {
 };
 
 const TextWrapper: React.FC<TextWrapperProps> = ({
+  isError = false,
   isLoading = false,
   text,
   isBold = false,
@@ -38,6 +40,10 @@ const TextWrapper: React.FC<TextWrapperProps> = ({
         fontSize={sizeMapping[size]} 
       />
     );
+  }
+
+  if (isError) {
+    return <ErrorDisplayWrapper compact={true} />;
   }
   
   return (

@@ -40,13 +40,31 @@ interface MainSummaryCardProps {
   onChartClick?: () => void;
 }
 
-const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isError, isLoading, title, value, chartData, onChartClick = () => { } }) => {
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ 
+  isError = false, 
+  isLoading = false, 
+  title, 
+  value, 
+  chartData, 
+  onChartClick = () => { } 
+}) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={false} size='xxxl' isLoading={isLoading} isError={isError}/>
-        <AreaChartWrapper chartData={chartData} onClick={onChartClick} isLoading={isLoading} />
+        <TextWrapper 
+          text={value} 
+          isBold={false} 
+          size='xxxl' 
+          isLoading={isLoading} 
+          isError={isError}
+        />
+        <AreaChartWrapper 
+          chartData={chartData} 
+          onClick={onChartClick} 
+          isLoading={isLoading} 
+          isError={isError}
+        />
       </FlexWrapper>
     </CardWrapper>
   );
@@ -54,28 +72,6 @@ const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isError, isLoading, t
 
 // Update the ChartType to include 'averageOrder'
 type ChartType = 'revenue' | 'orders' | 'averageOrder';
-
-// Update the SecondarySummaryCard to support charts
-// interface SecondarySummaryCardProps {
-//   title: string;
-//   value: string;
-//   chartData?: number[];
-//   onChartClick?: () => void;
-// }
-
-// const SecondarySummaryCard: React.FC<SecondarySummaryCardProps> = ({
-//   title,
-//   value
-// }) => {
-//   return (
-//     <CardWrapper>
-//       <FlexWrapper direction='vertical' gap='none'>
-//         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-//         <TextWrapper text={value} isBold={false} size='lg' />
-//       </FlexWrapper>
-//     </CardWrapper>
-//   );
-// }
 
 interface SummaryCardsProps {
   startDate: string;
@@ -187,6 +183,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
+          isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.totalRevenue')}
           chartData={(chartData && chartData.revenue) ? chartData.revenue : []}
           value={formatCurrency(weekAnalyticsData?.total_revenue)}
@@ -195,6 +192,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
+          isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.totalOrders')}
           chartData={(chartData && chartData.orders) ? chartData.orders : []}
           value={`${weekAnalyticsData?.total_orders}` || "0"}
@@ -203,6 +201,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
+          isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
           value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
             ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
@@ -210,14 +209,6 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           chartData={(chartData && chartData.avgOrders) ? chartData.avgOrders : []}
           onChartClick={() => handleChartClick('averageOrder')}
         />
-
-        {/* <FlexWrapper direction='vertical'>
-          <SecondarySummaryCard
-            title={t('adminDashboard.summaryCards.totalDistance')}
-            value={`${(weekAnalyticsData ? weekAnalyticsData.total_distance / 1000 : 0).toFixed(1)} km`}
-          />
-
-        </FlexWrapper> */}
 
       </FlexWrapper>
 

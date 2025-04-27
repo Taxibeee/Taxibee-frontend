@@ -95,13 +95,13 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
       <MainSummaryCard
         title={t('adminDashboard.summaryCards.totalRevenue')}
-        chartData={chartData!.revenue}
+        chartData={(chartData && chartData.revenue)? chartData.revenue : []}
         value={formatCurrency(weekAnalyticsData?.total_revenue)}
       />
 
       <MainSummaryCard
         title={t('adminDashboard.summaryCards.totalOrders')}
-        chartData={chartData!.orders}
+        chartData={(chartData && chartData.orders)? chartData.orders : []}
         value={`${weekAnalyticsData?.total_orders}` || "0"}
       />
 

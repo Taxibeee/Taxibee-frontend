@@ -8,7 +8,12 @@ interface HeadingsWrapperProps {
   isLight?: boolean;
 }
 
-const HeadingsWrapper: React.FC<HeadingsWrapperProps> = ({ text, type, isBold = true, isLight = true }) => {
+const HeadingsWrapper: React.FC<HeadingsWrapperProps> = ({
+  text,
+  type,
+  isBold = true,
+  isLight = true,
+}) => {
   return (
     <Typography
       variant={type}
@@ -33,17 +38,9 @@ interface AdminPageHeadingsWrapperProps {
 }
 
 const AdminPageHeadingsWrapper: React.FC<AdminPageHeadingsWrapperProps> = ({ text }) => {
-  return (
-    <HeadingsWrapper
-      text={text}
-      type='h3'
-      isBold={false}
-      isLight={false}
-    />
-  );
-}
+  return <HeadingsWrapper text={text} type="h3" isBold={false} isLight={false} />;
+};
 
 export default HeadingsWrapper;
-
 
 export { AdminPageHeadingsWrapper };

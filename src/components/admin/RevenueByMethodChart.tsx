@@ -6,7 +6,6 @@ import CardWrapper from '../common/CardWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';
 import TextWrapper from '../common/TextWrapper';
 
-
 // Utility function for formatting currency
 const formatCurrency = (amount: number | undefined | null) => {
   if (amount === undefined || amount === null) return '€0.00';
@@ -64,10 +63,15 @@ const RevenueByMethodChart: React.FC<RevenueByMethodChartProps> = ({ startDate, 
 
   return (
     <CardWrapper isLoading={isLoading}>
-      <FlexWrapper direction='vertical'>
-        <FlexWrapper direction='vertical' gap='none'>
-          <HeadingsWrapper text='Revenue by Payment Method' type='subtitle1' isBold={false} />
-          <TextWrapper text={`Total Revenue: ${formatCurrency(calculateTotal())}`} size='lg'  isBold={true}/>
+      <FlexWrapper direction="vertical">
+        <FlexWrapper direction="vertical" gap="none">
+          <HeadingsWrapper text="Revenue by Payment Method" type="subtitle1" isBold={false} />
+          <TextWrapper
+            text={`Total Revenue: ${formatCurrency(calculateTotal())}`}
+            size="lg"
+            isBold={true}
+            isError={isError}
+          />
         </FlexWrapper>
         <PieChart
           series={[
@@ -95,7 +99,6 @@ const RevenueByMethodChart: React.FC<RevenueByMethodChartProps> = ({ startDate, 
             },
           }}
         />
-
       </FlexWrapper>
     </CardWrapper>
   );

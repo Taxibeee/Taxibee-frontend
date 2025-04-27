@@ -40,29 +40,29 @@ interface MainSummaryCardProps {
   onChartClick?: () => void;
 }
 
-const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ 
-  isError = false, 
-  isLoading = false, 
-  title, 
-  value, 
-  chartData, 
-  onChartClick = () => { } 
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({
+  isError = false,
+  isLoading = false,
+  title,
+  value,
+  chartData,
+  onChartClick = () => {},
 }) => {
   return (
     <CardWrapper isLoading={false}>
-      <FlexWrapper direction='vertical' gap='none'>
-        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper 
-          text={value} 
-          isBold={false} 
-          size='xxxl' 
-          isLoading={isLoading} 
+      <FlexWrapper direction="vertical" gap="none">
+        <HeadingsWrapper text={title} type="subtitle1" isBold={false} />
+        <TextWrapper
+          text={value}
+          isBold={false}
+          size="xxxl"
+          isLoading={isLoading}
           isError={isError}
         />
-        <AreaChartWrapper 
-          chartData={chartData} 
-          onClick={onChartClick} 
-          isLoading={isLoading} 
+        <AreaChartWrapper
+          chartData={chartData}
+          onClick={onChartClick}
+          isLoading={isLoading}
           isError={isError}
         />
       </FlexWrapper>
@@ -86,10 +86,18 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
   const [selectedChartType, setSelectedChartType] = useState<ChartType | null>(null);
 
   const { useWeekDayAnalytics } = useAdminQueries();
-  const { data: weekDayData, isLoading: isWeekDayDataLoading, isError: isWeekDayError } = useWeekDayAnalytics(startDate, endDate);
+  const {
+    data: weekDayData,
+    isLoading: isWeekDayDataLoading,
+    isError: isWeekDayError,
+  } = useWeekDayAnalytics(startDate, endDate);
 
   const { useWeekAnalytics } = useAdminQueries();
-  const { data: weekAnalyticsData, isLoading: isWeekAnalyticsLoading, isError: isWeekAnalyticsError } = useWeekAnalytics(startDate, endDate);
+  const {
+    data: weekAnalyticsData,
+    isLoading: isWeekAnalyticsLoading,
+    isError: isWeekAnalyticsError,
+  } = useWeekAnalytics(startDate, endDate);
 
   const prepareChartData = () => {
     if (!weekDayData?.daily_analytics) return null;
@@ -179,8 +187,8 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
   return (
     <>
-      <FlexWrapper 
-        direction='horizontal'
+      <FlexWrapper
+        direction="horizontal"
         responsiveDirection={true} // Enable responsive direction - will switch to vertical on mobile
         gap={isMobile ? 'sm' : 'md'} // Adjust gap size for mobile
       >
@@ -188,7 +196,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.totalRevenue')}
-          chartData={(chartData && chartData.revenue) ? chartData.revenue : []}
+          chartData={chartData && chartData.revenue ? chartData.revenue : []}
           value={formatCurrency(weekAnalyticsData?.total_revenue)}
           onChartClick={() => handleChartClick('revenue')}
         />
@@ -197,8 +205,8 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.totalOrders')}
-          chartData={(chartData && chartData.orders) ? chartData.orders : []}
-          value={`${weekAnalyticsData?.total_orders}` || "0"}
+          chartData={chartData && chartData.orders ? chartData.orders : []}
+          value={`${weekAnalyticsData?.total_orders}` || '0'}
           onChartClick={() => handleChartClick('orders')}
         />
 
@@ -206,26 +214,29 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           isError={isWeekAnalyticsError || isWeekDayError}
           title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
-          value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
-            ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
-            : '€0.00'}
-          chartData={(chartData && chartData.avgOrders) ? chartData.avgOrders : []}
+          value={
+            weekAnalyticsData && weekAnalyticsData.total_orders > 0
+              ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
+              : '€0.00'
+          }
+          chartData={chartData && chartData.avgOrders ? chartData.avgOrders : []}
           onChartClick={() => handleChartClick('averageOrder')}
         />
       </FlexWrapper>
 
       {/* Detailed Chart Dialog - Make it fullScreen on mobile */}
-      <Dialog 
-        open={dialogOpen} 
-        onClose={() => setDialogOpen(false)} 
-        maxWidth="md" 
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        maxWidth="md"
         fullWidth
         fullScreen={isMobile} // Use fullScreen on mobile devices
       >
         <DialogTitle>
           {selectedChartType === 'revenue' && t('adminDashboard.summaryCards.totalRevenue')}
           {selectedChartType === 'orders' && t('adminDashboard.summaryCards.totalOrders')}
-          {selectedChartType === 'averageOrder' && t('adminDashboard.summaryCards.averageRevenuePerOrder')}
+          {selectedChartType === 'averageOrder' &&
+            t('adminDashboard.summaryCards.averageRevenuePerOrder')}
           <IconButton
             onClick={() => setDialogOpen(false)}
             sx={{ position: 'absolute', right: 8, top: 8 }}
@@ -240,7 +251,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 };
 
 export default SummaryCards;

@@ -24,7 +24,7 @@ const gapSizes = {
 const FlexWrapper: React.FC<FlexWrapperProps> = ({
   children,
   gap = 'md',
-  onClick = () => { },
+  onClick = () => {},
   direction = 'horizontal',
   responsiveDirection = false,
   isDebugging = false,
@@ -32,9 +32,9 @@ const FlexWrapper: React.FC<FlexWrapperProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   // If responsiveDirection is true and we're on mobile, force vertical layout
-  const effectiveDirection = (responsiveDirection && isMobile) ? 'vertical' : direction;
+  const effectiveDirection = responsiveDirection && isMobile ? 'vertical' : direction;
 
   return (
     <Box

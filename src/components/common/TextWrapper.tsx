@@ -33,19 +33,13 @@ const TextWrapper: React.FC<TextWrapperProps> = ({
   isDark = true,
 }) => {
   if (isLoading) {
-    return (
-      <SkeletonWrapper 
-        variant="text" 
-        width="80%"
-        fontSize={sizeMapping[size]} 
-      />
-    );
+    return <SkeletonWrapper variant="text" width="80%" fontSize={sizeMapping[size]} />;
   }
 
   if (isError) {
     return <ErrorDisplayWrapper compact={true} />;
   }
-  
+
   return (
     <Typography
       sx={{

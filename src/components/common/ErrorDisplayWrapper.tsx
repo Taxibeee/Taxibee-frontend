@@ -15,16 +15,16 @@ const ErrorDisplayWrapper: React.FC<ErrorDisplayWrapperProps> = ({
 }) => {
   if (compact) {
     return (
-      <FlexWrapper direction='horizontal' gap='sm'>
+      <FlexWrapper direction="horizontal" gap="sm">
         <Alert severity="error" sx={{ width: '100%' }}>
           {message}
         </Alert>
       </FlexWrapper>
     );
   }
-  
+
   return (
-    <FlexWrapper direction='vertical' gap='sm'>
+    <FlexWrapper direction="vertical" gap="sm">
       <Alert severity="error">
         <AlertTitle>{title}</AlertTitle>
         {message}

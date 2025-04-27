@@ -1,114 +1,100 @@
-"use client"
+'use client';
 import React from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
 
 import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
-import { Area, AreaChart, ResponsiveContainer } from "recharts"
+import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import SkeletonWrapper from '../../common/SkeletonWrapper';
 import ErrorDisplayWrapper from '../../common/ErrorDisplayWrapper';
 
-import {
-  ChartConfig,
-  ChartContainer,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 
 interface AreaChartWrapperProps {
-    isLoading: boolean;
-    isError?: boolean;
-    title?: string;
-    chartData: number[];
-    onClick: () => void;
+  isLoading: boolean;
+  isError?: boolean;
+  title?: string;
+  chartData: number[];
+  onClick: () => void;
 }
 
-const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ 
-    title, 
-    chartData, 
-    onClick, 
-    isLoading = false, 
-    isError = false
+const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({
+  title,
+  chartData,
+  onClick,
+  isLoading = false,
+  isError = false,
 }) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const numArrayToChartData = (data: number[]) => {
-        return data.map((value, index) => ({
-            index,
-            value
-        }));
-    };
+  const numArrayToChartData = (data: number[]) => {
+    return data.map((value, index) => ({
+      index,
+      value,
+    }));
+  };
 
-    const transformedData = numArrayToChartData(chartData);
-    
-    const chartConfig = {
-        value: {
-            label: "Value",
-            color: "hsl(210, 80%, 50%)", // Changed to blue hue
-        }
-    } satisfies ChartConfig;
+  const transformedData = numArrayToChartData(chartData);
 
-    if (isLoading) {
-        return (
-            <FlexWrapper direction='vertical' gap='md'>
-                {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
-                <SkeletonWrapper 
-                    variant="rectangular" 
-                    width="100%" 
-                    height={isMobile ? 150 : 200} // Adjust height for mobile
-                    sx={{
-                        borderRadius: '8px'
-                    }}
-                />
-            </FlexWrapper>
-        );
-    }
-    
-    if (isError) {
-        return (
-            <FlexWrapper direction='vertical' gap='md'>
-                {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
-                <ErrorDisplayWrapper message="Failed to load chart data" />
-            </FlexWrapper>
-        );
-    }
+  const chartConfig = {
+    value: {
+      label: 'Value',
+      color: 'hsl(210, 80%, 50%)', // Changed to blue hue
+    },
+  } satisfies ChartConfig;
 
-    const chartHeight = isMobile ? 150 : 200; // Adjust height based on screen size
-
+  if (isLoading) {
     return (
-        <FlexWrapper direction='vertical' onClick={onClick} gap='md'>
-            {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
-            <ChartContainer config={chartConfig} style={{ height: chartHeight }}>
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                        accessibilityLayer
-                        data={transformedData}
-                    >
-                        <defs>
-                            <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
-                                <stop
-                                    offset="0%"
-                                    stopColor="hsl(210, 80%, 50%)"
-                                    stopOpacity={0.8}
-                                />
-                                <stop
-                                    offset="95%"
-                                    stopColor="hsl(210, 80%, 50%)"
-                                    stopOpacity={0.1}
-                                />
-                            </linearGradient>
-                        </defs>
-                        <Area
-                            dataKey="value"
-                            type="natural"
-                            fill="url(#fillValue)"
-                            fillOpacity={0.6}
-                            stroke="hsl(210, 80%, 50%)"
-                        />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </ChartContainer>
-        </FlexWrapper>
-    )
+      <FlexWrapper direction="vertical" gap="md">
+        {title && <HeadingsWrapper text={title} isBold={false} type="subtitle1" />}
+        <SkeletonWrapper
+          variant="rectangular"
+          width="100%"
+          height={isMobile ? 150 : 200} // Adjust height for mobile
+          sx={{
+            borderRadius: '8px',
+          }}
+        />
+      </FlexWrapper>
+    );
+  }
+
+  if (isError) {
+    return (
+      <FlexWrapper direction="vertical" gap="md">
+        {title && <HeadingsWrapper text={title} isBold={false} type="subtitle1" />}
+        <ErrorDisplayWrapper message="Failed to load chart data" />
+      </FlexWrapper>
+    );
+  }
+
+  const chartHeight = isMobile ? 150 : 200; // Adjust height based on screen size
+
+  return (
+    <FlexWrapper direction="vertical" onClick={onClick} gap="md">
+      {title && <HeadingsWrapper text={title} isBold={false} type="subtitle1" />}
+      <ChartContainer config={chartConfig} style={{ height: chartHeight }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart accessibilityLayer data={transformedData}>
+            <defs>
+              <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(210, 80%, 50%)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="hsl(210, 80%, 50%)" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <Area
+              dataKey="value"
+              type="natural"
+              fill="url(#fillValue)"
+              fillOpacity={0.6}
+              stroke="hsl(210, 80%, 50%)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+    </FlexWrapper>
+  );
 };
 
 export default AreaChartWrapper;

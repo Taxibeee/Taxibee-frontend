@@ -172,7 +172,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                   <SparkLineChartWrapper
                     title="Revenue Trend"
                     chartData={chartData!.revenue}
-                    color={theme.palette.primary.main}
+
                     onClick={() => handleChartClick('revenue')}
                   />
                 </Grid2>
@@ -182,7 +182,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                   <SparkLineChartWrapper
                     title="Daily Orders"
                     chartData={chartData!.orders}
-                    color={theme.palette.secondary.main}
+
                     onClick={() => handleChartClick('orders')}
                   />
                 </Grid2>
@@ -192,7 +192,6 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                   <SparkLineChartWrapper
                     title="Average Order Value"
                     chartData={chartData!.avgOrders}
-                    color={theme.palette.success.main}
                     onClick={() => handleChartClick('average')}
                   />
                 </Grid2>

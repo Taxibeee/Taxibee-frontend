@@ -6,6 +6,7 @@ interface FlexWrapperProps {
   children: React.ReactNode;
   gap?: 'none'| 'xs' | 'sm' | 'md' | 'lg';
   direction?: 'vertical' | 'horizontal';
+  onClick?: () => void; // Optional click handler
   isDebugging?: boolean; // Optional prop to enable debugging border
   sx?: SxProps; // Optional prop for additional styling
 }

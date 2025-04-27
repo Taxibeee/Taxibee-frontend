@@ -1,30 +1,29 @@
 import React from 'react';
 import { SparkLineChart } from '@mui/x-charts';
-import { Box, Typography } from '@mui/material';
+
+import FlexWrapper from '../../common/FlexWrapper';
+import HeadingsWrapper from '../../common/HeadingsWrapper';
+
 
 interface SparkLineChartWrapperProps {
-  title: string;
-  chartData: number[];
-  color: string;
-  onClick: () => void;
+    title?: string;
+    chartData: number[];
+    onClick: () => void;
 }
 
-const SparkLineChartWrapper: React.FC<SparkLineChartWrapperProps> = ({ title, chartData, color, onClick }) => {
+const SparkLineChartWrapper: React.FC<SparkLineChartWrapperProps> = ({ title, chartData, onClick }) => {
 
-  return (
-    <Box
-      onClick={onClick}
-      sx={{
-        cursor: 'pointer',
-        '&:hover': { opacity: 0.8 },
-      }}
-    >
-      <Typography variant="subtitle2" gutterBottom>
-        {title}
-      </Typography>
-      <SparkLineChart data={chartData} height={100} curve="natural" colors={[color]} />
-    </Box>
-  );
+    return (
+        <FlexWrapper direction='vertical' onClick={onClick} gap='md'>
+            {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
+            <SparkLineChart
+                data={chartData}
+                height={100}
+                curve="natural"
+            />
+
+        </FlexWrapper>
+    )
 };
 
 export default SparkLineChartWrapper;

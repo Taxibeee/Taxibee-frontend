@@ -1,9 +1,10 @@
 "use client"
 import React from 'react';
+import { useTheme, useMediaQuery } from '@mui/material';
 
 import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
-import { Area, AreaChart } from "recharts"
+import { Area, AreaChart, ResponsiveContainer } from "recharts"
 import SkeletonWrapper from '../../common/SkeletonWrapper';
 import ErrorDisplayWrapper from '../../common/ErrorDisplayWrapper';
 
@@ -27,6 +28,8 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({
     isLoading = false, 
     isError = false
 }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const numArrayToChartData = (data: number[]) => {
         return data.map((value, index) => ({
@@ -51,7 +54,7 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({
                 <SkeletonWrapper 
                     variant="rectangular" 
                     width="100%" 
-                    height={200}
+                    height={isMobile ? 150 : 200} // Adjust height for mobile
                     sx={{
                         borderRadius: '8px'
                     }}
@@ -69,36 +72,40 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({
         );
     }
 
+    const chartHeight = isMobile ? 150 : 200; // Adjust height based on screen size
+
     return (
         <FlexWrapper direction='vertical' onClick={onClick} gap='md'>
             {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
-            <ChartContainer config={chartConfig}>
-                <AreaChart
-                    accessibilityLayer
-                    data={transformedData}
-                >
-                    <defs>
-                        <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop
-                                offset="0%"
-                                stopColor="hsl(210, 80%, 50%)"
-                                stopOpacity={0.8}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="hsl(210, 80%, 50%)"
-                                stopOpacity={0.1}
-                            />
-                        </linearGradient>
-                    </defs>
-                    <Area
-                        dataKey="value"
-                        type="natural"
-                        fill="url(#fillValue)"
-                        fillOpacity={0.6}
-                        stroke="hsl(210, 80%, 50%)"
-                    />
-                </AreaChart>
+            <ChartContainer config={chartConfig} style={{ height: chartHeight }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                        accessibilityLayer
+                        data={transformedData}
+                    >
+                        <defs>
+                            <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
+                                <stop
+                                    offset="0%"
+                                    stopColor="hsl(210, 80%, 50%)"
+                                    stopOpacity={0.8}
+                                />
+                                <stop
+                                    offset="95%"
+                                    stopColor="hsl(210, 80%, 50%)"
+                                    stopOpacity={0.1}
+                                />
+                            </linearGradient>
+                        </defs>
+                        <Area
+                            dataKey="value"
+                            type="natural"
+                            fill="url(#fillValue)"
+                            fillOpacity={0.6}
+                            stroke="hsl(210, 80%, 50%)"
+                        />
+                    </AreaChart>
+                </ResponsiveContainer>
             </ChartContainer>
         </FlexWrapper>
     )

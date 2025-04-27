@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 
 import DateRangePicker from '../../components/input/DateRangePicker';
 import WeeklyAnalyticsCharts from '../../components/admin/WeeklyAnalyticsCharts';
@@ -40,6 +40,8 @@ interface SidebarItem {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const endDate7Days = new Date();
   const startDate7Days = new Date();
@@ -74,12 +76,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
       case 'dashboard':
         return (
           <FlexWrapper direction='vertical'>
-            <FlexWrapper>
+            <FlexWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
               <AdminPageHeadingsWrapper text={t('adminSidebar.dashboard')} />
               <DateRangePicker onSelect={handleDateRangeChange} />
             </FlexWrapper>
             <SummaryCards startDate={startDate} endDate={endDate} />
-            <FlexWrapper direction='horizontal'>
+            <FlexWrapper 
+              direction='horizontal' 
+              responsiveDirection={true} // Enable responsive behavior
+            >
                 <RevenueByMethodChart startDate={startDate} endDate={endDate} />
                 <TopDriversTable startDate={startDate} endDate={endDate} />
             </FlexWrapper>

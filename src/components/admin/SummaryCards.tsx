@@ -179,8 +179,11 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
 
   return (
     <>
-      <FlexWrapper direction='horizontal'>
-
+      <FlexWrapper 
+        direction='horizontal'
+        responsiveDirection={true} // Enable responsive direction - will switch to vertical on mobile
+        gap={isMobile ? 'sm' : 'md'} // Adjust gap size for mobile
+      >
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           isError={isWeekAnalyticsError || isWeekDayError}
@@ -209,11 +212,16 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           chartData={(chartData && chartData.avgOrders) ? chartData.avgOrders : []}
           onChartClick={() => handleChartClick('averageOrder')}
         />
-
       </FlexWrapper>
 
-      {/* Detailed Chart Dialog */}
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
+      {/* Detailed Chart Dialog - Make it fullScreen on mobile */}
+      <Dialog 
+        open={dialogOpen} 
+        onClose={() => setDialogOpen(false)} 
+        maxWidth="md" 
+        fullWidth
+        fullScreen={isMobile} // Use fullScreen on mobile devices
+      >
         <DialogTitle>
           {selectedChartType === 'revenue' && t('adminDashboard.summaryCards.totalRevenue')}
           {selectedChartType === 'orders' && t('adminDashboard.summaryCards.totalOrders')}
@@ -226,7 +234,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ pt: 2 }}>
+          <Box sx={{ pt: 2, height: isMobile ? 'calc(100vh - 120px)' : '400px' }}>
             <DetailedChart />
           </Box>
         </DialogContent>

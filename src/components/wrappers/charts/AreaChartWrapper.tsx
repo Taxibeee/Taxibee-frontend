@@ -4,6 +4,7 @@ import React from 'react';
 import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
 import { Area, AreaChart } from "recharts"
+import Skeleton from '@mui/material/Skeleton';
 
 import {
   ChartConfig,
@@ -17,7 +18,7 @@ interface AreaChartWrapperProps {
     onClick: () => void;
 }
 
-const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, onClick }) => {
+const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, onClick, isLoading = false }) => {
 
     const numArrayToChartData = (data: number[]) => {
         return data.map((value, index) => ({
@@ -34,6 +35,23 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
             color: "hsl(210, 80%, 50%)", // Changed to blue hue
         }
     } satisfies ChartConfig;
+
+    if (isLoading) {
+        return (
+            <FlexWrapper direction='vertical' gap='md'>
+                {title && <HeadingsWrapper text={title} isBold={false} type='subtitle1' />}
+                <Skeleton 
+                    variant="rectangular" 
+                    animation="wave"
+                    width="100%" 
+                    height={200}
+                    sx={{
+                        borderRadius: '8px'
+                    }}
+                />
+            </FlexWrapper>
+        );
+    }
 
     return (
         <FlexWrapper direction='vertical' onClick={onClick} gap='md'>

@@ -33,7 +33,7 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
     const chartConfig = {
         value: {
             label: "Value",
-            color: "hsl(var(--chart-1))",
+            color: "hsl(210, 80%, 50%)", // Changed to blue hue
         }
     } satisfies ChartConfig;
 
@@ -48,13 +48,13 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
                     <defs>
                         <linearGradient id="fillValue" x1="0" y1="0" x2="0" y2="1">
                             <stop
-                                offset="5%"
-                                stopColor="var(--color-value, hsl(var(--chart-1)))"
+                                offset="0%"
+                                stopColor="hsl(210, 80%, 50%)"
                                 stopOpacity={0.8}
                             />
                             <stop
                                 offset="95%"
-                                stopColor="var(--color-value, hsl(var(--chart-1)))"
+                                stopColor="hsl(210, 80%, 50%)"
                                 stopOpacity={0.1}
                             />
                         </linearGradient>
@@ -64,7 +64,7 @@ const AreaChartWrapper: React.FC<AreaChartWrapperProps> = ({ title, chartData, o
                         type="natural"
                         fill="url(#fillValue)"
                         fillOpacity={0.6}
-                        stroke="var(--color-value, hsl(var(--chart-1)))"
+                        stroke="hsl(210, 80%, 50%)"
                     />
                 </AreaChart>
             </ChartContainer>

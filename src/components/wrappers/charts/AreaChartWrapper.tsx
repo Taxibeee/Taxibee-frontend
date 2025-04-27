@@ -1,11 +1,8 @@
+"use client"
 import React from 'react';
 
 import FlexWrapper from '../../common/FlexWrapper';
 import HeadingsWrapper from '../../common/HeadingsWrapper';
-
-
-"use client"
-
 import { Area, AreaChart } from "recharts"
 
 import {

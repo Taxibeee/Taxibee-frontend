@@ -19,7 +19,7 @@ import HeadingsWrapper from '../common/HeadingsWrapper';
 import TextWrapper from '../common/TextWrapper';
 
 import { WeekDayAnalytics } from '../../types/analytics.types';
-import AreaChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
+import AreaChartWrapper from '../wrappers/charts/AreaChartWrapper';
 import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
 
 // Utility function for formatting currency

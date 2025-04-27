@@ -80,7 +80,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ selectedPage }) => {
             </FlexWrapper>
             <SummaryCards startDate={startDate} endDate={endDate} />
             <FlexWrapper direction='horizontal'>
-                <WeeklyAnalyticsCharts startDate={startDate} endDate={endDate} />
                 <RevenueByMethodChart startDate={startDate} endDate={endDate} />
                 <TopDriversTable startDate={startDate} endDate={endDate} />
             </FlexWrapper>

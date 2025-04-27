@@ -39,13 +39,13 @@ interface MainSummaryCardProps {
   onChartClick?: () => void;
 }
 
-const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isLoading, title, value, chartData, onChartClick=()=>{}}) => {
+const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isLoading, title, value, chartData, onChartClick = () => { } }) => {
   return (
     <CardWrapper isLoading={false}>
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
         <TextWrapper text={value} isBold={false} size='xxxl' isLoading={isLoading} />
-        <AreaChartWrapper chartData={chartData} onClick={onChartClick} />
+        <AreaChartWrapper chartData={chartData} onClick={onChartClick} isLoading={isLoading} />
       </FlexWrapper>
     </CardWrapper>
   );
@@ -55,29 +55,26 @@ const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ isLoading, title, val
 type ChartType = 'revenue' | 'orders' | 'averageOrder';
 
 // Update the SecondarySummaryCard to support charts
-interface SecondarySummaryCardProps {
-  title: string;
-  value: string;
-  chartData?: number[];
-  onChartClick?: () => void;
-}
+// interface SecondarySummaryCardProps {
+//   title: string;
+//   value: string;
+//   chartData?: number[];
+//   onChartClick?: () => void;
+// }
 
-const SecondarySummaryCard: React.FC<SecondarySummaryCardProps> = ({ 
-  title, 
-  value, 
-  chartData, 
-  onChartClick 
-}) => {
-  return (
-    <CardWrapper isLoading={false}>
-      <FlexWrapper direction='vertical' gap='none'>
-        <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
-        <TextWrapper text={value} isBold={false} size='lg' />
-        {chartData && <AreaChartWrapper chartData={chartData} onClick={onChartClick || (() => {})} />}
-      </FlexWrapper>
-    </CardWrapper>
-  );
-}
+// const SecondarySummaryCard: React.FC<SecondarySummaryCardProps> = ({
+//   title,
+//   value
+// }) => {
+//   return (
+//     <CardWrapper>
+//       <FlexWrapper direction='vertical' gap='none'>
+//         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
+//         <TextWrapper text={value} isBold={false} size='lg' />
+//       </FlexWrapper>
+//     </CardWrapper>
+//   );
+// }
 
 interface SummaryCardsProps {
   startDate: string;
@@ -190,7 +187,7 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           title={t('adminDashboard.summaryCards.totalRevenue')}
-          chartData={(chartData && chartData.revenue)? chartData.revenue : []}
+          chartData={(chartData && chartData.revenue) ? chartData.revenue : []}
           value={formatCurrency(weekAnalyticsData?.total_revenue)}
           onChartClick={() => handleChartClick('revenue')}
         />
@@ -198,28 +195,31 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ startDate, endDate }) => {
         <MainSummaryCard
           isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
           title={t('adminDashboard.summaryCards.totalOrders')}
-          chartData={(chartData && chartData.orders)? chartData.orders : []}
+          chartData={(chartData && chartData.orders) ? chartData.orders : []}
           value={`${weekAnalyticsData?.total_orders}` || "0"}
           onChartClick={() => handleChartClick('orders')}
         />
 
-        <FlexWrapper direction='vertical'>
+        <MainSummaryCard
+          isLoading={isWeekAnalyticsLoading || isWeekDayDataLoading}
+          title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
+          value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
+            ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
+            : '€0.00'}
+          chartData={(chartData && chartData.avgOrders) ? chartData.avgOrders : []}
+          onChartClick={() => handleChartClick('averageOrder')}
+        />
+
+        {/* <FlexWrapper direction='vertical'>
           <SecondarySummaryCard
             title={t('adminDashboard.summaryCards.totalDistance')}
             value={`${(weekAnalyticsData ? weekAnalyticsData.total_distance / 1000 : 0).toFixed(1)} km`}
           />
-          <SecondarySummaryCard
-            title={t('adminDashboard.summaryCards.averageRevenuePerOrder')}
-            value={weekAnalyticsData && weekAnalyticsData.total_orders > 0
-              ? formatCurrency(weekAnalyticsData.total_revenue / weekAnalyticsData.total_orders)
-              : '€0.00'}
-            chartData={(chartData && chartData.avgOrders)? chartData.avgOrders : []}
-            onChartClick={() => handleChartClick('averageOrder')}
-          />
-        </FlexWrapper>
+
+        </FlexWrapper> */}
 
       </FlexWrapper>
-      
+
       {/* Detailed Chart Dialog */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>

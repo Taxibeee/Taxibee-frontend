@@ -170,6 +170,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                 {/* Revenue Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
                   <AreaChartWrapper
+                    isLoading={isLoading}
                     title="Revenue Trend"
                     chartData={chartData!.revenue}
                     onClick={() => handleChartClick('revenue')}
@@ -179,6 +180,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                 {/* Orders Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
                   <AreaChartWrapper
+                    isLoading={isLoading}
                     title="Daily Orders"
                     chartData={chartData!.orders}
                     onClick={() => handleChartClick('orders')}
@@ -188,6 +190,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
                 {/* Average Order Value */}
                 <Grid2 size={{ xs: 12 }}>
                   <AreaChartWrapper
+                    isLoading={isLoading}
                     title="Average Order Value"
                     chartData={chartData!.avgOrders}
                     onClick={() => handleChartClick('average')}

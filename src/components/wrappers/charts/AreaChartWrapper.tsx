@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/chart";
 
 interface AreaChartWrapperProps {
+    isLoading: boolean;
     title?: string;
     chartData: number[];
     onClick: () => void;

@@ -12,17 +12,21 @@ const driverApi = {
   },
 
   // Earnings
-  getDriverEarnings: async (period: string = 'week'): Promise<DriverEarnings> => {
-    const response = await api.get(`/driver/earnings?period=${period}`);
+  getDriverEarnings: async (startDate: string, endDate: string): Promise<DriverEarnings> => {
+    const response = await api.get(`/driver/earnings?start_date=${startDate}&end_date=${endDate}`);
     return response.data;
   },
 
   // Orders
-  getDriverOrders: async (
-    params: { period: string; limit?: number; offset?: number } = { period: 'week' }
-  ): Promise<Order[]> => {
+  getDriverOrders: async (params: {
+    startDate: string;
+    endDate: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<Order[]> => {
     const queryParams = new URLSearchParams();
-    queryParams.append('period', params.period);
+    queryParams.append('start_date', params.startDate);
+    queryParams.append('end_date', params.endDate);
     if (params.limit) queryParams.append('limit', params.limit.toString());
     if (params.offset) queryParams.append('offset', params.offset.toString());
 

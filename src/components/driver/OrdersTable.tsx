@@ -29,13 +29,14 @@ const formatCurrency = (amount: number | undefined | null) => {
 };
 
 interface OrdersTableProps {
-  period: string;
-  onPeriodChange: (period: string) => void;
+  startDate: string;
+  endDate: string;
+  onDateRangeChange: (startDate: string, endDate: string) => void;
 }
 
-const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => {
+const OrdersTable: React.FC<OrdersTableProps> = ({ startDate, endDate, onDateRangeChange }) => {
   const { useDriverOrders } = useDriverQueries();
-  const { data, isLoading, isError } = useDriverOrders({ period, limit: 50 });
+  const { data, isLoading, isError } = useDriverOrders({ startDate, endDate, limit: 50 });
 
   return (
     <Card elevation={2}>
@@ -45,26 +46,11 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ period, onPeriodChange }) => 
           <Box>
             <Button
               size="small"
-              variant={period === 'today' ? 'contained' : 'outlined'}
-              onClick={() => onPeriodChange('today')}
+              variant="outlined"
+              onClick={() => onDateRangeChange('2023-01-01', '2023-01-07')} // Example
               sx={{ mr: 1 }}
             >
-              Today
-            </Button>
-            <Button
-              size="small"
-              variant={period === 'week' ? 'contained' : 'outlined'}
-              onClick={() => onPeriodChange('week')}
-              sx={{ mr: 1 }}
-            >
-              This Week
-            </Button>
-            <Button
-              size="small"
-              variant={period === 'month' ? 'contained' : 'outlined'}
-              onClick={() => onPeriodChange('month')}
-            >
-              This Month
+              Last Week
             </Button>
           </Box>
         }

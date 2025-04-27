@@ -24,12 +24,13 @@ const formatTime = (seconds: number | undefined | null) => {
 };
 
 interface DriverStatsCardsProps {
-  period: string;
+  startDate: string;
+  endDate: string;
 }
 
-const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ period }) => {
+const DriverStatsCards: React.FC<DriverStatsCardsProps> = ({ startDate, endDate }) => {
   const { useDriverEarnings } = useDriverQueries();
-  const { data, isLoading, isError } = useDriverEarnings(period);
+  const { data, isLoading, isError } = useDriverEarnings(startDate, endDate);
 
   return (
     <Grid2 container spacing={3} sx={{ mb: 4 }}>

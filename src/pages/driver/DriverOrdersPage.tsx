@@ -21,32 +21,40 @@ import {
   Grid2,
   Divider,
   IconButton,
-  ButtonGroup,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDriverQueries } from '../../hooks';
 import { Order } from '../../types/order.types';
 import { CustomAlert } from '../../utils/customAlert';
+import DateRangePicker from '../../components/input/DateRangePicker';
 
 interface DriverOrdersPageProps {
-  period: string;
-  onPeriodChange?: (period: string) => void;
+  startDate: string;
+  endDate: string;
+  onDateRangeChange: (startDate: Date, endDate: Date) => void;
 }
 
 const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
-  period: externalPeriod,
-  onPeriodChange: externalPeriodChange,
+  startDate: externalStartDate,
+  endDate: externalEndDate,
+  onDateRangeChange: externalOnDateRangeChange,
 }) => {
-  // State for selected period and order details dialog
-  const [internalPeriod, setInternalPeriod] = useState<string>('week');
+  const [startDate, setStartDate] = useState<string>(externalStartDate);
+  const [endDate, setEndDate] = useState<string>(externalEndDate);
 
-  const selectedPeriod = externalPeriod || internalPeriod;
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
-  // Fetch driver orders based on selected period
   const { useDriverOrders } = useDriverQueries();
-  const { data, isLoading, isError } = useDriverOrders({ period: selectedPeriod });
+  const { data, isLoading, isError } = useDriverOrders({ startDate, endDate });
+
+  const handleDateRangeChange = (start: Date, end: Date) => {
+    const startDateString = start.toISOString().split('T')[0];
+    const endDateString = end.toISOString().split('T')[0];
+    setStartDate(startDateString);
+    setEndDate(endDateString);
+    externalOnDateRangeChange(start, end);
+  };
 
   // Format timestamp to readable date
   const formatTimestamp = (timestamp: string | number | null): string => {
@@ -69,15 +77,6 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
   const formatDistance = (meters: number | null): string => {
     if (meters === null) return 'N/A';
     return `${(meters / 1000).toFixed(1)} km`;
-  };
-
-  // Handle period change
-  const handlePeriodChange = (period: string) => {
-    if (externalPeriodChange) {
-      externalPeriodChange(period);
-    } else {
-      setInternalPeriod(period);
-    }
   };
 
   // Handle opening order details dialog
@@ -132,20 +131,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
             sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}
           >
             <Typography variant="h5">Your Orders</Typography>
-            <ButtonGroup variant="outlined" size="small">
-              <Button
-                onClick={() => handlePeriodChange('week')}
-                variant={selectedPeriod === 'week' ? 'contained' : 'outlined'}
-              >
-                This Week
-              </Button>
-              <Button
-                onClick={() => handlePeriodChange('month')}
-                variant={selectedPeriod === 'month' ? 'contained' : 'outlined'}
-              >
-                This Month
-              </Button>
-            </ButtonGroup>
+            <DateRangePicker onSelect={handleDateRangeChange} />
           </Box>
 
           {isLoading ? (
@@ -155,7 +141,7 @@ const DriverOrdersPage: React.FC<DriverOrdersPageProps> = ({
           ) : isError ? (
             <CustomAlert severity="error">Failed to load orders data.</CustomAlert>
           ) : !data || data.length === 0 ? (
-            <CustomAlert severity="info">No orders found for the selected period.</CustomAlert>
+            <CustomAlert severity="info">No orders found for the selected date range.</CustomAlert>
           ) : (
             <TableContainer component={Paper}>
               <Table>

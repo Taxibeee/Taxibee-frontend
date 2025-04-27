@@ -16,17 +16,20 @@ export const useDriverQueries = () => {
   };
 
   // Earnings query with period parameter
-  const useDriverEarnings = (period: string = 'week') => {
+  const useDriverEarnings = (startDate: string, endDate: string) => {
     return useQuery<DriverEarnings, Error>({
-      queryKey: ['driver', 'earnings', period],
-      queryFn: () => driverApi.getDriverEarnings(period),
+      queryKey: ['driver', 'earnings', startDate, endDate],
+      queryFn: () => driverApi.getDriverEarnings(startDate, endDate),
     });
   };
 
   // Orders query with parameters
-  const useDriverOrders = (
-    params: { period: string; limit?: number; offset?: number } = { period: 'week' }
-  ) => {
+  const useDriverOrders = (params: {
+    startDate: string;
+    endDate: string;
+    limit?: number;
+    offset?: number;
+  }) => {
     return useQuery<Order[], Error>({
       queryKey: ['driver', 'orders', params],
       queryFn: () => driverApi.getDriverOrders(params),

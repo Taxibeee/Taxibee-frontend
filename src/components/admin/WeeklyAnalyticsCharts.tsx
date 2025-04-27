@@ -19,7 +19,7 @@ import { BarChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
-import SparkLineChartWrapper from '../wrappers/charts/sparkLineChartWrapper';
+import SparkLineChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 

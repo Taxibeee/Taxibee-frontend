@@ -11,9 +11,10 @@ import FlexWrapper from '../common/FlexWrapper';
 import CardWrapper from '../common/CardWrapper';
 import HeadingsWrapper from '../common/HeadingsWrapper';
 import TextWrapper from '../common/TextWrapper';
-import { SparkLineChart } from '@mui/x-charts';
-import SparkLineChartWrapper from '../wrappers/charts/sparkLineChartWrapper';
+
+
 import { WeekDayAnalytics } from '../../types/analytics.types';
+import SparkLineChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
 
 
 // Utility function for formatting currency

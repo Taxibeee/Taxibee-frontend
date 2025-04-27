@@ -19,7 +19,8 @@ import { BarChart } from '@mui/x-charts';
 import { CustomAlert } from '../../utils/customAlert';
 import { WeekDayAnalytics } from '../../types/analytics.types';
 import LineChartWrapper from '../wrappers/charts/LineChartWrapper';
-import SparkLineChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
+import { AreaChart } from 'recharts';
+import AreaChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
 
 type ChartType = 'revenue' | 'orders' | 'average';
 
@@ -169,7 +170,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
               <Grid2 spacing={2}>
                 {/* Revenue Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <SparkLineChartWrapper
+                  <AreaChartWrapper
                     title="Revenue Trend"
                     chartData={chartData!.revenue}
                     onClick={() => handleChartClick('revenue')}
@@ -178,7 +179,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
 
                 {/* Orders Sparkline */}
                 <Grid2 size={{ xs: 6 }}>
-                  <SparkLineChartWrapper
+                  <AreaChartWrapper
                     title="Daily Orders"
                     chartData={chartData!.orders}
                     onClick={() => handleChartClick('orders')}
@@ -187,7 +188,7 @@ const WeeklyAnalyticsCharts: React.FC<WeeklyAnalyticsChartsProps> = ({ startDate
 
                 {/* Average Order Value */}
                 <Grid2 size={{ xs: 12 }}>
-                  <SparkLineChartWrapper
+                  <AreaChartWrapper
                     title="Average Order Value"
                     chartData={chartData!.avgOrders}
                     onClick={() => handleChartClick('average')}

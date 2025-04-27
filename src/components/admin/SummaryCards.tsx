@@ -14,7 +14,7 @@ import TextWrapper from '../common/TextWrapper';
 
 
 import { WeekDayAnalytics } from '../../types/analytics.types';
-import SparkLineChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
+import AreaChartWrapper from '../wrappers/charts/SparkLineChartWrapper';
 
 
 // Utility function for formatting currency
@@ -40,7 +40,7 @@ const MainSummaryCard: React.FC<MainSummaryCardProps> = ({ title, value, chartDa
       <FlexWrapper direction='vertical' gap='none'>
         <HeadingsWrapper text={title} type='subtitle1' isBold={false} />
         <TextWrapper text={value} isBold={false} size='xxxl' />
-        <SparkLineChartWrapper chartData={chartData} onClick={onChartClick}/>
+        <AreaChartWrapper chartData={chartData} onClick={onChartClick} />
       </FlexWrapper>
     </CardWrapper>
   );
